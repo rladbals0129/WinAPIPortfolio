@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="2D FrameWork">
+      <UniqueIdentifier>{9e04f056-c619-4ba8-9fe1-53604c0ae0bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\DesignPattern">
+      <UniqueIdentifier>{e11d1d71-28c3-4252-b01f-cd62273c9374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\DesignPattern\Singleton">
+      <UniqueIdentifier>{24c71beb-6e6f-4b75-8667-8d39104ba94b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\FrameWorkManager">
+      <UniqueIdentifier>{26db817d-8e52-4862-bd05-b320eb9aa279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\GameCore">
+      <UniqueIdentifier>{fb1f6e4c-60b6-4304-ab3c-3e443d1ca542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\GImage">
+      <UniqueIdentifier>{1e509965-fc00-43d0-9ad6-76c98fd98ecf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\Utility">
+      <UniqueIdentifier>{1b9f44bf-7d94-46ea-abc7-6753c729f651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\Utility\Math">
+      <UniqueIdentifier>{0e93b5ec-1001-4aa6-bd4a-47bd7b309556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\PCH">
+      <UniqueIdentifier>{06fb32b1-8cb7-4b4e-bd21-b4103798f19a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\Utility\ResourceClass">
+      <UniqueIdentifier>{1eabe3bd-33bc-4882-b6c0-432f04f54c3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass">
+      <UniqueIdentifier>{c91695f4-f92a-4aa0-a572-058575fef293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Player">
+      <UniqueIdentifier>{1785943c-6377-4863-8f77-f045e75f10d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Stage">
+      <UniqueIdentifier>{fec481a3-9b4a-452b-a398-8d21f991a7aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Enemy">
+      <UniqueIdentifier>{c11df3eb-7006-4990-90ef-ae202a2c2764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Enemy\Common">
+      <UniqueIdentifier>{aa731522-7857-44fe-914f-3f65829be604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Enemy\Boss">
+      <UniqueIdentifier>{a878b9f7-2607-4085-a6a3-af1b5cb15ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\NPC">
+      <UniqueIdentifier>{1e587088-8b60-4c00-b2d1-fd5f27f024ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D FrameWork\ManagerClass">
+      <UniqueIdentifier>{f22c82a4-94cc-4367-86ba-5151b28ab997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\NewFilter1">
+      <UniqueIdentifier>{c4dc987d-55db-4012-8b2e-a6888e8ab205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Title">
+      <UniqueIdentifier>{f22244ad-4723-4903-8b74-6de7b2a2cce1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Intro">
+      <UniqueIdentifier>{30d3fb64-a422-4c5c-b62a-ed28cb8463b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="WinAPIPortfolio.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>2D FrameWork\DesignPattern\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Stdafx.h">
+      <Filter>2D FrameWork\PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>2D FrameWork\GameCore</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>2D FrameWork\ManagerClass</Filter>
+    </ClInclude>
+    <ClInclude Include="GImage.h">
+      <Filter>2D FrameWork\GImage</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonMacroFunction.h">
+      <Filter>2D FrameWork\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFunction.h">
+      <Filter>2D FrameWork\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceClass.h">
+      <Filter>2D FrameWork\Utility\ResourceClass</Filter>
+    </ClInclude>
+    <ClInclude Include="TempSoundManager.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>소스 파일\GameObjectClass\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>소스 파일\GameObjectClass\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoPlayer.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Intro.h">
+      <Filter>소스 파일\GameObjectClass\Intro</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinAPIPortfolio.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Stdafx.cpp">
+      <Filter>2D FrameWork\PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>2D FrameWork\GameCore</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>2D FrameWork\ManagerClass</Filter>
+    </ClCompile>
+    <ClCompile Include="GImage.cpp">
+      <Filter>2D FrameWork\GImage</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceClass.cpp">
+      <Filter>2D FrameWork\Utility\ResourceClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일\GameObjectClass\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TempSoundManager.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>소스 파일\GameObjectClass\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoPlayer.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Intro.cpp">
+      <Filter>소스 파일\GameObjectClass\Intro</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WinAPIPortfolio.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="WinAPIPortfolio.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

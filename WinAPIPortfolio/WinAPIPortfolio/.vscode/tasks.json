@@ -1,0 +1,86 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: cl.exe 활성 파일 빌드",
+            "command": "cl.exe",
+            "args": [
+                "/Zi",
+                "/EHsc",
+                "/nologo",
+                "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "detail": "디버거에서 생성된 작업입니다."
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: configure",
+            "command": "configure",
+            "problemMatcher": [],
+            "detail": "CMake template configure task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: clean",
+            "command": "clean",
+            "problemMatcher": [],
+            "detail": "CMake template clean task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: clean rebuild",
+            "command": "cleanRebuild",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template clean rebuild task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: test",
+            "command": "test",
+            "problemMatcher": [],
+            "detail": "CMake template test task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: test",
+            "command": "test",
+            "problemMatcher": [],
+            "detail": "CMake template test task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: build",
+            "command": "build",
+            "targets": [
+                "[N/A - Select Kit]"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "CMake template build task"
+        },
+        {
+            "type": "cmake",
+            "label": "CMake: configure",
+            "command": "configure",
+            "problemMatcher": [],
+            "detail": "CMake template configure task",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
