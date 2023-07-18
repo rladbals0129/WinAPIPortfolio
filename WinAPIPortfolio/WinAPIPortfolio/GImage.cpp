@@ -363,7 +363,7 @@ void GImage::render(HDC hdc, int destX, int destY, int destWidth, int destHight)
 			destWidth,				
 			destHight,				
 			_imageInfo->hMemDC,		
-			0, 0,					
+			0, 0,
 			_imageInfo->width,		
 			_imageInfo->height,		
 			_transColor				
@@ -725,6 +725,8 @@ void GImage::frameRender(HDC hdc, int destX, int destY, int currentFrameX, int c
 			SRCCOPY);
 	}
 }
+
+
 void GImage::camRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY)
 {	
 	RECT rcSour; // 소스 이미지 영역

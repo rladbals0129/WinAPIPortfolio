@@ -9,10 +9,35 @@ HRESULT Stage1::init(void)
 	_offsetX = 3840;
 	_offsetY = 0;
 
-	_breakGlass = false;
+
 	_glassIdx = 0;
 
+	_createPlayer = false;
+	//화면흔들기
+	_shakeScreen = false;
+	_shakeDuration = 0;
+	_shakeAmount = 50;
+	//유리깨지기
+	_breakFX = false;
+	_breakSizeX = 0;
+	_breakSizeY = 0;
+	_breakStartX = 640;
+	_breakStartY = 520;
+	
 
+
+	_mglassPushX = 0;
+	_mglassPushY = 0;
+	_mglassCnt = 0;
+	_mglassIdx = 0;
+	_mglassAngle = 0.f;
+	for (int i = 0; i < 50; i++)
+	{
+		_glass[i] = RectMake(600, 400, 72, 76);
+	}
+	
+
+	//
 	_cutDoorL = 0;
 	_cutDoorR = 0;
 	_renderDoor = true;
@@ -44,7 +69,11 @@ void Stage1::release(void)
 
 void Stage1::update(void)
 {
-	PLAYER->update();
+	if (_createPlayer)
+	{
+		PLAYER->update();
+		
+	}
 	_pPosRc.left = PLAYER->getPlayerPos().left;
 	_pPosRc.right = PLAYER->getPlayerPos().right;
 	_pPosRc.top = PLAYER->getPlayerPos().top;
@@ -146,13 +175,78 @@ void Stage1::update(void)
 	
 	if (_currentMap == map1)
 	{
-		if ((_pPosRc.right + _pPosRc.left )/ 2 > 1280) //맵 넘기기
+		if (!_createPlayer)
 		{
 		
+			if (KEYMANAGER->isOnceKeyDown('E'))
+			{
+				_glassIdx++;
+				_shakeScreen = true;
+				_shakeDuration = 10;
+			
+			}
+			IMAGEMANAGER->findImage("유리관")->setFrameX(_glassIdx);
+			if (_glassIdx < 4)
+			{
+				shakeScreen(3840, 0);
+
+			}
+			UI->btnEAnim();
+			
+
+			if (_glassIdx > 3)
+			{
+				_createPlayer = true;
+				_breakFX = true;
+			}
+
+		
+		
+			
+		}
+
+		if (_breakFX)
+		{
+			_breakSizeX += 30;
+			_breakSizeY += 30;
+			_breakStartX -= 15;
+			_breakStartY -= 15;
+			if (_breakSizeX > 1000 && _breakSizeY > 800)
+			{
+				_breakFX = false;
+			}
+
+			//여기
+			for (int i = 0; i < 25; i++)
+			{
+				_mglassPushX = RND->getFromIntTo(-100, -90);
+				_mglassPushY = RND->getFromIntTo(-100, -90);
+				_mglassAngle = RND->getFromFloatTo(-180.f, 180.f);
+				_glass[i].left += cosf(RADIAN(-_mglassAngle)) * _mglassPushX;
+				_glass[i].right += cosf(RADIAN(-_mglassAngle)) * _mglassPushX;
+				_glass[i].top += sinf(RADIAN(-_mglassAngle)) * _mglassPushY;
+				_glass[i].bottom += sinf(RADIAN(-_mglassAngle)) * _mglassPushY;
+				
+
+			}
+			for (int i = 25;  i < 50; i++)
+			{
+
+			}
+
+
+
+		}
+
+
+		if ((_pPosRc.right + _pPosRc.left )/ 2 > 1280) //맵 넘기기
+		{
+			_renderBreakGlass = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
 			if (_offsetX == 5120)
 			{
+				
 				_renderDoor = true;
 				_currentMap = map2;
 				PLAYER->setPlayerPos(_pPosRc);
@@ -190,6 +284,7 @@ void Stage1::update(void)
 	{
 		if ((_pPosRc.left + _pPosRc.right)  / 2 < 0)
 		{
+			_renderBreakGlass = true;
 			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX -= 80;
@@ -260,11 +355,13 @@ void Stage1::update(void)
 	{
 		if ((_pPosRc.left + _pPosRc.right) / 2 < 0)
 		{			
+			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
 			_renderKnife = false;
 			if (_offsetX == 6400)
 			{
+				_renderDoor = true;
 				_cutDoorR = 170;
 				_cutDoorL = 0;
 				_currentMap = map3;
@@ -277,7 +374,8 @@ void Stage1::update(void)
 		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_obCol) && !_knifeGet)
 		{
 			_UIknifeRender = true;
-			efUIKeybordUp();
+			UI->btnUPAnim();
+			
 			PLAYER->setKnife(true);
 			if (PLAYER->getUsingKnife())
 			{
@@ -299,20 +397,31 @@ void Stage1::update(void)
 		}
 		if (PLAYER->getTxtKnife())
 		{
-			efUIReturn();
+			UI->btnEndterAnim();
+			
 		}
 		if (PLAYER->getPanalKnife())
 		{
 			_panalCnt++;
-			if (_panalOffsetY > 0)
+			if (_panalOffsetY > 0 && _panalCnt < 200)
 			{
 				_panalOffsetY -= 50;
 			}
 			
 			if (_panalCnt > 200)
 			{
-				_panalCnt = 0;
-				PLAYER->setPanalKnife(false);
+				if (_panalOffsetY <= 800)
+				{
+					_panalOffsetY += 50;
+				}
+				else 
+				{
+					_panalCnt = 0;
+					PLAYER->setPanalKnife(false);
+				}
+				
+				
+				
 			}
 			PLAYER->setKnife(false);
 			//cout << _panalCnt << endl;
@@ -331,8 +440,37 @@ void Stage1::render(void)
 	if (_currentMap == map1)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
-		IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
-		IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
+		
+		if (_createPlayer)
+		{
+			IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
+			IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
+		}
+		else if (!_createPlayer)
+		{
+			IMAGEMANAGER->frameRender("유리관", getMemDC(),602,420);
+			UI->btnERender(getMemDC());
+		}
+		if (_breakFX)
+		{
+			IMAGEMANAGER->render("깨지는파티클", getMemDC(), _breakStartX, _breakStartY, _breakSizeX, _breakSizeY);
+			for (int i = 0; i < 50; i++)
+			{
+				IMAGEMANAGER->frameRender("유리폭발", getMemDC(), _glass[i].left, _glass[i].top);
+			}
+
+		}
+		/*
+		inline void setCenter(float x, float y)
+	{
+		_imageInfo->x = x - (_imageInfo->width / 2);
+		_imageInfo->y = y - (_imageInfo->height / 2);
+	}
+		*/
+
+
+
+		
 		if (_upBtnRender)
 		{
 			UI->btnUPRender(getMemDC());
@@ -359,7 +497,7 @@ void Stage1::render(void)
 		IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
 	}
 
-	if (_currentMap == map4)
+	if (_currentMap == map4 && _renderDoor)
 	{
 		IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
 		if (_renderKnife && !_knifeGet)
@@ -406,7 +544,12 @@ void Stage1::render(void)
 		if (_currentMap == map4)
 			DrawRectMake(getMemDC(), _obCol);
 	}	
-	PLAYER->render(getMemDC());
+	if (_createPlayer)
+	{
+		PLAYER->render(getMemDC());
+
+	}
+	
 
 	
 }
@@ -462,37 +605,29 @@ void Stage1::efKnife()
 	
 }
 
-void Stage1::efUIKeybordUp()
+void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY)
 {
-	_keyUPCnt++;
-	if (_keyUPCnt % 24 == 0)
+	if (_shakeScreen && _shakeDuration > 0)
 	{
-		_keyUPIdx++;
-		
-		if (_keyUPIdx > 2)
+		_offsetX += RND->getInt(_shakeAmount * 2) - _shakeAmount;
+		_offsetY += RND->getInt(_shakeAmount) - _shakeAmount;
+		_shakeDuration--;
+
+		if (_shakeDuration == 0)
 		{
-			_keyUPIdx = 0;
-			_keyUPCnt = 0;
+			_offsetX = currntOffsetX;
+			_offsetY = currntOffsetY;
+			_shakeScreen = false;
+		//	cout << _offsetX << " " << _offsetY << endl;
+
 		}
-		IMAGEMANAGER->findImage("방향키위")->setFrameX(_keyUPIdx);
 	}
+}
+
+void Stage1::glassBoom()
+{
 
 }
 
-void Stage1::efUIReturn()
-{
-	_enterCnt++;
-	if (_enterCnt % 24 == 0)
-	{
-		_enterIdx++;
-
-		if (_enterIdx > 2)
-		{
-			_enterIdx = 0;
-			_enterCnt = 0;
-		}
-		IMAGEMANAGER->findImage("엔터키")->setFrameX(_enterIdx);
-	}
-}
 
 

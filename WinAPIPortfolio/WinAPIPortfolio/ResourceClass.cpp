@@ -75,9 +75,26 @@ HRESULT ResourceClass::init()
 	
 	IMAGEMANAGER->addImage("깨진유리아래", "Resources/Images/Stage1/Object/breakGlassTubeDown.bmp", 146, 51,true,RGB(255,0,255));
 	IMAGEMANAGER->addImage("깨진유리위", "Resources/Images/Stage1/Object/breakGlassTubeUP.bmp", 146, 51,true,RGB(255,0,255));
-	IMAGEMANAGER->addFrameImage("유리관", "Resources/Images/Stage1/Object/glassTube.bmp", 804, 289, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("유리관", "Resources/Images/Stage1/Object/glassTube.bmp",
+		502, 200,
+		4,1,
+		true,
+		RGB(255, 0, 255));
 																						//536,213
+	IMAGEMANAGER->addFrameImage("E키", "Resources/Images/UI/PushE.bmp",
+		40, 20,
+		2, 1,
+		true,
+		RGB(255, 0, 255));
 
+	IMAGEMANAGER->addImage("깨지는파티클", "Resources/Images/Effect/Shockwave.bmp", 484, 477, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("달리기이펙트", "Resources/Images/Effect/run.bmp", 120, 200, 3, 2, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("유리폭발", "Resources/Images/Effect/GlassSheet.bmp",
+		360, 380,
+		5, 5,
+		true,
+		RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("문", "Resources/Images/Stage1/Object/Door.bmp", 55, 225);// 37 166
 	IMAGEMANAGER->addImage("일본도", "Resources/Images/Player/Weapon/Knife.bmp", 140, 50,true,RGB(255,0,255));// 37 166
@@ -95,7 +112,7 @@ HRESULT ResourceClass::init()
 		RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("일본도텍스트", "Resources/Images/UI/knifeTXT.bmp",
-		468,223,
+		312,165,
 		true,
 		RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("컴퓨터텍스트", "Resources/Images/UI/txtCom.bmp",

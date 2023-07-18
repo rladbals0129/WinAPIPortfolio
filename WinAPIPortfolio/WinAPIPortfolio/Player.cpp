@@ -9,7 +9,7 @@ HRESULT Player::init(void)
 	_isLeft = true;
 	_breath = 0;
 	_breathIn = false;
-	_rc = RectMake(500, 200, 74, 74);
+	_rc = RectMake(630, 550, 74, 74);
 
 	_down = false;
 	
@@ -668,8 +668,8 @@ void Player::Attack(void)
 			{
 				_atkIdx = 9;
 				_cnt = 0;
-				_rc.left -= 20;
-				_rc.right -= 20;
+				_rc.left -= 30;
+				_rc.right -= 30;
 			//	_currentState = IDLE;
 			//	_isATK = false;
 			}
@@ -703,8 +703,8 @@ void Player::Attack(void)
 			{
 				_atkIdx = 0;
 				_cnt = 0;
-				_rc.left += 20;
-				_rc.right += 20;
+				_rc.left += 30;
+				_rc.right += 30;
 			//	_currentState = IDLE;
 			//	_isATK = false;
 			}

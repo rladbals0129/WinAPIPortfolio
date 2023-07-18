@@ -7,6 +7,8 @@ HRESULT UIManager::init()
 	_upIdx = 0;
 	_enterCnt = 0;
 	_enterIdx = 0;
+	_ECnt = 0;
+	_EIdx = 0;
 	return S_OK;
 }
 
@@ -67,6 +69,28 @@ void UIManager::btnEndterAnim()
 	}
 
 	//cout << "cnt : " << _cnt << "idx : " << _idx << endl;
+}
+
+void UIManager::btnERender(HDC hdc)
+{
+	IMAGEMANAGER->frameRender("EŰ", hdc, (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2 - 10, PLAYER->getPlayerPos().top - 60);
+}
+
+void UIManager::btnEAnim()
+{
+	_ECnt++;
+	if (_ECnt % 24 == 0)
+	{
+		_EIdx++;
+
+		if (_EIdx > 2)
+		{
+			_EIdx = 0;
+			_ECnt = 0;
+		}
+		IMAGEMANAGER->findImage("EŰ")->setFrameX(_EIdx);
+	}
+
 }
 
 void UIManager::txtRender(HDC hdc, string key)

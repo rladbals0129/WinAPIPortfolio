@@ -57,6 +57,7 @@ using namespace std;
 //#define VIDEOMANAGER VideoPlayer::getSingleton()
 
 
+
 #define WINNAME		(LPTSTR)(TEXT("WindowsAPI"))
 
 //전체화면

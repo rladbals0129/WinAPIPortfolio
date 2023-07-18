@@ -19,7 +19,7 @@ HRESULT GameNode::init(bool managerInit)
 		KEYMANAGER->init();
 		IMAGEMANAGER->init();
 		TEMPSOUNDMANAGER->init();
-		PLAYER->init();
+	//	PLAYER->init();
 		UI->init();
 		
 		//VIDEOMANAGER->init();
