@@ -40,6 +40,8 @@ using namespace std;
 #include "ImageManager.h"
 #include "FontManager.h"
 #include "TempSoundManager.h"
+#include "UIManager.h"
+#include "Player.h"
 //#include "VideoPlayer.h"
 
 #include <Vfw.h>
@@ -50,6 +52,8 @@ using namespace std;
 #define IMAGEMANAGER ImageManager::getSingleton()
 #define FONTMANAGER FontManager::getSingleton()
 #define TEMPSOUNDMANAGER TempSoundManager::getSingleton()
+#define UI UIManager::getSingleton()
+#define PLAYER Player::getSingleton()
 //#define VIDEOMANAGER VideoPlayer::getSingleton()
 
 

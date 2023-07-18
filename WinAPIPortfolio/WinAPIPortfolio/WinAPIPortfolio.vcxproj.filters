@@ -73,8 +73,14 @@
     <Filter Include="소스 파일\GameObjectClass\Title">
       <UniqueIdentifier>{f22244ad-4723-4903-8b74-6de7b2a2cce1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObjectClass\Intro">
+    <Filter Include="소스 파일\GameObjectClass\IntroReal">
+      <UniqueIdentifier>{61cbc1fb-3f74-4ef5-88f8-e6d4d52ad3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\IntroTest">
       <UniqueIdentifier>{30d3fb64-a422-4c5c-b62a-ed28cb8463b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\UI">
+      <UniqueIdentifier>{4112fbfd-ae2a-455f-abae-21bb2e463fce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +142,13 @@
       <Filter>2D FrameWork\FrameWorkManager</Filter>
     </ClInclude>
     <ClInclude Include="Intro.h">
-      <Filter>소스 파일\GameObjectClass\Intro</Filter>
+      <Filter>소스 파일\GameObjectClass\IntroTest</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>소스 파일\GameObjectClass\IntroReal</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>소스 파일\GameObjectClass\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +195,13 @@
       <Filter>2D FrameWork\FrameWorkManager</Filter>
     </ClCompile>
     <ClCompile Include="Intro.cpp">
-      <Filter>소스 파일\GameObjectClass\Intro</Filter>
+      <Filter>소스 파일\GameObjectClass\IntroTest</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>소스 파일\GameObjectClass\IntroReal</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>소스 파일\GameObjectClass\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,16 +6,16 @@ HRESULT MainGame::init()
 	GameNode::init(true);
 	_resource.init();
 	_title = new Title;
-	_intro = new Intro;
+	_intro = new IntroScene;
 	_stage1 = new Stage1;
 
 	_title->init();
-	_intro->init();
-	_stage1->init();
-
+	
 	_currentScene = _title;
 
-
+	_playVideo = false;
+	_startStage1 = false;
+	
 	assert(_currentScene != nullptr); 	// <->
 
 	return S_OK;
@@ -37,36 +37,35 @@ void MainGame::update(void)
 	GameNode::update();
 
 	if (_title->getStartGame())
-	{
-		_intro->playVideo();
+	{	
+		if (!_playVideo)
+		{
+			_intro->init();
+			_playVideo = true;
+		}
+		_currentScene = _intro;
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+	if (_intro->getNextScene())
 	{
+		if (!_startStage1)
+		{
+			_stage1->init();
+			_startStage1 = true;
+		}
 		_currentScene = _stage1;
-		//_intro->release();
 	}
+
 	_currentScene->update();
 
 }
 
 void MainGame::render(void)
 {
-	PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, BLACKNESS);
-	_currentScene->render();
-	this->getBackBuffer()->render(getHDC());
+	if (_currentScene != _intro)
+	{
+		PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, BLACKNESS);
+		_currentScene->render();
+		this->getBackBuffer()->render(getHDC());
+	}
+	
 }
-
-//void MainGame::playVideo()
-//{
-//	HWND LogoVideo;
-//
-//	LogoVideo = MCIWndCreate(_hWnd, NULL, MCIWNDF_NOPLAYBAR | WS_VISIBLE | WS_CHILD, "Resources/video/Intro.avi");
-//
-//	MoveWindow(LogoVideo, 0, 0, 1280, 800, NULL);
-//	MCIWndPlay(LogoVideo);
-//}
-//
-//void MainGame::stopVideo()
-//{
-//	MCIWndClose(LogoVideo);sadasdqqweqweqwe
-//}

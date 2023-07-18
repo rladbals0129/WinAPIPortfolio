@@ -1,11 +1,8 @@
 #pragma once
 #include "GameNode.h"
-#include "Player.h"
 class Title : public GameNode
 {
 private:
-	Player* _player;
-
 	RECT _col;
 	RECT _selectArrowL;
 	RECT _selectArrowR;

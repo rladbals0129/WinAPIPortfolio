@@ -4,11 +4,14 @@
 
 HRESULT Stage1::init(void)
 {
-	_player = new Player;
-	_player->init();
+	PLAYER->init();
 	_currentMap = map1;
 	_offsetX = 3840;
 	_offsetY = 0;
+
+	_breakGlass = false;
+	_glassIdx = 0;
+
 
 	_cutDoorL = 0;
 	_cutDoorR = 0;
@@ -16,7 +19,7 @@ HRESULT Stage1::init(void)
 
 	_knifeGet = false;
 	_UIknifeRender = false;
-	_knifeCol = RectMake(900, 537, 140, 100);
+	_obCol = RectMake(900, 537, 140, 100);
 	_knifeCnt = 0;
 	_knifeIdx = 0;
 
@@ -29,6 +32,9 @@ HRESULT Stage1::init(void)
 	_panalCnt = 0;
 	_panalOffsetY = 800;
 
+	_upBtnRender = false;
+	_txtComputer1 = false;
+
 	return S_OK;
 }
 
@@ -38,11 +44,11 @@ void Stage1::release(void)
 
 void Stage1::update(void)
 {
-	_player->update();
-	_pPosRc.left = _player->getPlayerPos().left;
-	_pPosRc.right = _player->getPlayerPos().right;
-	_pPosRc.top = _player->getPlayerPos().top;
-	_pPosRc.bottom = _player->getPlayerPos().bottom;
+	PLAYER->update();
+	_pPosRc.left = PLAYER->getPlayerPos().left;
+	_pPosRc.right = PLAYER->getPlayerPos().right;
+	_pPosRc.top = PLAYER->getPlayerPos().top;
+	_pPosRc.bottom = PLAYER->getPlayerPos().bottom;
 	//==픽셀 충돌==
 	int Rlb = GetRValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.left + _offsetX, _pPosRc.bottom + _offsetY+3));
 	int Rlbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.left + _offsetX, _pPosRc.bottom + _offsetY - 5));
@@ -70,33 +76,33 @@ void Stage1::update(void)
 	{
 		if (Rlbup == 131 || Rrbup == 131)
 		{
-			_player->setPlayerPosBottom(7);
+			PLAYER->setPlayerPosBottom(7);
 		}
 		
-		_player->setIsJumping(false);
+		PLAYER->setIsJumping(false);
 	
 		
 
 	}
 	else {
 		
-		_player->setIsJumping(true);
+		PLAYER->setIsJumping(true);
 
 	}
 	//센터값 장애물
 	if (GCR == 134)
 	{
-		_player->setColRight(true);
+		PLAYER->setColRight(true);
 	}
 	else {
-		_player->setColRight(false);
+		PLAYER->setColRight(false);
 	}
 	if (GCL == 134)
 	{
-		_player->setColLeft(true);
+		PLAYER->setColLeft(true);
 	}
 	else {
-		_player->setColLeft(false);
+		PLAYER->setColLeft(false);
 	}
 
 	
@@ -104,28 +110,28 @@ void Stage1::update(void)
 	//오른쪽 막힌곳
 	if (Grt == 134 && Grb == 134)
 	{
-		_player->setPlayerPosRight(8);
+		PLAYER->setPlayerPosRight(8);
 		
 	}
 	/*else 
 	{
-		_player->setColRight(false);
+		PLAYER->setColRight(false);
 	}*/
 	
 	//왼쪽막힌곳
 	if (Glt == 134 && Glb == 134)
 	{
-		_player->setPlayerPosLeft(8);
+		PLAYER->setPlayerPosLeft(8);
 	}
 	//else
 	//{
-	//	//_player->setColLeft(false);
+	//	//PLAYER->setColLeft(false);
 	//}
 
 	//위쪽막힌곳
 	if (Glt == 134 && Grt == 134)
 	{
-		_player->setPlayerPosBottom(_player->getColTop());
+		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
 	
 	}
 	else
@@ -143,15 +149,41 @@ void Stage1::update(void)
 		if ((_pPosRc.right + _pPosRc.left )/ 2 > 1280) //맵 넘기기
 		{
 		
-			_pPosRc = RectMake(0, _player->getPlayerPos().top-40, 74, 74);
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
 			if (_offsetX == 5120)
 			{
 				_renderDoor = true;
 				_currentMap = map2;
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			}	
 		}
+		/*if (KEYMANAGER->isOnceKeyDown(VK_UP) && !_breakGlass)
+		{
+			_glassIdx++;
+			cout << "되냐?" << endl;
+		}*/
+
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_obCol))
+		{
+			_upBtnRender = true;
+			//cout << "들어옴" << endl;
+			//efUIKeybordUp();
+			UI->btnUPAnim();
+			PLAYER->setcolCom(true);
+
+			if (PLAYER->getTxtCom())
+			{
+				UI->btnEndterAnim();
+			}
+			
+		}
+		else
+		{
+			PLAYER->setcolCom(false);
+			_upBtnRender = false;
+		}
+		
 	}
 
 	if (_currentMap == map2)
@@ -159,13 +191,13 @@ void Stage1::update(void)
 		if ((_pPosRc.left + _pPosRc.right)  / 2 < 0)
 		{
 			_renderDoor = false;
-			_pPosRc = RectMake(1180, _player->getPlayerPos().top-40, 74, 74);
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX -= 80;
 			if (_offsetX == 3840)
 			{
 				_currentMap = map1;
 				
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			}							
 		}
 		openDoorR();
@@ -174,14 +206,14 @@ void Stage1::update(void)
 		{
 			_cutDoorL = 170;
 			_renderDoor = false;
-			_pPosRc = RectMake(0, _player->getPlayerPos().top-40, 74, 74);
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
 			if (_offsetX == 6400)
 			{
 				_cutDoorR = 0;
 				_renderDoor = true;
 				_currentMap = map3;
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			}
 		}
 
@@ -194,7 +226,7 @@ void Stage1::update(void)
 		if ((_pPosRc.left + _pPosRc.right) / 2 < 0)
 		{
 			_renderDoor = false;
-			_pPosRc = RectMake(1180, _player->getPlayerPos().top - 40, 74, 74);
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
 			if (_offsetX == 5120)
 			{
@@ -202,7 +234,7 @@ void Stage1::update(void)
 				_renderDoor = true;
 				_currentMap = map2;
 
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			}
 		}
 		openDoorL();
@@ -211,7 +243,7 @@ void Stage1::update(void)
 		{
 			_renderDoor = false;
 			_renderKnife = false;
-			_pPosRc = RectMake(0, _player->getPlayerPos().top - 40, 74, 74);
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX += 80;
 			if (_offsetX == 7680)
 			{
@@ -219,7 +251,7 @@ void Stage1::update(void)
 				_renderDoor = true;
 				_renderKnife = true;
 				_currentMap = map4;
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			}
 		}
 	}
@@ -228,7 +260,7 @@ void Stage1::update(void)
 	{
 		if ((_pPosRc.left + _pPosRc.right) / 2 < 0)
 		{			
-			_pPosRc = RectMake(1180, _player->getPlayerPos().top - 40, 74, 74);
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
 			_renderKnife = false;
 			if (_offsetX == 6400)
@@ -236,23 +268,23 @@ void Stage1::update(void)
 				_cutDoorR = 170;
 				_cutDoorL = 0;
 				_currentMap = map3;
-				_player->setPlayerPos(_pPosRc);
+				PLAYER->setPlayerPos(_pPosRc);
 			
 			}
 		}	
 		openDoorL();
 		efKnife();
-		if (IntersectRect(&_collider, &_player->getPlayerPos(), &_knifeCol) && !_knifeGet)
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_obCol) && !_knifeGet)
 		{
 			_UIknifeRender = true;
 			efUIKeybordUp();
-			_player->setKnife(true);
-			if (_player->getUsingKnife())
+			PLAYER->setKnife(true);
+			if (PLAYER->getUsingKnife())
 			{
-				_player->setKnife(false);
+				PLAYER->setKnife(false);
 				cout << "dd" << endl;
 			}
-			if (_player->getTxtKnife())
+			if (PLAYER->getTxtKnife())
 			{
 				_knifeGet = true;
 				_renderKnife = false;
@@ -263,13 +295,13 @@ void Stage1::update(void)
 		else 
 		{
 			_UIknifeRender = false;
-			_player->setKnife(false);
+			PLAYER->setKnife(false);
 		}
-		if (_player->getTxtKnife())
+		if (PLAYER->getTxtKnife())
 		{
 			efUIReturn();
 		}
-		if (_player->getPanalKnife())
+		if (PLAYER->getPanalKnife())
 		{
 			_panalCnt++;
 			if (_panalOffsetY > 0)
@@ -280,9 +312,9 @@ void Stage1::update(void)
 			if (_panalCnt > 200)
 			{
 				_panalCnt = 0;
-				_player->setPanalKnife(false);
+				PLAYER->setPanalKnife(false);
 			}
-			_player->setKnife(false);
+			PLAYER->setKnife(false);
 			//cout << _panalCnt << endl;
 			
 		}
@@ -296,6 +328,25 @@ void Stage1::render(void)
 {
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
 	
+	if (_currentMap == map1)
+	{
+		_obCol = RectMake(130, 580, 100, 100);
+		IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
+		IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
+		if (_upBtnRender)
+		{
+			UI->btnUPRender(getMemDC());
+		}
+		if (PLAYER->getTxtCom())
+		{
+			UI->txtRender(getMemDC(), "컴퓨터텍스트");
+			
+			UI->btnEnterRender(getMemDC(), "컴퓨터텍스트");
+
+		}
+
+		
+	}
 
 	if (_currentMap == map2 && _renderDoor)
 	{
@@ -313,26 +364,34 @@ void Stage1::render(void)
 		IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
 		if (_renderKnife && !_knifeGet)
 		{
-			IMAGEMANAGER->frameRender("일본도이펙트", getMemDC(), _knifeCol.left, _knifeCol.top);
-			IMAGEMANAGER->render("일본도", getMemDC(), _knifeCol.left, _knifeCol.top);
+			IMAGEMANAGER->frameRender("일본도이펙트", getMemDC(), _obCol.left, _obCol.top);
+			IMAGEMANAGER->render("일본도", getMemDC(), _obCol.left, _obCol.top);
 
 		}
 		if (_UIknifeRender && !_knifeGet)
 		{
-			IMAGEMANAGER->frameRender("방향키위", getMemDC(), (_pPosRc.left + _pPosRc.right) / 2, _pPosRc.top - 60);
+			UI->btnUPRender(getMemDC());
+			//IMAGEMANAGER->frameRender("방향키위", getMemDC(), (_pPosRc.left + _pPosRc.right) / 2, _pPosRc.top - 60);
 
 		}
-		if (_player->getTxtKnife())
+		if (PLAYER->getTxtKnife())
 		{
+			UI->txtRender(getMemDC(), "일본도텍스트");
+
+			UI->btnEnterRender(getMemDC(), "일본도텍스트");
+
+		//	IMAGEMANAGER->render("일본도텍스트", getMemDC(), _pPosRc.left-200, _pPosRc.top-200);
 			
-			IMAGEMANAGER->render("일본도텍스트", getMemDC(), _pPosRc.left-200, _pPosRc.top-200);
-			
-			IMAGEMANAGER->frameRender("엔터키", getMemDC(), _pPosRc.left+240, _pPosRc.top + 3);
+		//	IMAGEMANAGER->frameRender("엔터키", getMemDC(), _pPosRc.left+240, _pPosRc.top + 3);
 
 		}
-		if (_player->getPanalKnife())
+		if (PLAYER->getPanalKnife())
 		{
 			IMAGEMANAGER->render("일본도획득", getMemDC(),0, _panalOffsetY);
+		}
+		if (!_knifeGet)
+		{
+			_obCol = RectMake(900, 537, 140, 100);
 		}
 
 	}
@@ -341,16 +400,20 @@ void Stage1::render(void)
 	if (KEYMANAGER->isToggleKey(VK_F1))
 	{
 		IMAGEMANAGER->render("스테이지1픽셀", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
-		if(_currentMap == map4)	DrawRectMake(getMemDC(), _knifeCol);
+		if(_currentMap == map1)	
+		DrawRectMake(getMemDC(), _obCol);
+
+		if (_currentMap == map4)
+			DrawRectMake(getMemDC(), _obCol);
 	}	
-	_player->render();
+	PLAYER->render(getMemDC());
 
 	
 }
 
 void Stage1::openDoorR()
 {
-	if (_player->getPlayerPos().right >= 1100)
+	if (PLAYER->getPlayerPos().right >= 1100)
 	{
 		if (_cutDoorR <= 170)
 		{
@@ -367,7 +430,7 @@ void Stage1::openDoorR()
 
 void Stage1::openDoorL()
 {
-	if (_player->getPlayerPos().left <= 180)
+	if (PLAYER->getPlayerPos().left <= 180)
 	{
 		if (_cutDoorL <= 170)
 		{

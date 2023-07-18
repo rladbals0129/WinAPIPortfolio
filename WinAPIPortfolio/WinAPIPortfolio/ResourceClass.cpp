@@ -73,6 +73,12 @@ HRESULT ResourceClass::init()
 	IMAGEMANAGER->addImage("스테이지1", "Resources/Images/Stage1/_tStage1-1.bmp", 8960,1600); //7680 1440
 	IMAGEMANAGER->addImage("스테이지1픽셀", "Resources/Images/Stage1/tStage1-1.bmp", 8960, 1600 );
 	
+	IMAGEMANAGER->addImage("깨진유리아래", "Resources/Images/Stage1/Object/breakGlassTubeDown.bmp", 146, 51,true,RGB(255,0,255));
+	IMAGEMANAGER->addImage("깨진유리위", "Resources/Images/Stage1/Object/breakGlassTubeUP.bmp", 146, 51,true,RGB(255,0,255));
+	IMAGEMANAGER->addFrameImage("유리관", "Resources/Images/Stage1/Object/glassTube.bmp", 804, 289, true, RGB(255, 0, 255));
+																						//536,213
+
+
 	IMAGEMANAGER->addImage("문", "Resources/Images/Stage1/Object/Door.bmp", 55, 225);// 37 166
 	IMAGEMANAGER->addImage("일본도", "Resources/Images/Player/Weapon/Knife.bmp", 140, 50,true,RGB(255,0,255));// 37 166
 
@@ -89,9 +95,12 @@ HRESULT ResourceClass::init()
 		RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("일본도텍스트", "Resources/Images/UI/knifeTXT.bmp",
-		468, 223,
+		468,223,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("컴퓨터텍스트", "Resources/Images/UI/txtCom.bmp",
+		296, 82
+	);
 	IMAGEMANAGER->addFrameImage("엔터키", "Resources/Images/UI/UI_Keyboard_return.bmp",
 		80, 40,
 		2, 1,

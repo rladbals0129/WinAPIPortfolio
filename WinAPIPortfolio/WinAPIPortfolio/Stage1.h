@@ -1,6 +1,5 @@
 #pragma once
 #include "GameNode.h"
-#include "Player.h"
 enum MAP
 {
 	map1,map2,
@@ -14,7 +13,6 @@ enum MAP
 class Stage1 : public GameNode
 {
 private:
-	Player* _player;
 	RECT _pPosRc;
 	RECT _pPosRcCol;
 
@@ -24,6 +22,10 @@ private:
 
 	float _offsetX;
 	float _offsetY;
+	//인트로 후 시작글라스
+	bool _breakGlass;
+	int _glassIdx;
+
 
 	//문 애니메이션
 	int _cutDoorL;
@@ -34,7 +36,8 @@ private:
 	bool _knifeGet;
 	bool _UIknifeRender;
 	bool _renderKnife;
-	RECT _knifeCol;
+
+	RECT _obCol;
 	
 
 	int _keyUPCnt;
@@ -49,6 +52,9 @@ private:
 	int _panalCnt;
 	int _panalOffsetY;
 //=========================================
+
+	bool _upBtnRender;
+	bool _txtComputer1;
 
 	
 public:

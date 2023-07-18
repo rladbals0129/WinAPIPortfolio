@@ -1,16 +1,17 @@
 #pragma once
-#include "GameNode.h"
+#include "SingletonBase.h"
 #define GRAVITY 0.3f
 
-enum STATE {
-	IDLE, MOVE,
-	JUMP, SLAP,
-	DOWN , ATTACK
-};
 
-class Player : public GameNode
+
+class Player :public SingletonBase<Player>
 {
 private:
+	enum STATE {
+		IDLE, MOVE,
+		JUMP, SLAP,
+		DOWN, ATTACK
+	};
 	STATE _currentState;
 
 	RECT _rc;
@@ -55,6 +56,11 @@ private:
 	bool _usingKnife;
 	bool _panalKnife;
 
+	//1컴터
+	bool _txtCom;
+	bool _colCom;
+	//bool _panalCom;
+
 	//공격관련
 	RECT _rangeATK;
 	bool _isATK;
@@ -64,7 +70,7 @@ public:
 	HRESULT init(void);
 	void release(void);
 	void update(void);
-	void render(void);
+	void render(HDC hdc);
 
 	void idle(void);
 	void move(void);
@@ -73,7 +79,7 @@ public:
 	void clap(void);
 	void Attack(void);
 
-	void titlePlayer(void);
+	void titlePlayer(HDC hdc);
 
 	STATE getState() { return _currentState; }
 	RECT getPlayerPos() { return _rc; }
@@ -84,9 +90,11 @@ public:
 	bool getTxtKnife() { return _txtKnife; }
 	bool getUsingKnife() { return _usingKnife; }
 	bool getPanalKnife() { return _panalKnife; }
+	bool getTxtCom() { return _txtCom; }
+//	bool getPanalCom() { return _panalCom; }
 
 	
-
+	void setIdle() { _currentState = IDLE; }
 	void setPlayerPosLeft(int x) { _rc.left += x; _rc.right += x; }
 	void setPlayerPosRight(int x) { _rc.left -= x; _rc.right -= x; }
 	void setPlayerPosBottom(int y){ _rc.top -= y; _rc.bottom -= y; }
@@ -101,6 +109,9 @@ public:
 	void setKnife(bool knife) { _knife = knife; }
 	void setTxtKnife(bool txtKnife) { _txtKnife = txtKnife; }
 	void setPanalKnife(bool panalKnife) { _panalKnife = panalKnife; }
+	void setTxtCom(bool txtCom) { _txtCom = txtCom; }
+	void setcolCom(bool colCom) { _colCom = colCom; }
+	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	
 
 

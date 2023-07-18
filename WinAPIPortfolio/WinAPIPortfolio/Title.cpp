@@ -3,10 +3,12 @@
 
 HRESULT Title::init(void)
 {
-	_player = new Player;
-	_player->setPlayerPos(610, 325, 685, 400);
-	IMAGEMANAGER->findImage("머리")->setY(_player->getPlayerPos().top);
-	IMAGEMANAGER->findImage("기본표정")->setY(_player->getPlayerPos().top);
+	PLAYER->init();
+
+	PLAYER->setPlayerPos(610, 325, 685, 400);
+
+	IMAGEMANAGER->findImage("머리")->setY(PLAYER->getPlayerPos().top);
+	IMAGEMANAGER->findImage("기본표정")->setY(PLAYER->getPlayerPos().top);
 	_arrowCntL = 0;
 	_arrowIdxL = 0;
 	_arrowCntR = 0;
@@ -67,7 +69,7 @@ void Title::update(void)
 
 	
 
-	_player->idle();
+	PLAYER->idle();
 }
 
 void Title::render(void)
@@ -86,9 +88,10 @@ void Title::render(void)
 	IMAGEMANAGER->frameRender("선택", getMemDC(), _selectArrowL.left, _selectArrowL.top);
 	animSelectR();
 	IMAGEMANAGER->frameRender("선택", getMemDC(), _selectArrowR.left, _selectArrowR.top);
-
-	
-	_player->titlePlayer();
+	//PLAYER->setIdle();
+	//PLAYER->getState();
+	//PLAYER->render(getMemDC());
+	PLAYER->titlePlayer(getMemDC());
 }
 
 void Title::animSelectR(void)

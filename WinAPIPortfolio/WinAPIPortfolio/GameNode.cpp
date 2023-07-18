@@ -19,6 +19,9 @@ HRESULT GameNode::init(bool managerInit)
 		KEYMANAGER->init();
 		IMAGEMANAGER->init();
 		TEMPSOUNDMANAGER->init();
+		PLAYER->init();
+		UI->init();
+		
 		//VIDEOMANAGER->init();
 	}
 
@@ -36,6 +39,8 @@ void GameNode::release(void)
 		IMAGEMANAGER->release();
 		IMAGEMANAGER->releaseSingleton();
 		TEMPSOUNDMANAGER->releaseSingleton();
+		PLAYER->releaseSingleton();
+		UI->releaseSingleton();
 		//VIDEOMANAGER->release();
 	//	VIDEOMANAGER->releaseSingleton();
 	}
@@ -80,7 +85,7 @@ LRESULT GameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		{
 		case VK_ESCAPE:
 			//PostMessage(hWnd, WM_DESTROY, 0, 0);+
-			SendMessage(hWnd, WM_CLOSE, 0, 0);
+		//	SendMessage(hWnd, WM_CLOSE, 0, 0);
 			
 			break;
 		}
