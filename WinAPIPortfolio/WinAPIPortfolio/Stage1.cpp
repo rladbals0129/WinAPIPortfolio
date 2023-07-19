@@ -13,6 +13,9 @@ HRESULT Stage1::init(void)
 	_glassIdx = 0;
 
 	_createPlayer = false;
+	_readyPlayer = false;
+	_readyCnt = 0;
+	_readyIdx = 0;
 	//화면흔들기
 	_shakeScreen = false;
 	_shakeDuration = 0;
@@ -24,20 +27,34 @@ HRESULT Stage1::init(void)
 	_breakStartX = 640;
 	_breakStartY = 520;
 	
-
-
-	_mglassPushX = 0;
-	_mglassPushY = 0;
-	_mglassCnt = 0;
-	_mglassIdx = 0;
-	_mglassAngle = 0.f;
+	_boom = false;
 	for (int i = 0; i < 50; i++)
 	{
-		_glass[i] = RectMake(600, 400, 72, 76);
-	}
-	
+		_gl[i].isGlass = false;
+		_gl[i].alpha = 255;
+		_gl[i].bounceX = 1;
+		_gl[i].bounceY = 1;
+		_gl[i].bounce = 1;
 
-	//
+		_gl[i].glassYIdx = RND->getInt(5);
+	
+		_gl[i].angle = RND->getFromFloatTo(-92.5f, -87.5f);
+
+		_gl[i].speed = 20;
+		_gl[i].speedX = _gl[i].speed * cosf(_gl[i].angle);
+		_gl[i].speedY = _gl[i].speed * sinf(_gl[i].angle);
+
+		_gl[i].centerX = 625;
+		_gl[i].centerY = 480;
+		_gl[i].distance = 10;
+		_gl[i].createX =  _gl[i].centerX + cosf(RADIAN(_gl[i].angle))  * _gl[i].distance;
+		_gl[i].createY =  _gl[i].centerY + sinf(RADIAN(_gl[i].angle))  * _gl[i].distance;
+		_gl[i].glass = RectMakeCenter(_gl[i].createX, _gl[i].createY, 72, 76);
+
+	}
+
+
+
 	_cutDoorL = 0;
 	_cutDoorR = 0;
 	_renderDoor = true;
@@ -107,16 +124,23 @@ void Stage1::update(void)
 		{
 			PLAYER->setPlayerPosBottom(7);
 		}
-		
-		PLAYER->setIsJumping(false);
-	
-		
 
+		PLAYER->setIsJumping(false);
 	}
 	else {
 		
 		PLAYER->setIsJumping(true);
 
+	}
+	if (Rlb == 176 || Rrb == 176)
+	{
+		PLAYER->setDownJump(true);
+		PLAYER->setIsJumping(false);
+	}
+	else
+	{
+		PLAYER->setDownJump(false);
+		//PLAYER->setIsJumping(true);
 	}
 	//센터값 장애물
 	if (GCR == 134)
@@ -188,25 +212,42 @@ void Stage1::update(void)
 			IMAGEMANAGER->findImage("유리관")->setFrameX(_glassIdx);
 			if (_glassIdx < 4)
 			{
-				shakeScreen(3840, 0);
+				shakeScreen(3840, 0,50);
 
+			}
+			else {
+				/*
+				_shakeScreen = true;
+				_shakeDuration = 20;
+				shakeScreen(3840, 0, 50);
+				*/
 			}
 			UI->btnEAnim();
 			
 
 			if (_glassIdx > 3)
 			{
-				_createPlayer = true;
+				
+				_readyPlayer = true;
+				//_createPlayer = true;
+				_renderBreakGlass = true;
 				_breakFX = true;
+				_boom = true;
+				for (int i = 0; i < 50; i++)
+				{
+					_gl[i].isGlass = true;
+				}
 			}
-
+			
 		
 		
 			
 		}
 
+		
 		if (_breakFX)
 		{
+	
 			_breakSizeX += 30;
 			_breakSizeY += 30;
 			_breakStartX -= 15;
@@ -214,28 +255,93 @@ void Stage1::update(void)
 			if (_breakSizeX > 1000 && _breakSizeY > 800)
 			{
 				_breakFX = false;
+			
 			}
 
 			//여기
-			for (int i = 0; i < 25; i++)
-			{
-				_mglassPushX = RND->getFromIntTo(-100, -90);
-				_mglassPushY = RND->getFromIntTo(-100, -90);
-				_mglassAngle = RND->getFromFloatTo(-180.f, 180.f);
-				_glass[i].left += cosf(RADIAN(-_mglassAngle)) * _mglassPushX;
-				_glass[i].right += cosf(RADIAN(-_mglassAngle)) * _mglassPushX;
-				_glass[i].top += sinf(RADIAN(-_mglassAngle)) * _mglassPushY;
-				_glass[i].bottom += sinf(RADIAN(-_mglassAngle)) * _mglassPushY;
-				
-
-			}
-			for (int i = 25;  i < 50; i++)
+			
+		}
+		if (_boom)
+		{
+			glassBoom();
+			for (int i = 0; i < 50; i++)
 			{
 
+				if (!_gl[i].isGlass) continue;
+
+				_gl[i].speedY -= GRAVITY;
+				//_gl[i].speedX += GRAVITY;
+
+				_gl[i].glass.left += _gl[i].speedX * _gl[i].bounce;
+				_gl[i].glass.right += _gl[i].speedX * _gl[i].bounce;
+				_gl[i].glass.top -= _gl[i].speedY * _gl[i].bounce - GRAVITY;
+				_gl[i].glass.bottom -= _gl[i].speedY * _gl[i].bounce - GRAVITY;
+
+				int RLB = GetRValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.left + _offsetX, _gl[i].glass.bottom + _offsetY + 3));
+				int RRB = GetRValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.right + _offsetX, _gl[i].glass.bottom + _offsetY + 3));
+
+				int GLB = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.left + _offsetX, _gl[i].glass.bottom + _offsetY + 3));
+				int GLT = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.left + _offsetX, _gl[i].glass.top + _offsetY + 3));
+				int GRB = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.right + _offsetX, _gl[i].glass.bottom + _offsetY + 3));
+				int GRT = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+					_gl[i].glass.right + _offsetX, _gl[i].glass.top + _offsetY + 3));
+
+				if (RLB == 131 || RRB == 131)
+				{
+
+					_gl[i].speedY = -_gl[i].speedY * 0.8;
+					_gl[i].speedX = _gl[i].speedX * 0.5;
+					_gl[i].bounce = -_gl[i].bounce;
+					// 
+					// 
+						//_gl[i].speedX = _gl[i].speedX / 1.5f;
+
+
+
+				}
+
+				if (GLB == 134 || GLT == 134 || GRB == 134 || GRT == 134)
+				{
+
+					//_gl[i].bounceY = -_gl[i].bounceY;
+					//_gl[i].speedY = -_gl[i].speedY * -1.5;
+					//_gl[i].glass.top += 10;
+					//_gl[i].glass.bottom += 10;
+					
+					_gl[i].speedX *= 0.5;
+					_gl[i].speedY *= 0.5f;
+				}
+
+				if (fabs(_gl[i].speedX) < 0.1 && fabs(_gl[i].speedY) < 0.1)
+				{
+					_gl[i].speedX = 0;
+					_gl[i].speedY = 0;
+				}
+
+
+			}
+		}
+		
+		if (_readyPlayer)
+		{
+			_readyCnt++;
+			IMAGEMANAGER->findImage("플레이어생성")->setFrameX(0);
+			if (_readyCnt > 40)
+			{
+				IMAGEMANAGER->findImage("플레이어생성")->setFrameX(1);
 			}
 
-
-
+			if (_readyCnt > 250)
+			{
+				_readyPlayer = false;
+				_createPlayer = true;
+			}
+			
 		}
 
 
@@ -349,6 +455,21 @@ void Stage1::update(void)
 				PLAYER->setPlayerPos(_pPosRc);
 			}
 		}
+
+		//여기서부터
+		if (_pPosRc.bottom > 700)
+		{
+			_offsetY = _pPosRc.bottom - 600;
+			if (_offsetY == 1065)
+			{
+
+			}
+			
+		}
+
+
+
+
 	}
 
 	if (_currentMap == map4)
@@ -441,7 +562,8 @@ void Stage1::render(void)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
 		
-		if (_createPlayer)
+
+		if (_renderBreakGlass)
 		{
 			IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
 			IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
@@ -449,24 +571,39 @@ void Stage1::render(void)
 		else if (!_createPlayer)
 		{
 			IMAGEMANAGER->frameRender("유리관", getMemDC(),602,420);
+			IMAGEMANAGER->findImage("유리관플레이어")->setX(640);
+			IMAGEMANAGER->findImage("유리관플레이어")->setY(480);
+			IMAGEMANAGER->render("유리관플레이어", getMemDC(), 640, 480);
 			UI->btnERender(getMemDC());
+			//RECT test = RectMake(625, 480, 76, 72);
+			//DrawRectMake(getMemDC(), test);
 		}
+	
 		if (_breakFX)
 		{
 			IMAGEMANAGER->render("깨지는파티클", getMemDC(), _breakStartX, _breakStartY, _breakSizeX, _breakSizeY);
-			for (int i = 0; i < 50; i++)
+		}
+	
+		for (int i = 0; i < 50; i++)
+		{
+			if (!_gl[i].isGlass) continue;
+
+			if (_gl[i].isGlass)
 			{
-				IMAGEMANAGER->frameRender("유리폭발", getMemDC(), _glass[i].left, _glass[i].top);
+				//	cout << "dd" << endl;
+				IMAGEMANAGER->findImage("유리폭발")->setFrameY(_gl[i].glassYIdx);
+				IMAGEMANAGER->frameAlphaRender("유리폭발", getMemDC(), _gl[i].glass.left, _gl[i].glass.top,
+					IMAGEMANAGER->findImage("유리폭발")->getFrameX(),
+					IMAGEMANAGER->findImage("유리폭발")->getFrameY(), _gl[i].alpha);
+				//cout << _gl[i].alpha << endl;
 			}
 
 		}
-		/*
-		inline void setCenter(float x, float y)
-	{
-		_imageInfo->x = x - (_imageInfo->width / 2);
-		_imageInfo->y = y - (_imageInfo->height / 2);
-	}
-		*/
+		if (_readyPlayer)
+		{
+			IMAGEMANAGER->frameRender("플레이어생성", getMemDC(), 600, 570);
+		}
+
 
 
 
@@ -605,13 +742,20 @@ void Stage1::efKnife()
 	
 }
 
-void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY)
+void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 {
+	_shakeAmount = shakeAmount;
 	if (_shakeScreen && _shakeDuration > 0)
 	{
 		_offsetX += RND->getInt(_shakeAmount * 2) - _shakeAmount;
-		_offsetY += RND->getInt(_shakeAmount) - _shakeAmount;
+		_offsetY += RND->getInt(_shakeAmount) - _shakeAmount * 2;
 		_shakeDuration--;
+		if (_shakeDuration % 2== 0)
+		{
+			_offsetX = currntOffsetX;
+			_offsetY = currntOffsetY;
+			cout << _offsetX << " " << _offsetY << endl;
+		}
 
 		if (_shakeDuration == 0)
 		{
@@ -626,7 +770,44 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY)
 
 void Stage1::glassBoom()
 {
+	for (int i = 0; i < 50; i++)
+	{
+		_gl[i].glassCnt++;
+		//cout << _gl[i].alpha << endl;
+		
+		if (_gl[i].glassCnt % 20 == 0 && _gl[i].glassXIdx <4)
+		{
+			if(_gl[i].glassXIdx < 4)
+			{
+				_gl[i].glassXIdx++;
+				
+			}
+			else 
+			{
+				_gl[i].glassXIdx = 4;
+			}
+			
+			IMAGEMANAGER->findImage("유리폭발")->setFrameX(_gl[i].glassXIdx);
+		}
+		else if (_gl[i].glassXIdx == 4)
+		{
+		
+			
+			_gl[i].alphaCnt++;
+			if (_gl[i].alphaCnt % 4 == 0)
+			{
+				_gl[i].alpha = 255 - _gl[i].alpha;
+			}
 
+
+
+			if (_gl[i].alphaCnt > 200)
+			{
+				_gl[i].isGlass = false;
+			}
+		
+		}
+	}
 }
 
 

@@ -48,6 +48,11 @@ HRESULT ResourceClass::init()
 		25, 2,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("플레이어생성", "Resources/Images/Player/MonoBoy-fall.bmp",
+		240, 120,
+		2, 1,
+		true,
+		RGB(255, 0, 255));
 
 	IMAGEMANAGER->addFrameImage("Jump", "Resources/Images/Player/PlayerJump.bmp",
 		2300, 200,
@@ -80,6 +85,10 @@ HRESULT ResourceClass::init()
 		4,1,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("유리관플레이어", "Resources/Images/Stage1/Object/Laboratory-PlayerSprite.bmp",
+		50, 88,
+		true,
+		RGB(255,0,255));
 																						//536,213
 	IMAGEMANAGER->addFrameImage("E키", "Resources/Images/UI/PushE.bmp",
 		40, 20,

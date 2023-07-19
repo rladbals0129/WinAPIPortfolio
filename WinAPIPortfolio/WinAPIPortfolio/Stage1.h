@@ -2,7 +2,8 @@
 #include "GameNode.h"
 
 #define PI 3.141592f
-#define RADIAN(dig) (PI * (dig) / 180.f)
+#define RADIAN(dig)  (PI * dig) / 180.f
+#define GRAVITY  0.5f;
 enum MAP
 {
 	map1,map2,
@@ -13,6 +14,38 @@ enum MAP
 	map11
 };
 
+struct GlassFragment
+{
+	int glassCnt;
+	int glassXIdx;
+	int glassYIdx;
+
+
+	float angle;
+	float distance;
+	int centerX;
+	int centerY;
+
+	int createX, createY;
+
+	int bounceX;
+	int bounceY;
+	int bounce;
+
+	//int setPosY;
+	RECT glass;
+
+
+	bool isGlass;
+	int alpha;
+	int alphaCnt;
+
+	int speedX;
+	int speedY;
+	int speed;
+};
+
+
 class Stage1 : public GameNode
 {
 private:
@@ -20,6 +53,9 @@ private:
 	RECT _pPosRcCol;
 
 	MAP _currentMap;
+	bool _boom;
+	GlassFragment _gl[50];
+	
 
 	RECT _collider;
 
@@ -31,6 +67,9 @@ private:
 	
 	int _glassIdx;
 
+	bool _readyPlayer;
+	int _readyIdx;
+	int _readyCnt;
 	bool _createPlayer;
 
 	//화면 흔들림
@@ -44,12 +83,7 @@ private:
 	int _breakStartY;
 	bool _breakFX;
 	//유리조각
-	int _mglassPushX;
-	int _mglassPushY;
-	float _mglassAngle;
-	int _mglassCnt;
-	int _mglassIdx;
-	RECT _glass[50];
+	
 
 
 	//문 애니메이션
@@ -81,6 +115,9 @@ private:
 	bool _upBtnRender;
 	bool _txtComputer1;
 
+	//==========
+
+
 	
 public:
 
@@ -96,7 +133,7 @@ public:
 	void efKnife();
 	
 
-	void shakeScreen(int currntOffsetX, int currntOffsetY);
+	void shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount);
 	void glassBoom();
 
 

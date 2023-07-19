@@ -66,6 +66,9 @@ private:
 	bool _isATK;
 	int _atkIdx;
 
+	//하단점프
+	bool _downJump;
+
 public:	
 	HRESULT init(void);
 	void release(void);
@@ -91,7 +94,10 @@ public:
 	bool getUsingKnife() { return _usingKnife; }
 	bool getPanalKnife() { return _panalKnife; }
 	bool getTxtCom() { return _txtCom; }
+
 //	bool getPanalCom() { return _panalCom; }
+	bool getDownJump() { return _downJump; }
+	
 
 	
 	void setIdle() { _currentState = IDLE; }
@@ -111,6 +117,7 @@ public:
 	void setPanalKnife(bool panalKnife) { _panalKnife = panalKnife; }
 	void setTxtCom(bool txtCom) { _txtCom = txtCom; }
 	void setcolCom(bool colCom) { _colCom = colCom; }
+	void setDownJump(bool downJump) { _downJump = downJump; }
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	
 

@@ -104,6 +104,9 @@ public:
 	//===================프레임 랜더=================== 
 	void frameRender(HDC hdc, int destX, int destY);
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
+	void frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha);
+
+
 
 	//=================루프랜더=====================
 	void camRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY); 

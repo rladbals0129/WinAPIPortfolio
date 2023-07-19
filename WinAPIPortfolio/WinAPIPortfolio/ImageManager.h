@@ -48,7 +48,7 @@ public:
 	//===================프레임 랜더=================== 
 	void frameRender(string strKey, HDC hdc, int destX, int destY);
 	void frameRender(string strKey, HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
-
+	void frameAlphaRender(string strKey ,HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha);
 
 	//=====루프랜드=====
 	void camRender(string strKey, HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);

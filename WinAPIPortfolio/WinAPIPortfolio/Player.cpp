@@ -45,7 +45,8 @@ HRESULT Player::init(void)
 	//공격
 	_isATK = false;
 	
-
+	//하단점프
+	_downJump = false;
 
 	return S_OK;
 }
@@ -161,9 +162,18 @@ void Player::update(void)
 	//===========점프===========
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && !_isJumping)
 	{
-		_jumpPower = -18.f;
-		_jumpStartFrame = _frame;
-		_jumpEnd = false;
+		if (!_downJump)
+		{
+			_jumpPower = -18.f;
+			_jumpStartFrame = _frame;
+			_jumpEnd = false;
+		}
+		else if (_downJump && KEYMANAGER->isOnceKeyDown(VK_DOWN))
+		{
+			cout << "댐?" << endl;
+			_rc.top += 80;
+			_rc.bottom += 80;
+		}
 	
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_SPACE))
