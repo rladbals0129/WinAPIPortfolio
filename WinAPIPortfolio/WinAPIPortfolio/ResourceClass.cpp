@@ -74,6 +74,27 @@ HRESULT ResourceClass::init()
 		4, 2,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("AttackFXUP", "Resources/Images/Player/Attack/attackFXUP.bmp",
+		800, 400,
+		4, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("AttackFXDown", "Resources/Images/Player/Attack/attackFXDown.bmp",
+		800, 400,
+		4, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("AttackUP", "Resources/Images/Player/Attack/playerUpAttack.bmp",
+		800, 240,
+		5, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("AttackDown", "Resources/Images/Player/Attack/playerDownAttack.bmp",
+		800, 160,
+		5, 2,
+		true,
+		RGB(255, 0, 255));
+
 	
 	IMAGEMANAGER->addImage("스테이지1", "Resources/Images/Stage1/_tStage1-1.bmp", 8960,1600); //7680 1440
 	IMAGEMANAGER->addImage("스테이지1픽셀", "Resources/Images/Stage1/tStage1-1.bmp", 8960, 1600 );
@@ -137,7 +158,7 @@ HRESULT ResourceClass::init()
 	
 	
 	
-	
+	IMAGEMANAGER->addImage("배경시체", "Resources/Images/Stage1/Object/bgDumi.bmp", 600, 300, true, RGB(255, 0, 255));
 	
 	
 	

@@ -10,6 +10,7 @@ HRESULT Player::init(void)
 	_breath = 0;
 	_breathIn = false;
 	_rc = RectMake(630, 550, 74, 74);
+	_cnt = 0;
 
 	_down = false;
 	
@@ -44,6 +45,11 @@ HRESULT Player::init(void)
 
 	//공격
 	_isATK = false;
+	_atkUpIdx = 0;
+	_atkDownIdx = 0;
+	_isUpATK = false;
+	_isDownATK = false;
+
 	
 	//하단점프
 	_downJump = false;
@@ -170,9 +176,9 @@ void Player::update(void)
 		}
 		else if (_downJump && KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
-			cout << "댐?" << endl;
-			_rc.top += 80;
-			_rc.bottom += 80;
+			_rc.top += 40;
+			_goDownJump = true;
+			_rc.bottom += 40;
 		}
 	
 	}
@@ -206,6 +212,7 @@ void Player::update(void)
 		_rc.top += _gravity;
 		_rc.bottom += _gravity;
 	}
+
 	_gravityJumpPower = _gravity + _jumpPower;
 
 	
@@ -264,14 +271,39 @@ void Player::update(void)
 	{
 		_currentState = ATTACK;
 		_isATK = true;
+		cout << "ss?" << endl;
+		if (KEYMANAGER->isStayKeyDown(VK_UP))
+		{
+			_currentState = UPATTACK;
+			_isUpATK = true;
+			_isATK = false;
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_UP))
+		{
+			_isUpATK = false;
+			_isATK = true;
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+		{
+			_currentState = DOWNATTACK;
+			_isDownATK = true;
+			_isATK = false;
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+		{
+			_isDownATK = true;
+			_isATK = false;
+		}
 	
-	
-		//cout << "공격" << endl;
+		
 	}
+
 	if (KEYMANAGER->isOnceKeyUp('S') && _usingKnife)
 	{
 		_currentState = IDLE;
 		_isATK = false;
+		_isUpATK = false;
+		_isDownATK = false;
 	}
 	if (_isATK)
 	{
@@ -284,10 +316,20 @@ void Player::update(void)
 			_rangeATK = RectMake(_rc.right, _rc.top - 15, 100, 100);
 		}
 	}
+	else if (_isUpATK)
+	{
+		_rangeATK = RectMake(_rc.left - 10 , _rc.top - 100, 100, 100);
+	}
+	else if (_isDownATK)
+	{
+		_rangeATK = RectMake(_rc.left - 10, _rc.bottom , 100, 100);
+	}
 	else
 	{
 		_rangeATK = RectMake(_rc.right, _rc.top - 15, 0, 0);
 	}
+
+
 	if (_currentState == ATTACK)
 	{
 		IMAGEMANAGER->findImage("머리")->setX(_rc.left);
@@ -295,6 +337,23 @@ void Player::update(void)
 		IMAGEMANAGER->findImage("공격표정")->setY(_rc.top);
 		Attack();
 	}
+	if (_currentState == UPATTACK)
+	{
+		IMAGEMANAGER->findImage("머리")->setX(_rc.left);
+		IMAGEMANAGER->findImage("공격표정")->setX(_rc.left);
+		IMAGEMANAGER->findImage("공격표정")->setY(_rc.top);
+		AttackUP();
+
+	}
+	if (_currentState == DOWNATTACK)
+	{
+		IMAGEMANAGER->findImage("머리")->setX(_rc.left);
+		IMAGEMANAGER->findImage("공격표정")->setX(_rc.left);
+		IMAGEMANAGER->findImage("공격표정")->setY(_rc.top);
+		AttackDown();
+	}
+
+	
 	
 
 
@@ -430,6 +489,46 @@ void Player::render(HDC hdc)
 		}
 		
 	}
+
+	if (_currentState == UPATTACK)
+	{
+		if (_isLeft)
+		{
+			IMAGEMANAGER->frameRender("AttackFXUP", hdc, _rc.left - 75, (_rc.top + _rc.bottom) / 2 - 200);
+			IMAGEMANAGER->frameRender("AttackUP", hdc, _rc.left - 35, _rc.top - 45);
+			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 10, IMAGEMANAGER->findImage("머리")->getY() - 35.5f);
+			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 15, IMAGEMANAGER->findImage("머리")->getY() - 30.5f);
+		}
+		else
+		{
+			IMAGEMANAGER->frameRender("AttackFXUP", hdc, _rc.left - 100, (_rc.top + _rc.bottom) / 2 - 200);
+			IMAGEMANAGER->frameRender("AttackUP", hdc, _rc.left - 60, _rc.top - 45);
+			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 10, IMAGEMANAGER->findImage("머리")->getY() - 35.5f);
+			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 15, IMAGEMANAGER->findImage("머리")->getY() - 30.5f);
+		}
+	
+	}
+
+	if (_currentState == DOWNATTACK)
+	{
+		if (_isLeft)
+		{
+			IMAGEMANAGER->frameRender("AttackFXDown", hdc, _rc.left - 120, (_rc.top + _rc.bottom) / 2 - 30);
+			IMAGEMANAGER->frameRender("AttackDown", hdc, _rc.left - 80, _rc.top - 5);
+			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 10, IMAGEMANAGER->findImage("머리")->getY() - 30.5f);
+			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 15, IMAGEMANAGER->findImage("머리")->getY() - 25.5f);
+		}
+		else
+		{
+			IMAGEMANAGER->frameRender("AttackFXDown", hdc, _rc.left-60, (_rc.top + _rc.bottom) / 2 - 30);
+			IMAGEMANAGER->frameRender("AttackDown", hdc, _rc.left-20, _rc.top - 5);
+			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 10, IMAGEMANAGER->findImage("머리")->getY() - 30.5f);
+			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 15, IMAGEMANAGER->findImage("머리")->getY() - 25.5f);
+		}
+		
+	}
+
+
 }
 
 void Player::idle(void)
@@ -725,6 +824,160 @@ void Player::Attack(void)
 	IMAGEMANAGER->findImage("머리")->setY(_rc.top);
 	IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
 
+}
+
+void Player::AttackUP(void)
+{
+	if (_isLeft)
+	{
+
+		_cnt++;
+		IMAGEMANAGER->findImage("AttackFXUP")->setFrameY(1);
+		IMAGEMANAGER->findImage("AttackUP")->setFrameY(1);
+		if (_cnt % 3 == 0)
+		{
+			_idx--;
+			if (_idx < 0)
+			{
+				_idx = 4;
+
+
+			}
+			IMAGEMANAGER->findImage("AttackFXUP")->setFrameX(_idx);
+		}
+
+		if (_cnt % 3 == 0)
+		{
+			_atkUpIdx--;
+			if (_atkUpIdx < 0)
+			{
+				_atkUpIdx = 5;
+				_cnt = 0;
+				_rc.top -= 30;
+				_rc.bottom -= 30;
+				//	_currentState = IDLE;
+				//	_isATK = false;
+			}
+			IMAGEMANAGER->findImage("AttackUP")->setFrameX(_atkUpIdx);
+
+		}
+
+
+	}
+	else
+	{
+		_cnt++;
+		IMAGEMANAGER->findImage("AttackFXUP")->setFrameY(0);
+		IMAGEMANAGER->findImage("AttackUP")->setFrameY(0);
+		if (_cnt % 3 == 0)
+		{
+			_idx++;
+			if (_idx > 4)
+			{
+				_idx = 0;
+
+			}
+			IMAGEMANAGER->findImage("AttackFXUP")->setFrameX(_idx);
+		}
+
+
+		if (_cnt % 3 == 0)
+		{
+			_atkUpIdx++;
+			if (_atkUpIdx > 5)
+			{
+				_atkUpIdx = 0;
+				_cnt = 0;
+				_rc.top -= 30;
+				_rc.bottom -= 30;
+				//	_currentState = IDLE;
+				//	_isATK = false;
+			}
+			IMAGEMANAGER->findImage("AttackUP")->setFrameX(_atkUpIdx);
+
+		}
+	}
+	IMAGEMANAGER->findImage("머리")->setY(_rc.top);
+	IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
+}
+
+void Player::AttackDown(void)
+{
+	if (_isLeft)
+	{
+
+		_cnt++;
+		IMAGEMANAGER->findImage("AttackFXDown")->setFrameY(1);
+		IMAGEMANAGER->findImage("AttackDown")->setFrameY(1);
+		if (_cnt % 3 == 0)
+		{
+			_idx--;
+			if (_idx < 0)
+			{
+				_idx = 4;
+
+
+			}
+			IMAGEMANAGER->findImage("AttackFXDown")->setFrameX(_idx);
+		}
+
+		if (_cnt % 3 == 0)
+		{
+			_atkDownIdx--;
+			if (_atkDownIdx < 0)
+			{
+				_atkDownIdx = 5;
+				_cnt = 0;
+				_rc.top -= 30;
+				_rc.bottom -= 30;
+				//_rc.left -= 30;
+				//_rc.right -= 30;
+				//	_currentState = IDLE;
+				//	_isATK = false;
+			}
+			IMAGEMANAGER->findImage("AttackDown")->setFrameX(_atkDownIdx);
+
+		}
+
+
+	}
+	else
+	{
+		_cnt++;
+		IMAGEMANAGER->findImage("AttackFXDown")->setFrameY(0);
+		IMAGEMANAGER->findImage("AttackDown")->setFrameY(0);
+		if (_cnt % 3 == 0)
+		{
+			_idx++;
+			if (_idx > 4)
+			{
+				_idx = 0;
+
+			}
+			IMAGEMANAGER->findImage("AttackFXDown")->setFrameX(_idx);
+		}
+
+
+		if (_cnt % 3 == 0)
+		{
+			_atkDownIdx++;
+			if (_atkDownIdx > 5)
+			{
+				_atkDownIdx = 0;
+				_cnt = 0;
+				_rc.top -= 30;
+				_rc.bottom -= 30;
+				//_rc.left += 30;
+				//_rc.right += 30;
+				//	_currentState = IDLE;
+				//	_isATK = false;
+			}
+			IMAGEMANAGER->findImage("AttackDown")->setFrameX(_atkDownIdx);
+
+		}
+	}
+	IMAGEMANAGER->findImage("머리")->setY(_rc.top);
+	IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
 }
 
 void Player::titlePlayer(HDC hdc)

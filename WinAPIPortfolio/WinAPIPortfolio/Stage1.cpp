@@ -12,7 +12,7 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = false;
+	_createPlayer = true;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -52,7 +52,7 @@ HRESULT Stage1::init(void)
 		_gl[i].glass = RectMakeCenter(_gl[i].createX, _gl[i].createY, 72, 76);
 
 	}
-
+	_bgImage = RectMake(150, 600, 440, 300);
 
 
 	_cutDoorL = 0;
@@ -124,7 +124,7 @@ void Stage1::update(void)
 		{
 			PLAYER->setPlayerPosBottom(7);
 		}
-
+		PLAYER->setGoDownJump(false);
 		PLAYER->setIsJumping(false);
 	}
 	else {
@@ -229,7 +229,6 @@ void Stage1::update(void)
 			{
 				
 				_readyPlayer = true;
-				//_createPlayer = true;
 				_renderBreakGlass = true;
 				_breakFX = true;
 				_boom = true;
@@ -350,7 +349,7 @@ void Stage1::update(void)
 			_renderBreakGlass = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
-			if (_offsetX == 5120)
+			if (_offsetX == 5120 && _offsetY == 0)
 			{
 				
 				_renderDoor = true;
@@ -358,17 +357,11 @@ void Stage1::update(void)
 				PLAYER->setPlayerPos(_pPosRc);
 			}	
 		}
-		/*if (KEYMANAGER->isOnceKeyDown(VK_UP) && !_breakGlass)
-		{
-			_glassIdx++;
-			cout << "되냐?" << endl;
-		}*/
+
 
 		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_obCol))
 		{
 			_upBtnRender = true;
-			//cout << "들어옴" << endl;
-			//efUIKeybordUp();
 			UI->btnUPAnim();
 			PLAYER->setcolCom(true);
 
@@ -394,7 +387,7 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX -= 80;
-			if (_offsetX == 3840)
+			if (_offsetX == 3840 && _offsetY == 0)
 			{
 				_currentMap = map1;
 				
@@ -409,7 +402,7 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
-			if (_offsetX == 6400)
+			if (_offsetX == 6400 && _offsetY == 0)
 			{
 				_cutDoorR = 0;
 				_renderDoor = true;
@@ -429,7 +422,7 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
-			if (_offsetX == 5120)
+			if (_offsetX == 5120 && _offsetY == 0)
 			{
 				_cutDoorR = 170;
 				_renderDoor = true;
@@ -446,7 +439,7 @@ void Stage1::update(void)
 			_renderKnife = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX += 80;
-			if (_offsetX == 7680)
+			if (_offsetX == 7680 && _offsetY == 0)
 			{
 				_cutDoorL = 170;
 				_renderDoor = true;
@@ -457,15 +450,47 @@ void Stage1::update(void)
 		}
 
 		//여기서부터
-		if (_pPosRc.bottom > 700)
-		{
-			_offsetY = _pPosRc.bottom - 600;
-			if (_offsetY == 1065)
-			{
+		//if ((_pPosRc.bottom + _pPosRc.top) / 2 > 800)
+		//{
+		//	_offsetY += 20;
+		//		//PLAYER->getColTop();
+		//	_pPosRc = RectMake(PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top - 400, 74, 74);
+		//	if (_offsetY == 800)
+		//	{
+		//		cout << Rlb << endl;
+		//		cout << "offsetY = " << _offsetY << endl;
+		//		_currentMap = map5;
+		//		
+		//		PLAYER->setPlayerPos(_pPosRc);
+		//	}
+		//	
+		//}
+	//	cout << _offsetY << endl;
 
+
+
+		/*if (PLAYER->getPlayerPos().top < 400)
+		{
+
+			_offsetY -= 400 - PLAYER->getPlayerPos().top;
+			PLAYER->setPlayerPosTop(400 - PLAYER->getPlayerPos().top);
+		}*/
+		if (PLAYER->getGoDownjump())
+		{
+			if (PLAYER->getPlayerPos().top > 600 && _offsetY < 800)
+			{
+				cout << _offsetY << endl;
+
+				cout << PLAYER->getPlayerPos().top << endl;
+				_offsetY += PLAYER->getPlayerPos().top - 600;
+				PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - 600);
+				if (_offsetY > 600)
+				{
+					_currentMap = map5;
+				}
 			}
-			
 		}
+	
 
 
 
@@ -480,7 +505,7 @@ void Stage1::update(void)
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
 			_renderKnife = false;
-			if (_offsetX == 6400)
+			if (_offsetX == 6400 && _offsetY == 0)
 			{
 				_renderDoor = true;
 				_cutDoorR = 170;
@@ -548,6 +573,97 @@ void Stage1::update(void)
 			//cout << _panalCnt << endl;
 			
 		}
+	}
+
+	if (_currentMap == map5)
+	{
+		if (PLAYER->getPlayerPos().top < 400)
+		{
+
+			_offsetY -= 400 - PLAYER->getPlayerPos().top;
+			PLAYER->setPlayerPosTop(400 - PLAYER->getPlayerPos().top);
+		}
+		if (PLAYER->getPlayerPos().top > 400 && _offsetY < 800)
+		{
+			cout << _offsetY << endl;
+			cout << PLAYER->getPlayerPos().top << endl;
+			_offsetY += PLAYER->getPlayerPos().top - 400;
+			PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - 400);
+		}
+
+		if ((_pPosRc.left + _pPosRc.right) / 2 < 0)
+		{
+			//_renderBreakGlass = true;
+			//_renderDoor = false;
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top -80, 74, 74);
+			_offsetX -= 80;
+			if (_offsetX == 5120)
+			{
+				_currentMap = map6;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+
+		
+
+
+
+
+
+		//moveCamera(400,600, 600, 6420, 800);
+
+	}
+
+	if (_currentMap == map6)
+	{
+		if ((_pPosRc.left + _pPosRc.right) / 2 > 1280)
+		{
+			//_renderBreakGlass = true;
+			//_renderDoor = false;
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_offsetX += 80;
+			if (_offsetX == 6400)
+			{
+				_currentMap = map5;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+		moveCamera(400, 600, 400,3880, 5120, 800);
+
+		if ((_pPosRc.left + _pPosRc.right) / 2 < 0)
+		{
+			//_renderBreakGlass = true;
+			//_renderDoor = false;
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_offsetX -= 80;
+			if (_offsetX == 2600)
+			{
+				_currentMap = map7;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+	}
+	if (_currentMap == map7)
+	{
+		if ((_pPosRc.left + _pPosRc.right) / 2 > 1280)
+		{
+			//_renderBreakGlass = true;
+			//_renderDoor = false;
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_offsetX += 80;
+			if (_offsetX == 3880)
+			{
+				_currentMap = map6;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+		moveCamera(400,600,400,1280,2600,800);
+
+
 	}
 	
 
@@ -670,23 +786,40 @@ void Stage1::render(void)
 		}
 
 	}
-
-	
 	if (KEYMANAGER->isToggleKey(VK_F1))
 	{
 		IMAGEMANAGER->render("스테이지1픽셀", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
-		if(_currentMap == map1)	
-		DrawRectMake(getMemDC(), _obCol);
+		if (_currentMap == map1)
+			DrawRectMake(getMemDC(), _obCol);
 
 		if (_currentMap == map4)
 			DrawRectMake(getMemDC(), _obCol);
-	}	
+	}
 	if (_createPlayer)
 	{
 		PLAYER->render(getMemDC());
 
+	}	
+
+
+
+	if (_currentMap == map6)
+	{
+		IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
+		//DrawRectMake(getMemDC(), _bgImage);
 	}
+
+	if (_currentMap == map7)
+	{
+
+	}
+
+
+
+
+
 	
+
 
 	
 }
@@ -766,6 +899,52 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 
 		}
 	}
+}
+
+void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY)
+{
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	{
+		if (PLAYER->getPlayerPos().left < LcameraOffsetX && _offsetX > LmaxOffsetX)
+		{
+			_offsetX -= 8;
+			_bgImage.left += 8;
+			_bgImage.right += 8;
+			PLAYER->setPlayerPosLeft(8);
+		}
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		if (PLAYER->getPlayerPos().left > RcameraOffsetX && _offsetX < RmaxOffsetX)
+		{
+			_offsetX += 8;
+			_bgImage.left -= 8;
+			_bgImage.right -= 8;
+			PLAYER->setPlayerPosRight(8);
+		}
+
+	}
+
+	//상하
+	if (PLAYER->getPlayerPos().top < cameraOffsetY && _offsetY > 0)
+	{
+
+		_offsetY -= cameraOffsetY - PLAYER->getPlayerPos().top;
+		_bgImage.top += cameraOffsetY - PLAYER->getPlayerPos().top;
+		_bgImage.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+		PLAYER->setPlayerPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+	}
+	if (PLAYER->getPlayerPos().top > cameraOffsetY && _offsetY < maxOffsetY)
+	{
+	
+		_offsetY += PLAYER->getPlayerPos().top - cameraOffsetY;
+		_bgImage.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
+		_bgImage.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+		PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+	}
+
+
+
 }
 
 void Stage1::glassBoom()

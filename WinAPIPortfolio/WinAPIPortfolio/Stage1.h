@@ -14,6 +14,13 @@ enum MAP
 	map11
 };
 
+struct BREAKOBJECT
+{
+	RECT rc;
+	bool isBreak;
+	bool push;
+};
+
 struct GlassFragment
 {
 	int glassCnt;
@@ -52,10 +59,15 @@ private:
 	RECT _pPosRc;
 	RECT _pPosRcCol;
 
+	RECT _bgImage;
+
 	MAP _currentMap;
 	bool _boom;
 	GlassFragment _gl[50];
 	
+	BREAKOBJECT _breakObject;
+
+	vector<BREAKOBJECT> _obj;
 
 	RECT _collider;
 
@@ -134,8 +146,12 @@ public:
 	
 
 	void shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount);
+	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 	void glassBoom();
 
+
+	void updateObject();
+	void createBreakObject(int x, int y, int width, int height, bool isBreak);
 
 };
 

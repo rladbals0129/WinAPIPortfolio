@@ -1,6 +1,5 @@
 #pragma once
 #include "SingletonBase.h"
-#define GRAVITY 0.3f
 
 
 
@@ -10,12 +9,13 @@ private:
 	enum STATE {
 		IDLE, MOVE,
 		JUMP, SLAP,
-		DOWN, ATTACK
+		DOWN, ATTACK,
+		UPATTACK,DOWNATTACK
 	};
 	STATE _currentState;
 
 	RECT _rc;
-	
+	//플레이어 스펙
 	int _speed;
 	int _attack;
 
@@ -66,8 +66,15 @@ private:
 	bool _isATK;
 	int _atkIdx;
 
+	bool _isUpATK;
+	int _atkUpIdx;
+
+	bool _isDownATK;
+	int _atkDownIdx;
+
 	//하단점프
 	bool _downJump;
+	bool _goDownJump;
 
 public:	
 	HRESULT init(void);
@@ -81,44 +88,55 @@ public:
 	void down(void);
 	void clap(void);
 	void Attack(void);
+	void AttackUP(void);
+	void AttackDown(void);
 
 	void titlePlayer(HDC hdc);
 
-	STATE getState() { return _currentState; }
-	RECT getPlayerPos() { return _rc; }
-	bool getIsJumping() { return _isJumping; }
-	bool getColRight() { return _colRight; }
-	float getColTop() { return _gravityJumpPower; }
-	bool getKnife() { return _knife; }
-	bool getTxtKnife() { return _txtKnife; }
-	bool getUsingKnife() { return _usingKnife; }
-	bool getPanalKnife() { return _panalKnife; }
-	bool getTxtCom() { return _txtCom; }
+	inline STATE getState() { return _currentState; }
+	inline RECT getPlayerPos() { return _rc; }
 
-//	bool getPanalCom() { return _panalCom; }
-	bool getDownJump() { return _downJump; }
+	inline RECT getATKRange() { return _rangeATK; }
+
+	inline bool getIsJumping() { return _isJumping; }
+	inline bool getColRight() { return _colRight; }
+
+	inline float getColTop() { return _gravityJumpPower; }
+
+	inline bool getKnife() { return _knife; }
+	inline bool getTxtKnife() { return _txtKnife; }
+	inline bool getUsingKnife() { return _usingKnife; }
+	inline bool getPanalKnife() { return _panalKnife; }
+	inline bool getTxtCom() { return _txtCom; }
+	inline bool getDownJump() { return _downJump; }
+	inline bool getGoDownjump() { return _goDownJump; }
 	
 
 	
-	void setIdle() { _currentState = IDLE; }
-	void setPlayerPosLeft(int x) { _rc.left += x; _rc.right += x; }
-	void setPlayerPosRight(int x) { _rc.left -= x; _rc.right -= x; }
-	void setPlayerPosBottom(int y){ _rc.top -= y; _rc.bottom -= y; }
-	void setPlayerPosTop(int y) { _rc.top += y; _rc.bottom += y; }
-	void setPlayerPos(RECT rc) { _rc = rc; }
-	void setIsJumping(bool isJumping) { _isJumping = isJumping; }
-	void setPlayerPos(int left, int top, int right, int bottom) { _rc.left = left; _rc.top = top; _rc.right = right; _rc.bottom = bottom; }
-	void setIsGravity(bool isGravity) { _isGravity = isGravity; }
-	void setColRight(bool colRight) { _colRight = colRight; }
-	void setColLeft(bool colLeft) { _colLeft = colLeft; }
-	void setColTop(bool colTop) { _colTop = colTop; }
-	void setKnife(bool knife) { _knife = knife; }
-	void setTxtKnife(bool txtKnife) { _txtKnife = txtKnife; }
-	void setPanalKnife(bool panalKnife) { _panalKnife = panalKnife; }
-	void setTxtCom(bool txtCom) { _txtCom = txtCom; }
-	void setcolCom(bool colCom) { _colCom = colCom; }
-	void setDownJump(bool downJump) { _downJump = downJump; }
+	inline void setIdle() { _currentState = IDLE; }
+
+	//inline void setATKRange(RECT rangeATK) { _rangeATK = rangeATK; }
+
+	inline void setPlayerPosLeft(int x) { _rc.left += x; _rc.right += x; }
+	inline void setPlayerPosRight(int x) { _rc.left -= x; _rc.right -= x; }
+	inline void setPlayerPosBottom(int y){ _rc.top -= y; _rc.bottom -= y; }
+	inline void setPlayerPosTop(int y) { _rc.top += y; _rc.bottom += y; }
+	inline void setPlayerPos(RECT rc) { _rc = rc; }
+	inline void setIsJumping(bool isJumping) { _isJumping = isJumping; }
+	inline void setPlayerPos(int left, int top, int right, int bottom) { _rc.left = left; _rc.top = top; _rc.right = right; _rc.bottom = bottom; }
+	inline void setIsGravity(bool isGravity) { _isGravity = isGravity; }
+	inline void setColRight(bool colRight) { _colRight = colRight; }
+	inline void setColLeft(bool colLeft) { _colLeft = colLeft; }
+	inline void setColTop(bool colTop) { _colTop = colTop; }
+	inline void setKnife(bool knife) { _knife = knife; }
+	inline void setTxtKnife(bool txtKnife) { _txtKnife = txtKnife; }
+	inline void setPanalKnife(bool panalKnife) { _panalKnife = panalKnife; }
+	inline void setTxtCom(bool txtCom) { _txtCom = txtCom; }
+	inline void setcolCom(bool colCom) { _colCom = colCom; }
+	inline void setDownJump(bool downJump) { _downJump = downJump; }
+	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
+	
 	
 
 
