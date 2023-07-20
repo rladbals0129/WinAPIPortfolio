@@ -150,6 +150,9 @@
     <ClInclude Include="UIManager.h">
       <Filter>소스 파일\GameObjectClass\UI</Filter>
     </ClInclude>
+    <ClInclude Include="RotationRender.h">
+      <Filter>소스 파일\GameObjectClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일\GameObjectClass\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationRender.cpp">
+      <Filter>소스 파일\GameObjectClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

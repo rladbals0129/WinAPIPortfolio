@@ -1,5 +1,6 @@
 #pragma once
 #include "GameNode.h"
+#include "RotationRender.h"
 
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
@@ -18,7 +19,6 @@ struct BREAKOBJECT
 {
 	RECT rc;
 	bool isBreak;
-	bool push;
 };
 
 struct GlassFragment
@@ -56,6 +56,8 @@ struct GlassFragment
 class Stage1 : public GameNode
 {
 private:
+	RotationRender* _rot;
+
 	RECT _pPosRc;
 	RECT _pPosRcCol;
 
@@ -65,7 +67,7 @@ private:
 	bool _boom;
 	GlassFragment _gl[50];
 	
-	BREAKOBJECT _breakObject;
+	BREAKOBJECT _box[3];
 
 	vector<BREAKOBJECT> _obj;
 
@@ -95,7 +97,7 @@ private:
 	int _breakStartY;
 	bool _breakFX;
 	//유리조각
-	
+	bool _explosion;
 
 
 	//문 애니메이션

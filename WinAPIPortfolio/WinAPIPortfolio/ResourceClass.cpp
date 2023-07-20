@@ -159,7 +159,8 @@ HRESULT ResourceClass::init()
 	
 	
 	IMAGEMANAGER->addImage("배경시체", "Resources/Images/Stage1/Object/bgDumi.bmp", 600, 300, true, RGB(255, 0, 255));
-	
+	IMAGEMANAGER->addImage("상자", "Resources/Images/Stage1/Object/Box.bmp", 120, 80, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("상자조각", "Resources/Images/Stage1/Object/BoxBreak.bmp", 72, 40, true, RGB(255, 0, 255));
 	
 	
 	

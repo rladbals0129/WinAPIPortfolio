@@ -5,6 +5,9 @@
 HRESULT Stage1::init(void)
 {
 	PLAYER->init();
+	_rot = new RotationRender;
+	_rot->init();
+	_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
 	_currentMap = map1;
 	_offsetX = 3840;
 	_offsetY = 0;
@@ -76,6 +79,15 @@ HRESULT Stage1::init(void)
 
 	_upBtnRender = false;
 	_txtComputer1 = false;
+	_explosion = false;
+
+	//박스 792 440
+	for (int i = 0; i < 3; i++)
+	{	
+		_box[i].rc = RectMake(792, 440 + (i * 70), 120, 80);
+		_box[i].isBreak = false;
+		_obj.push_back(_box[i]);
+	}
 
 	return S_OK;
 }
@@ -91,6 +103,7 @@ void Stage1::update(void)
 		PLAYER->update();
 		
 	}
+	_rot->rotateImage(0.1f);
 	_pPosRc.left = PLAYER->getPlayerPos().left;
 	_pPosRc.right = PLAYER->getPlayerPos().right;
 	_pPosRc.top = PLAYER->getPlayerPos().top;
@@ -207,6 +220,10 @@ void Stage1::update(void)
 				_glassIdx++;
 				_shakeScreen = true;
 				_shakeDuration = 10;
+			/*	if (_glassIdx == 4 && !_explosion)
+				{
+					_explosion = true;
+				}*/
 			
 			}
 			IMAGEMANAGER->findImage("유리관")->setFrameX(_glassIdx);
@@ -215,19 +232,21 @@ void Stage1::update(void)
 				shakeScreen(3840, 0,50);
 
 			}
-			else {
-				/*
+			
+			/*if (_explosion)
+			{
+				_shakeDuration = 10;
 				_shakeScreen = true;
-				_shakeDuration = 20;
 				shakeScreen(3840, 0, 50);
-				*/
-			}
+		
+			}*/
 			UI->btnEAnim();
 			
 
 			if (_glassIdx > 3)
 			{
 				
+			
 				_readyPlayer = true;
 				_renderBreakGlass = true;
 				_breakFX = true;
@@ -479,13 +498,14 @@ void Stage1::update(void)
 		{
 			if (PLAYER->getPlayerPos().top > 600 && _offsetY < 800)
 			{
-				cout << _offsetY << endl;
+				//cout << _offsetY << endl;
 
-				cout << PLAYER->getPlayerPos().top << endl;
+				//cout << PLAYER->getPlayerPos().top << endl;
 				_offsetY += PLAYER->getPlayerPos().top - 600;
 				PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - 600);
 				if (_offsetY > 600)
 				{
+				
 					_currentMap = map5;
 				}
 			}
@@ -526,7 +546,7 @@ void Stage1::update(void)
 			if (PLAYER->getUsingKnife())
 			{
 				PLAYER->setKnife(false);
-				cout << "dd" << endl;
+				//cout << "dd" << endl;
 			}
 			if (PLAYER->getTxtKnife())
 			{
@@ -577,17 +597,26 @@ void Stage1::update(void)
 
 	if (_currentMap == map5)
 	{
+		cout << _offsetY << endl;
 		if (PLAYER->getPlayerPos().top < 400)
 		{
 
 			_offsetY -= 400 - PLAYER->getPlayerPos().top;
+			/*for (auto _iter = _obj.begin(); _iter != _obj.end(); ++_iter)
+			{
+				_iter->rc.top += 400 - PLAYER->getPlayerPos().top;
+				_iter->rc.bottom += 400 - PLAYER->getPlayerPos().bottom;
+			}*/
 			PLAYER->setPlayerPosTop(400 - PLAYER->getPlayerPos().top);
 		}
 		if (PLAYER->getPlayerPos().top > 400 && _offsetY < 800)
 		{
-			cout << _offsetY << endl;
-			cout << PLAYER->getPlayerPos().top << endl;
 			_offsetY += PLAYER->getPlayerPos().top - 400;
+			/*for (auto _iter = _obj.begin(); _iter != _obj.end(); ++_iter)
+			{
+				_iter->rc.top -= PLAYER->getPlayerPos().top - 600;
+				_iter->rc.bottom -= PLAYER->getPlayerPos().bottom - 600;
+			}*/
 			PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - 400);
 		}
 
@@ -603,6 +632,27 @@ void Stage1::update(void)
 
 				PLAYER->setPlayerPos(_pPosRc);
 			}
+		}
+		//박스
+		for (auto it = _obj.begin(); it != _obj.end();)
+		{
+			
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &it->rc))
+			{
+				PLAYER->setColRight(true);
+			}
+
+			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &it->rc))
+			{
+				cout << "상자 맞았다";
+				it->isBreak = false;
+				it = _obj.erase(it);
+			}
+			else
+			{
+				it++;
+			}
+
 		}
 
 		
@@ -674,6 +724,7 @@ void Stage1::render(void)
 {
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
 	
+	_rot->RotateRender(400, 400, 72, 40);
 	if (_currentMap == map1)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
@@ -801,6 +852,26 @@ void Stage1::render(void)
 
 	}	
 
+	if (_currentMap == map5)
+	{
+		for (auto it = _obj.begin(); it != _obj.end(); ++it)
+		{
+			//BREAKOBJECT& breakObject = *it;
+			//RECT& rc = breakObject.rc;
+			//bool isBreak = breakObject.isBreak;
+
+			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
+			// 이곳에서 필요한 작업을 수행하세요.
+		}
+		//for (int i = 0; i < 3; i++)
+		//{
+		//	
+		//	//IMAGEMANAGER->render("상자", getMemDC(), _box[i].rc.left,_box[i].rc.top);
+		//	
+		////	DrawRectMake(getMemDC(), _box[i].rc);
+
+		//}
+	}
 
 
 	if (_currentMap == map6)
@@ -816,9 +887,10 @@ void Stage1::render(void)
 
 
 
+	char ptMouse[128];
 
-
-	
+	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
+	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
 
 
 	
@@ -887,7 +959,7 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 		{
 			_offsetX = currntOffsetX;
 			_offsetY = currntOffsetY;
-			cout << _offsetX << " " << _offsetY << endl;
+			
 		}
 
 		if (_shakeDuration == 0)
@@ -895,10 +967,12 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 			_offsetX = currntOffsetX;
 			_offsetY = currntOffsetY;
 			_shakeScreen = false;
-		//	cout << _offsetX << " " << _offsetY << endl;
-
 		}
 	}
+
+	
+
+	
 }
 
 void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY)
