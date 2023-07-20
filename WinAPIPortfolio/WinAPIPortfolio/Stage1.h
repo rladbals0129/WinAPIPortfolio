@@ -3,6 +3,7 @@
 #include "RotationRender.h"
 #include "RigidBody.h"
 #include "Fragment.h"
+#include "Zombiebot.h"
 
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
@@ -66,6 +67,15 @@ private:
 	std::vector<Fragment> m_fragments;
 	float m_gravity; 
 	vector<BREAKOBJECT> _obj;
+
+	
+	//==============
+	Zombiebot* _zm;
+	vector<Zombiebot> _Fzm;
+	vector<Fragment> _fragments;
+	//========Àû====
+
+	bool _once;
 
 	RECT _pPosRc;
 	RECT _pPosRcCol;
@@ -151,7 +161,9 @@ public:
 
 	void openDoorR();
 	void openDoorL();
-
+	//====ÆÄÆí=====
+	void addFragment(const Fragment& fragment);
+	//=======
 
 	void efKnife();
 	
@@ -160,9 +172,6 @@ public:
 	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 	void glassBoom();
 
-
-	void updateObject();
-	void createBreakObject(int x, int y, int width, int height, bool isBreak);
 
 };
 

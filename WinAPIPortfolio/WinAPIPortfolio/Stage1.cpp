@@ -16,12 +16,19 @@ HRESULT Stage1::init(void)
 	_offsetX = 3840;
 	_offsetY = 0;
 
+	//적
+	
+	_zm = new Zombiebot;
+	_zm->init();
+	
+	
 
 
+	//===========
 
 	_glassIdx = 0;
 
-	_createPlayer = true;
+	_createPlayer = false;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -409,7 +416,8 @@ void Stage1::update(void)
 			PLAYER->setcolCom(false);
 			_upBtnRender = false;
 		}
-		
+
+	
 	}
 
 	if (_currentMap == map2)
@@ -718,6 +726,51 @@ void Stage1::update(void)
 
 	if (_currentMap == map6)
 	{
+
+		_zm->update();
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_zm->getRange()))
+		{
+			if (!_once)
+			{
+				//cout << "옴?" << endl;
+				_zm->setState(1);
+				_once = true;
+			}
+
+			if (_zm->getState() == 2)
+			{
+				int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
+				int zombieCenter = (_zm->getPos().left + _zm->getPos().right) / 2;
+				if (playerCenter > zombieCenter)
+				{
+					_zm->setIsLeft(false);
+					_zm->setPosLeft(1);
+				}
+				else
+				{
+					_zm->setIsLeft(true);
+					_zm->setPosRight(1);
+				}
+
+
+			}
+		}
+		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_zm->getPos()))
+		{
+			for (Fragment& fragment : _fragments) {
+				fragment.Update(0.16f);
+			}
+			_zm->setDie(true);
+		}
+
+
+
+
+
+
+
+
+
 		if ((_pPosRc.left + _pPosRc.right) / 2 > 1280)
 		{
 			//_renderBreakGlass = true;
@@ -774,12 +827,6 @@ void Stage1::update(void)
 void Stage1::render(void)
 {
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
-	/*Ellipse(getMemDC(),
-		m_rigidBody.GetPosition().x - 10,
-		m_rigidBody.GetPosition().y - 10,
-		m_rigidBody.GetPosition().x + 10,
-		m_rigidBody.GetPosition().y + 10);
-	*/
 
 	if (_currentMap == map1)
 	{
@@ -901,6 +948,9 @@ void Stage1::render(void)
 
 		if (_currentMap == map4)
 			DrawRectMake(getMemDC(), _obCol);
+
+		DrawRectMake(getMemDC(), _zm->getRange());
+		DrawRectMake(getMemDC(), _zm->getPos());
 	}
 	if (_createPlayer)
 	{
@@ -929,7 +979,10 @@ void Stage1::render(void)
 
 	if (_currentMap == map6)
 	{
-		IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
+		_zm->render();
+
+		//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
+
 		//DrawRectMake(getMemDC(), _bgImage);
 	}
 
@@ -985,6 +1038,11 @@ void Stage1::openDoorL()
 			_cutDoorL -= 10;
 		}
 	}
+}
+
+void Stage1::addFragment(const Fragment& fragment)
+{
+	_fragments.push_back(fragment);
 }
 
 void Stage1::efKnife()

@@ -18,6 +18,7 @@ private:
 	//플레이어 스펙
 	int _speed;
 	int _attack;
+	int _hp;
 
 	//애니메이션 컨트롤
 	int _cnt;
@@ -110,6 +111,7 @@ public:
 	inline bool getTxtCom() { return _txtCom; }
 	inline bool getDownJump() { return _downJump; }
 	inline bool getGoDownjump() { return _goDownJump; }
+	inline int getHp() { return _hp; }
 	
 
 	
@@ -135,6 +137,7 @@ public:
 	inline void setcolCom(bool colCom) { _colCom = colCom; }
 	inline void setDownJump(bool downJump) { _downJump = downJump; }
 	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
+	inline void setHp(int hp) { _hp = hp; }
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	
 	

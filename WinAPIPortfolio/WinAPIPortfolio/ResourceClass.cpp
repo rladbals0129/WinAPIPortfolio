@@ -160,9 +160,15 @@ HRESULT ResourceClass::init()
 	
 	IMAGEMANAGER->addImage("배경시체", "Resources/Images/Stage1/Object/bgDumi.bmp", 600, 300, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("상자", "Resources/Images/Stage1/Object/Box.bmp", 120, 80, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("상자조각", "Resources/Images/Stage1/Object/BoxBreak.bmp", 72, 40, true, RGB(255, 0, 255));
+	//IMAGEMANAGER->addImage("상자조각", "Resources/Images/Stage1/Object/BoxBreak.bmp", 72, 40, true, RGB(255, 0, 255));
 	
+
 	
+	IMAGEMANAGER->addFrameImage("좀비정지", "Resources/Images/Enemy/Zombie/Zombiebot_sleep.bmp", 200, 52, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("좀비기상", "Resources/Images/Enemy/Zombie/Zombiebot_wake.bmp", 200, 70, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("좀비이동", "Resources/Images/Enemy/Zombie/Zombiebot_move.bmp", 396, 172, 4, 2, true, RGB(255, 0, 255));
+
+
 	
 	
 	

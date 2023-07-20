@@ -156,7 +156,6 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Fragment.h" />
     <ClInclude Include="GameNode.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GImage.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Intro.h" />
@@ -178,13 +177,13 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="VideoPlayer.h" />
     <ClInclude Include="WinAPIPortfolio.h" />
+    <ClInclude Include="Zombiebot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="GameNode.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GImage.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Intro.cpp" />
@@ -204,6 +203,7 @@
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VideoPlayer.cpp" />
     <ClCompile Include="WinAPIPortfolio.cpp" />
+    <ClCompile Include="Zombiebot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPIPortfolio.rc" />

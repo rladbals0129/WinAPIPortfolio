@@ -17,7 +17,7 @@ HRESULT Player::init(void)
 	//Į
 	_knife = false;
 	_txtKnife = false;
-	_usingKnife = true;
+	_usingKnife = false;
 	_panalKnife = false;
 
 	//ui
