@@ -16,6 +16,7 @@ void RotationRender::release(void)
 }
 
 
+
 void RotationRender::LoadImage(wchar_t* filePath)
 {
     if (image != nullptr)
@@ -28,12 +29,16 @@ void RotationRender::LoadImage(wchar_t* filePath)
 void RotationRender::RotateRender(int x, int y, int width, int height)
 {
     Gdiplus::Graphics graphics(getMemDC());    
-    graphics.TranslateTransform(-(width / 2), -(height / 2));
+    graphics.SetSmoothingMode(SmoothingModeAntiAlias);
+
+
+    int centerX = image->GetWidth() / 2;
+    int centerY = image->GetHeight() / 2;
+    graphics.TranslateTransform(x, y);
     graphics.RotateTransform(_angle);
-    graphics.TranslateTransform(width/2, height/2);
+    graphics.TranslateTransform(-x, -y);
 
-
-    graphics.DrawImage(image, x, y,width,height);
+    graphics.DrawImage(image, x - centerX, y - centerY,width,height);
 }
 
 void RotationRender::rotateImage(REAL delta_angle)

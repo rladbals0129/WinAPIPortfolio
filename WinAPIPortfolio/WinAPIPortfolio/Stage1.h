@@ -1,6 +1,8 @@
 #pragma once
 #include "GameNode.h"
 #include "RotationRender.h"
+#include "RigidBody.h"
+#include "Fragment.h"
 
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
@@ -15,17 +17,15 @@ enum MAP
 	map11
 };
 
-struct BREAKOBJECT
-{
-	RECT rc;
-	bool isBreak;
-};
+
+
 
 struct GlassFragment
 {
 	int glassCnt;
 	int glassXIdx;
 	int glassYIdx;
+
 
 
 	float angle;
@@ -52,11 +52,20 @@ struct GlassFragment
 	int speed;
 };
 
-
+struct BREAKOBJECT
+{
+	RECT rc;
+	bool isBreak;
+};
 class Stage1 : public GameNode
 {
 private:
 	RotationRender* _rot;
+	RigidBody m_rigidBody;
+	bool m_isDestroyed;
+	std::vector<Fragment> m_fragments;
+	float m_gravity; 
+	vector<BREAKOBJECT> _obj;
 
 	RECT _pPosRc;
 	RECT _pPosRcCol;
@@ -69,12 +78,12 @@ private:
 	
 	BREAKOBJECT _box[3];
 
-	vector<BREAKOBJECT> _obj;
+	
 
 	RECT _collider;
 
-	float _offsetX;
-	float _offsetY;
+	int _offsetX;
+	int _offsetY;
 	bool _renderBreakGlass;
 
 	//인트로 후 시작글라스

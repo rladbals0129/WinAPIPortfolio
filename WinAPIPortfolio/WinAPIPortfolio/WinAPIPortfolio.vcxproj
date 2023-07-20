@@ -152,8 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CommonMacroFunction.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="FontManager.h" />
+    <ClInclude Include="Fragment.h" />
     <ClInclude Include="GameNode.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GImage.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Intro.h" />
@@ -164,6 +167,7 @@
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceClass.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="RotationRender.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="Stage1.h" />
@@ -176,8 +180,11 @@
     <ClInclude Include="WinAPIPortfolio.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="GameNode.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GImage.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Intro.cpp" />
@@ -186,6 +193,7 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceClass.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RotationRender.cpp" />
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stdafx.cpp">

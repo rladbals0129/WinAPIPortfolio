@@ -8,9 +8,15 @@ HRESULT Stage1::init(void)
 	_rot = new RotationRender;
 	_rot->init();
 	_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
+
+
+
+
 	_currentMap = map1;
 	_offsetX = 3840;
 	_offsetY = 0;
+
+
 
 
 	_glassIdx = 0;
@@ -86,8 +92,15 @@ HRESULT Stage1::init(void)
 	{	
 		_box[i].rc = RectMake(792, 440 + (i * 70), 120, 80);
 		_box[i].isBreak = false;
+		m_rigidBody.SetPosition(792.0f, 440.0f + (i*70));
+		m_rigidBody.SetVelocity(0.0f, 0.0f);
+		m_rigidBody.SetAcceleration(0.0f, 0.0f);
+		m_gravity = 98.0f;
+		m_isDestroyed = false;
 		_obj.push_back(_box[i]);
 	}
+
+	
 
 	return S_OK;
 }
@@ -103,7 +116,8 @@ void Stage1::update(void)
 		PLAYER->update();
 		
 	}
-	_rot->rotateImage(0.1f);
+	//m_rigidBody.Update(0.016f);
+	
 	_pPosRc.left = PLAYER->getPlayerPos().left;
 	_pPosRc.right = PLAYER->getPlayerPos().right;
 	_pPosRc.top = PLAYER->getPlayerPos().top;
@@ -597,7 +611,7 @@ void Stage1::update(void)
 
 	if (_currentMap == map5)
 	{
-		cout << _offsetY << endl;
+		
 		if (PLAYER->getPlayerPos().top < 400)
 		{
 
@@ -634,26 +648,63 @@ void Stage1::update(void)
 			}
 		}
 		//박스
-		for (auto it = _obj.begin(); it != _obj.end();)
+		std::vector<size_t> breakIndices;
+
+		// 박스
+		for (size_t i = 0; i < _obj.size(); i++)
 		{
-			
-			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &it->rc))
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_obj[i].rc))
 			{
 				PLAYER->setColRight(true);
 			}
 
-			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &it->rc))
+			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_obj[i].rc))
 			{
-				cout << "상자 맞았다";
-				it->isBreak = false;
-				it = _obj.erase(it);
-			}
-			else
-			{
-				it++;
-			}
+				cout << "상자 맞았다" << endl;
+				_obj[i].isBreak = true;
 
+				_shakeDuration = 7;
+				_shakeScreen = true;
+				shakeScreen(6400, 800, 30);
+			
+				// 상자가 파괴되었다는 것을 목록에 추가
+				breakIndices.push_back(i);
+			}
 		}
+
+		// 파괴된 상자의 인덱스를 사용해 파편 생성
+		for (size_t i : breakIndices)
+		{
+			const int numFragments = 10;
+			for (int j = 0; j < numFragments; j++)
+			{
+				Fragment fragment;
+
+				fragment.SetPosition(m_rigidBody.GetPosition().x, m_rigidBody.GetPosition().y);
+				float velocityX = static_cast<float>(rand() % 21 - 10) * 10.0f;
+				float velocityY = static_cast<float>(rand() % 16 - 15) * 10.0f;
+				fragment.SetVelocity(velocityX, velocityY);
+				fragment.SetAcceleration(0, m_gravity);
+				fragment.SetRotation(RND->getFloat(10.f));
+				fragment.LoadImage(L"Resources/Images/Stage1/Object/BoxBreak.png");
+
+				m_fragments.push_back(fragment);
+			}
+		}
+
+		// 상자 목록에서 파괴된 상자를 제거합니다.
+		for (auto it = breakIndices.rbegin(); it != breakIndices.rend(); ++it)
+		{
+			_obj.erase(_obj.begin() + *it);
+		}
+
+		// 파편 업데이트
+		for (auto& fragment : m_fragments)
+		{
+			fragment.Update(0.16f);
+		}
+
+
 
 		
 
@@ -723,8 +774,13 @@ void Stage1::update(void)
 void Stage1::render(void)
 {
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
-	
-	_rot->RotateRender(400, 400, 72, 40);
+	/*Ellipse(getMemDC(),
+		m_rigidBody.GetPosition().x - 10,
+		m_rigidBody.GetPosition().y - 10,
+		m_rigidBody.GetPosition().x + 10,
+		m_rigidBody.GetPosition().y + 10);
+	*/
+
 	if (_currentMap == map1)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
@@ -856,21 +912,18 @@ void Stage1::render(void)
 	{
 		for (auto it = _obj.begin(); it != _obj.end(); ++it)
 		{
-			//BREAKOBJECT& breakObject = *it;
-			//RECT& rc = breakObject.rc;
-			//bool isBreak = breakObject.isBreak;
-
 			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
-			// 이곳에서 필요한 작업을 수행하세요.
 		}
-		//for (int i = 0; i < 3; i++)
-		//{
-		//	
-		//	//IMAGEMANAGER->render("상자", getMemDC(), _box[i].rc.left,_box[i].rc.top);
-		//	
-		////	DrawRectMake(getMemDC(), _box[i].rc);
 
-		//}
+		// 파편 렌더링
+		for (auto& fragment : m_fragments)
+		{
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				72,     // 파편의 너비(width)를 설정합니다.
+				40);    // 파편의 높이(height)를 설정합니다.
+		}
+	
 	}
 
 
@@ -888,9 +941,13 @@ void Stage1::render(void)
 
 
 	char ptMouse[128];
-
+	char ptOffset[128];
+	//cout << " offset X : " << _offsetX << endl;
+	//cout << " offset Y : " << _offsetY << endl;
 	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
+	wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
 	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
+	TextOut(getMemDC(), 100, 120, ptOffset, strlen(ptOffset));
 
 
 	
@@ -952,8 +1009,9 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 	_shakeAmount = shakeAmount;
 	if (_shakeScreen && _shakeDuration > 0)
 	{
-		_offsetX += RND->getInt(_shakeAmount * 2) - _shakeAmount;
+		_offsetX += RND->getFromIntTo(_shakeAmount,_shakeAmount * 2) - _shakeAmount;
 		_offsetY += RND->getInt(_shakeAmount) - _shakeAmount * 2;
+		
 		_shakeDuration--;
 		if (_shakeDuration % 2== 0)
 		{
@@ -962,7 +1020,7 @@ void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
 			
 		}
 
-		if (_shakeDuration == 0)
+		if (_shakeDuration < 0)
 		{
 			_offsetX = currntOffsetX;
 			_offsetY = currntOffsetY;

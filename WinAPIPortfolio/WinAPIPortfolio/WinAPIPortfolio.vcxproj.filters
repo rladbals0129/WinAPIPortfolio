@@ -67,9 +67,6 @@
     <Filter Include="2D FrameWork\ManagerClass">
       <UniqueIdentifier>{f22c82a4-94cc-4367-86ba-5151b28ab997}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObjectClass\NewFilter1">
-      <UniqueIdentifier>{c4dc987d-55db-4012-8b2e-a6888e8ab205}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\GameObjectClass\Title">
       <UniqueIdentifier>{f22244ad-4723-4903-8b74-6de7b2a2cce1}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     </Filter>
     <Filter Include="소스 파일\GameObjectClass\UI">
       <UniqueIdentifier>{4112fbfd-ae2a-455f-abae-21bb2e463fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Effect">
+      <UniqueIdentifier>{e1305c63-2fb9-485c-88ad-e87a17a3eed7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +151,18 @@
       <Filter>소스 파일\GameObjectClass\UI</Filter>
     </ClInclude>
     <ClInclude Include="RotationRender.h">
+      <Filter>소스 파일\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>소스 파일\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Fragment.h">
+      <Filter>소스 파일\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>소스 파일\GameObjectClass\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
       <Filter>소스 파일\GameObjectClass</Filter>
     </ClInclude>
   </ItemGroup>
@@ -207,6 +219,18 @@
       <Filter>소스 파일\GameObjectClass\UI</Filter>
     </ClCompile>
     <ClCompile Include="RotationRender.cpp">
+      <Filter>소스 파일\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>소스 파일\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Fragment.cpp">
+      <Filter>소스 파일\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>소스 파일\GameObjectClass\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일\GameObjectClass</Filter>
     </ClCompile>
   </ItemGroup>

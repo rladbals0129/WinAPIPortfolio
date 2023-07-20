@@ -271,7 +271,7 @@ void Player::update(void)
 	{
 		_currentState = ATTACK;
 		_isATK = true;
-		cout << "ss?" << endl;
+		//cout << "ss?" << endl;
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
 			_currentState = UPATTACK;
