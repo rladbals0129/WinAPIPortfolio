@@ -6,6 +6,7 @@ HRESULT Zombiebot::init(void)
 	_hp = 3;
 	_dmg = 10;
 	_isDie = false;
+	//
 
 	_Scnt = 0;
 	_Sidx = 0;
@@ -15,8 +16,8 @@ HRESULT Zombiebot::init(void)
 	_Midx = 0;
 	_state = 0;
 	_go = false;
-	_rc = RectMake(200, 670, 100, 100);
-	
+	//_rc = RectMake(200, 670, 100, 100);
+	initZombieState();
 
 	return S_OK;
 }
@@ -26,7 +27,7 @@ void Zombiebot::release(void)
 
 }
 
-void Zombiebot::update(void)
+void Zombiebot::UpdateZombie(void)
 {
 	if (!_isDie)
 	{
@@ -42,11 +43,9 @@ void Zombiebot::update(void)
 			move();
 			break;
 		}
-		sleep();
+		//sleep();
 	}
 	_Range = RectMakeCenter(_rc.left+30 , _rc.top, 800, 100);
-	
-
 
 }
 
@@ -72,6 +71,13 @@ void Zombiebot::render()
 
 }
 
+void Zombiebot::initZombieState()
+{
+	_zombieState.Mcnt = 0;
+	_zombieState.Midx = 0;
+	_zombieState.isLeft = false;
+}
+
 void Zombiebot::sleep()
 {	
 	_Scnt++;
@@ -89,12 +95,10 @@ void Zombiebot::sleep()
 
 void Zombiebot::wake()
 {
-	
 	_Wcnt++;
 	
 	if (_Wcnt % 19 == 0)
 	{
-		
 		_Widx++;
 		
 		if (_Widx > 2)
@@ -112,38 +116,35 @@ void Zombiebot::wake()
 
 void Zombiebot::move()
 {
-	if (_isLeft)
+	if (_zombieState.isLeft)
 	{
-		_Mcnt++;
+		_zombieState.Mcnt++;
 		IMAGEMANAGER->findImage("좀비이동")->setFrameY(1);
-		if (_Mcnt % 20 == 0)
+		if (_zombieState.Mcnt % 20 == 0)
 		{
-			_Midx--;
-			if (_Midx < 0 )
+			_zombieState.Midx--;
+			if (_zombieState.Midx < 0)
 			{
-				_Mcnt = 0;
-				_Midx = 4;
+				_zombieState.Mcnt = 0;
+				_zombieState.Midx = 4;
 			}
-			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_Midx);
+			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_zombieState.Midx);
 		}
-
 	}
+
 	else
 	{
-		_Mcnt++;
+		_zombieState.Mcnt++;
 		IMAGEMANAGER->findImage("좀비이동")->setFrameY(0);
-		if (_Mcnt % 10 == 0)
+		if (_zombieState.Mcnt % 20 == 0)
 		{
-			_Midx++;
-			if (_Midx > 4)
+			_zombieState.Midx++;
+			if (_zombieState.Midx > 4)
 			{
-				_Mcnt = 0;
-				_Midx = 0;
+				_zombieState.Mcnt = 0;
+				_zombieState.Midx = 0;
 			}
-			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_Midx);
+			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_zombieState.Midx);
 		}
 	}
-	
-	
-	
 }

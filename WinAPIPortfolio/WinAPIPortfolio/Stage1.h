@@ -53,6 +53,12 @@ struct GlassFragment
 	int speed;
 };
 
+struct CRATEENEMYPOS
+{
+	int x, y;
+	int width, height;
+};
+
 struct BREAKOBJECT
 {
 	RECT rc;
@@ -70,9 +76,13 @@ private:
 
 	
 	//==============
+	CRATEENEMYPOS _createPos;
 	Zombiebot* _zm;
-	vector<Zombiebot> _Fzm;
-	vector<Fragment> _fragments;
+	vector<Zombiebot*> _Fzm;
+	int _zombieNum;
+
+
+	vector<Fragment> _Zfragments;
 	//========Àû====
 
 	bool _once;

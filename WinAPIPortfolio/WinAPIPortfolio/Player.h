@@ -96,6 +96,7 @@ public:
 
 	inline STATE getState() { return _currentState; }
 	inline RECT getPlayerPos() { return _rc; }
+	inline int getPlayerCenter() { return (_rc.left + _rc.right) / 2; }
 
 	inline RECT getATKRange() { return _rangeATK; }
 

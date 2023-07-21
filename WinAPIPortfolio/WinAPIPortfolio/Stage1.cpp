@@ -7,7 +7,7 @@ HRESULT Stage1::init(void)
 	PLAYER->init();
 	_rot = new RotationRender;
 	_rot->init();
-	_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
+	//_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
 
 
 
@@ -16,19 +16,11 @@ HRESULT Stage1::init(void)
 	_offsetX = 3840;
 	_offsetY = 0;
 
-	//적
-	
-	_zm = new Zombiebot;
-	_zm->init();
-	
-	
 
-
-	//===========
 
 	_glassIdx = 0;
 
-	_createPlayer = false;
+	_createPlayer = true;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -107,6 +99,30 @@ HRESULT Stage1::init(void)
 		_obj.push_back(_box[i]);
 	}
 
+	//적
+
+	//_zm = new Zombiebot;
+
+	_zombieNum = 3;
+	//===========
+	for (int i = 0; i < _zombieNum; i++)
+	{
+		_zm = new Zombiebot;
+		_zm->init();
+		_zm->setPos(200 - ( i * 300), 670);
+		_Fzm.push_back(_zm);
+	}
+
+	/*for (int i = 0; i < _Fzm.size(); i++)
+	{
+		_Fzm[i]->init();
+	}*/
+
+	
+	/*for (auto it = _Fzm.begin(); it != _Fzm.end(); ++it)
+	{
+		cout << it->getPos().left << endl;
+	}*/
 	
 
 	return S_OK;
@@ -669,14 +685,15 @@ void Stage1::update(void)
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_obj[i].rc))
 			{
 				cout << "상자 맞았다" << endl;
-				_obj[i].isBreak = true;
+				breakIndices.push_back(i);
+				//_obj[i].isBreak = true;
 
-				_shakeDuration = 7;
-				_shakeScreen = true;
-				shakeScreen(6400, 800, 30);
+				//_shakeDuration = 7;
+				//_shakeScreen = true;
+				//shakeScreen(6400, 800, 30);
 			
 				// 상자가 파괴되었다는 것을 목록에 추가
-				breakIndices.push_back(i);
+				
 			}
 		}
 
@@ -726,42 +743,114 @@ void Stage1::update(void)
 
 	if (_currentMap == map6)
 	{
-
-		_zm->update();
-		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_zm->getRange()))
+	/*	for (int i = 0; i < _Fzm.size(); i++)
 		{
-			if (!_once)
+		
+		}*/
+	//	_zm->update();
+
+		//좀비 위치 생성
+//		if (!_zmPush)
+//		{
+//			for (int i = 0; i < 3; i++)
+//			{
+////				_zm->setPos(200, 670);
+//
+//				_Fzm.push_back(*_zm);
+//				//cout << i << endl;
+//			}
+//			_zmPush = true;
+//			
+//		}
+		
+
+		//좀비 상태처리
+		//for (int i = 0; i < _Fzm.size(); i++) 
+		//{
+		//	_Fzm[i]->UpdateZombie();
+		//	if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getRange()))
+		//	{
+		//		if (!_Fzm[i]->getGo())
+		//		{
+		//			//cout << "옴?" << endl;
+		//			//cout << i << endl;
+		//			_Fzm[i]->setState(1);
+		//			_Fzm[i]->setGo(true);
+		//		}
+
+		//		if (_Fzm[i]->getState() == 2)
+		//		{
+		//			/*int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
+		//			int zombieCenter[3];
+		//			zombieCenter[i] = (_Fzm[i]->getPos().left + _Fzm[i]->getPos().right) / 2;*/
+		//			if (PLAYER->getPlayerCenter() > _Fzm[i]->getCenter())
+		//			{
+		//				_Fzm[i]->setPosLeft(1);
+		//				_Fzm[i]->setIsLeft(false);
+		//				//cout << "i : " << _Fzm[i]->getIsLeft() << endl;
+		//				
+		//				//cout << "이거냐" << endl;
+		//			}
+		//			else if (PLAYER->getPlayerCenter() <= _Fzm[i]->getCenter())
+		//			{
+		//				_Fzm[i]->setPosRight(1);
+		//				_Fzm[i]->setIsLeft(true);
+		//			}
+
+
+		//		}
+		//	}
+		//}
+
+		for (auto iter = _Fzm.begin(); iter != _Fzm.end(); ++iter)
+		{
+			(*iter)->UpdateZombie();
+
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &(*iter)->getRange()))
 			{
-				//cout << "옴?" << endl;
-				_zm->setState(1);
-				_once = true;
-			}
-
-			if (_zm->getState() == 2)
-			{
-				int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
-				int zombieCenter = (_zm->getPos().left + _zm->getPos().right) / 2;
-				if (playerCenter > zombieCenter)
+				if (!(*iter)->getGo())
 				{
-					_zm->setIsLeft(false);
-					_zm->setPosLeft(1);
-				}
-				else
-				{
-					_zm->setIsLeft(true);
-					_zm->setPosRight(1);
+					//cout << "옴?" << endl;
+					//cout << i << endl;
+					(*iter)->setState(1);
+					(*iter)->setGo(true);
 				}
 
+				if ((*iter)->getState() == 2)
+				{
+					/*int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
+					int zombieCenter[3];
+					zombieCenter[i] = (_Fzm[i]->getPos().left + _Fzm[i]->getPos().right) / 2;*/
+					if (PLAYER->getPlayerCenter() > (*iter)->getCenter())
+					{
+						(*iter)->setPosLeft(1);
+						(*iter)->setIsLeft(false);
+						//cout << "i : " << _Fzm[i]->getIsLeft() << endl;
 
+						//cout << "이거냐" << endl;
+					}
+					else
+					{
+						(*iter)->setPosRight(1);
+						(*iter)->setIsLeft(true);
+					}
+				}
 			}
 		}
-		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_zm->getPos()))
+
+		vector<size_t> zombieFM;
+		for (int i = 0; i < _Fzm.size(); i++)
 		{
-			for (Fragment& fragment : _fragments) {
-				fragment.Update(0.16f);
+			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
+			{
+				//for (Fragment& fragment : _fragments)
+				//  {
+				//	fragment.Update(0.16f);
+				//}
+				_Fzm[i]->setDie(true);
 			}
-			_zm->setDie(true);
 		}
+		
 
 
 
@@ -949,8 +1038,16 @@ void Stage1::render(void)
 		if (_currentMap == map4)
 			DrawRectMake(getMemDC(), _obCol);
 
-		DrawRectMake(getMemDC(), _zm->getRange());
-		DrawRectMake(getMemDC(), _zm->getPos());
+		for (int i = 0; i < _Fzm.size();i++)
+		{
+			if (_Fzm[i]->GetDie() == false)
+			{
+				DrawRectMake(getMemDC(), _Fzm[i]->getRange());
+				DrawRectMake(getMemDC(), _Fzm[i]->getPos());
+			}
+		}
+		
+	
 	}
 	if (_createPlayer)
 	{
@@ -979,8 +1076,11 @@ void Stage1::render(void)
 
 	if (_currentMap == map6)
 	{
-		_zm->render();
-
+		//_zm->render();
+		for (int i = 0; i < _Fzm.size(); i++)
+		{
+			_Fzm[i]->render();
+		}
 		//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
 
 		//DrawRectMake(getMemDC(), _bgImage);
@@ -1040,10 +1140,10 @@ void Stage1::openDoorL()
 	}
 }
 
-void Stage1::addFragment(const Fragment& fragment)
-{
-	_fragments.push_back(fragment);
-}
+//void Stage1::addFragment(const Fragment& fragment)
+//{
+//	_fragments.push_back(fragment);
+//}
 
 void Stage1::efKnife()
 {
@@ -1100,6 +1200,10 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 			_offsetX -= 8;
 			_bgImage.left += 8;
 			_bgImage.right += 8;
+			for (int i = 0; i < _Fzm.size(); i++)
+			{
+				_Fzm[i]->setPosLeft(8);
+			}
 			PLAYER->setPlayerPosLeft(8);
 		}
 	}
@@ -1110,6 +1214,10 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 			_offsetX += 8;
 			_bgImage.left -= 8;
 			_bgImage.right -= 8;
+			for (int i = 0; i < _Fzm.size(); i++)
+			{
+				_Fzm[i]->setPosRight(8);
+			}
 			PLAYER->setPlayerPosRight(8);
 		}
 
@@ -1122,6 +1230,10 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		_offsetY -= cameraOffsetY - PLAYER->getPlayerPos().top;
 		_bgImage.top += cameraOffsetY - PLAYER->getPlayerPos().top;
 		_bgImage.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+		for (int i = 0; i < _Fzm.size(); i++)
+		{
+			_Fzm[i]->setPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+		}
 		PLAYER->setPlayerPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
 	}
 	if (PLAYER->getPlayerPos().top > cameraOffsetY && _offsetY < maxOffsetY)
@@ -1130,6 +1242,10 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		_offsetY += PLAYER->getPlayerPos().top - cameraOffsetY;
 		_bgImage.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
 		_bgImage.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+		for (int i = 0; i < _Fzm.size(); i++)
+		{
+			_Fzm[i]->setPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+		}
 		PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
 	}
 

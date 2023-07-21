@@ -1,5 +1,13 @@
 #pragma once
 #include "Enemy.h"
+
+struct ZombieState {
+	int Mcnt = 0;
+	int Midx = 0;
+	bool isLeft = false;
+};
+
+
 class Zombiebot : public Enemy
 {
 private:
@@ -8,13 +16,13 @@ private:
 	int _hp;
 	int _dmg;
 	bool _isDie;
+	ZombieState _zombieState;
 
-	bool _idle;
 	bool _go;
-	bool _sleepFinish;
-	bool _wakeFinish;
 
-	bool _isLeft;
+	//bool _isLeft;
+
+	
 	
 	int _state;
 
@@ -27,8 +35,9 @@ private:
 public:
 	HRESULT init(void);
 	void release(void);
-	void update(void);
+	void UpdateZombie(void);
 	void render();
+	void initZombieState();
 
 	
 
@@ -36,9 +45,11 @@ public:
 	inline int getAtk() { return _dmg; }
 	inline bool getDie() { return _isDie; }
 	inline RECT getPos() { return _rc; }
-	inline bool getIsLeft() { return _isLeft; }
+	inline bool getIsLeft() { return _zombieState.isLeft; }
 	inline RECT getRange() { return _Range; }
 	inline int getState() { return _state; }
+	inline bool getGo() { return _go; }
+	inline int getCenter() { return (_rc.left + _rc.right) / 2; }
 
 	inline void setHp(int hp) { _hp = hp; }
 	inline void setDie(bool die) { _isDie = die; }
@@ -46,8 +57,9 @@ public:
 	inline void setPosRight(int x) { _rc.left -= x; _rc.right -= x; }
 	inline void setPosBottom(int y) { _rc.top -= y; _rc.bottom -= y; }
 	inline void setPosTop(int y) { _rc.top += y; _rc.bottom += y; }
-	inline void setPos(RECT rc) { _rc = rc; }
-	inline void setIsLeft(bool isLeft) { _isLeft = isLeft; }
+	inline void setPos(int x, int y) { _rc = { x,y,x + 100,y + 100 }; }
+	//RECT rc = { x,y,x + width,y + height };
+	inline void setIsLeft(bool isLeft) { _zombieState.isLeft = isLeft; }
 
 	inline void setState(int state) { _state = state; }
 	inline void setGo(bool go) { _go = go; }
