@@ -3,7 +3,7 @@
 
 HRESULT Zombiebot::init(void)
 {
-	_hp = 3;
+	
 	_dmg = 10;
 	_isDie = false;
 	//
@@ -14,10 +14,13 @@ HRESULT Zombiebot::init(void)
 	_Widx = 0;
 	_Mcnt = 0;
 	_Midx = 0;
+	_MYidx = 0;
 	_state = 0;
 	_go = false;
+	_isWake = false;
+	_isLeft = false;
 	//_rc = RectMake(200, 670, 100, 100);
-	initZombieState();
+	
 
 	return S_OK;
 }
@@ -43,7 +46,6 @@ void Zombiebot::UpdateZombie(void)
 			move();
 			break;
 		}
-		//sleep();
 	}
 	_Range = RectMakeCenter(_rc.left+30 , _rc.top, 800, 100);
 
@@ -63,7 +65,14 @@ void Zombiebot::render()
 			IMAGEMANAGER->frameRender("좀비기상", getMemDC(), _rc.left, _rc.top);
 			break;
 		case 2:
-			IMAGEMANAGER->frameRender("좀비이동", getMemDC(), _rc.left, _rc.top);
+			if (!_isLeft)
+			{			
+				IMAGEMANAGER->frameRender("좀비이동", getMemDC(), _rc.left, _rc.top - 30,_Midx, _MYidx);
+			}
+			else 
+			{			
+				IMAGEMANAGER->frameRender("좀비이동", getMemDC(), _rc.left, _rc.top - 30, _Midx, _MYidx);
+			}
 			break;
 		}
 	}
@@ -71,12 +80,7 @@ void Zombiebot::render()
 
 }
 
-void Zombiebot::initZombieState()
-{
-	_zombieState.Mcnt = 0;
-	_zombieState.Midx = 0;
-	_zombieState.isLeft = false;
-}
+
 
 void Zombiebot::sleep()
 {	
@@ -105,6 +109,8 @@ void Zombiebot::wake()
 		{
 			_Wcnt = 0;
 			_Widx = 0;
+		//	_isWake = true;
+
 			_state = 2;
 			
 		}
@@ -116,35 +122,35 @@ void Zombiebot::wake()
 
 void Zombiebot::move()
 {
-	if (_zombieState.isLeft)
+	if (_isLeft)
 	{
-		_zombieState.Mcnt++;
-		IMAGEMANAGER->findImage("좀비이동")->setFrameY(1);
-		if (_zombieState.Mcnt % 20 == 0)
+		_Mcnt++;
+		_MYidx = 1;
+		if (_Mcnt % 20 == 0)
 		{
-			_zombieState.Midx--;
-			if (_zombieState.Midx < 0)
+			
+			_Midx--;
+			if (_Midx < 0)
 			{
-				_zombieState.Mcnt = 0;
-				_zombieState.Midx = 4;
+				_Mcnt = 0;
+				_Midx = 4;
 			}
-			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_zombieState.Midx);
 		}
+
 	}
 
 	else
 	{
-		_zombieState.Mcnt++;
-		IMAGEMANAGER->findImage("좀비이동")->setFrameY(0);
-		if (_zombieState.Mcnt % 20 == 0)
+		_Mcnt++;
+		_MYidx = 0;
+		if (_Mcnt % 20 == 0)
 		{
-			_zombieState.Midx++;
-			if (_zombieState.Midx > 4)
+			_Midx++;
+			if (_Midx > 4)
 			{
-				_zombieState.Mcnt = 0;
-				_zombieState.Midx = 0;
+				_Mcnt = 0;
+				_Midx = 0;
 			}
-			IMAGEMANAGER->findImage("좀비이동")->setFrameX(_zombieState.Midx);
 		}
 	}
 }

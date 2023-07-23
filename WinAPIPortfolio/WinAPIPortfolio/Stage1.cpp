@@ -5,8 +5,6 @@
 HRESULT Stage1::init(void)
 {
 	PLAYER->init();
-	_rot = new RotationRender;
-	_rot->init();
 	//_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
 
 
@@ -87,16 +85,34 @@ HRESULT Stage1::init(void)
 	_explosion = false;
 
 	//박스 792 440
+
+	_rot = new RotationRender;
+	_rot->init();
+	m_rigidBody.SetPosition(0.0f, 0.0f);
+	m_rigidBody.SetVelocity(0.0f, 0.0f);
+	m_rigidBody.SetAcceleration(0.0f, 0.0f);
+	m_gravity = 9.81f;
+	m_isDestroyed = false;
 	for (int i = 0; i < 3; i++)
 	{	
 		_box[i].rc = RectMake(792, 440 + (i * 70), 120, 80);
-		_box[i].isBreak = false;
-		m_rigidBody.SetPosition(792.0f, 440.0f + (i*70));
-		m_rigidBody.SetVelocity(0.0f, 0.0f);
-		m_rigidBody.SetAcceleration(0.0f, 0.0f);
-		m_gravity = 98.0f;
-		m_isDestroyed = false;
+		_box[i].isBreak = false;	
 		_obj.push_back(_box[i]);
+
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		if (i < 3)
+		{
+			_box[i].rc = RectMake(310, 360 + (i * 70), 120, 80);
+			_box2.push_back(_box[i]);
+		}
+		
+		else if (i >= 3)
+		{
+			_box[i].rc = RectMake(-460, 360 + ((i-3) * 70), 120, 80);
+			_box2.push_back(_box[i]);
+		}
 	}
 
 	//적
@@ -104,14 +120,23 @@ HRESULT Stage1::init(void)
 	//_zm = new Zombiebot;
 
 	_zombieNum = 3;
+	_fragmentCnt = 0;
 	//===========
 	for (int i = 0; i < _zombieNum; i++)
 	{
 		_zm = new Zombiebot;
 		_zm->init();
-		_zm->setPos(200 - ( i * 300), 670);
+		_zm->setPos(200 - (i * 300), 670);
 		_Fzm.push_back(_zm);
+	//	SAFE_DELETE(_zm);
 	}
+
+	//for (int i = 0; i < _Fzm.size(); i++)
+	//{
+	//	_Fzm[i]->setIsLeft(true);
+
+	//	cout << _Fzm[i]->getIsLeft();
+	//}
 
 	/*for (int i = 0; i < _Fzm.size(); i++)
 	{
@@ -685,184 +710,97 @@ void Stage1::update(void)
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_obj[i].rc))
 			{
 				cout << "상자 맞았다" << endl;
-				breakIndices.push_back(i);
-				//_obj[i].isBreak = true;
-
-				//_shakeDuration = 7;
-				//_shakeScreen = true;
-				//shakeScreen(6400, 800, 30);
-			
-				// 상자가 파괴되었다는 것을 목록에 추가
-				
+				breakIndices.push_back(i);			
 			}
 		}
-
 		// 파괴된 상자의 인덱스를 사용해 파편 생성
 		for (size_t i : breakIndices)
 		{
-			const int numFragments = 10;
-			for (int j = 0; j < numFragments; j++)
-			{
-				Fragment fragment;
-
-				fragment.SetPosition(m_rigidBody.GetPosition().x, m_rigidBody.GetPosition().y);
-				float velocityX = static_cast<float>(rand() % 21 - 10) * 10.0f;
-				float velocityY = static_cast<float>(rand() % 16 - 15) * 10.0f;
-				fragment.SetVelocity(velocityX, velocityY);
-				fragment.SetAcceleration(0, m_gravity);
-				fragment.SetRotation(RND->getFloat(10.f));
-				fragment.LoadImage(L"Resources/Images/Stage1/Object/BoxBreak.png");
-
-				m_fragments.push_back(fragment);
-			}
+			POINT position = { _obj[i].rc.left, _obj[i].rc.top };
+			createFragments(m_fragments, position, L"Resources/Images/Stage1/Object/BoxBreak.png", 5);
 		}
-
 		// 상자 목록에서 파괴된 상자를 제거합니다.
 		for (auto it = breakIndices.rbegin(); it != breakIndices.rend(); ++it)
 		{
 			_obj.erase(_obj.begin() + *it);
 		}
-
 		// 파편 업데이트
 		for (auto& fragment : m_fragments)
 		{
-			fragment.Update(0.16f);
+			fragment.Update(0.16f, IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),_offsetX,_offsetY);
 		}
-
-
-
-		
-
-
-
-
-
 		//moveCamera(400,600, 600, 6420, 800);
 
 	}
 
 	if (_currentMap == map6)
-	{
-	/*	for (int i = 0; i < _Fzm.size(); i++)
-		{
-		
-		}*/
-	//	_zm->update();
-
-		//좀비 위치 생성
-//		if (!_zmPush)
-//		{
-//			for (int i = 0; i < 3; i++)
-//			{
-////				_zm->setPos(200, 670);
-//
-//				_Fzm.push_back(*_zm);
-//				//cout << i << endl;
-//			}
-//			_zmPush = true;
-//			
-//		}
-		
-
+	{		
 		//좀비 상태처리
-		//for (int i = 0; i < _Fzm.size(); i++) 
-		//{
-		//	_Fzm[i]->UpdateZombie();
-		//	if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getRange()))
-		//	{
-		//		if (!_Fzm[i]->getGo())
-		//		{
-		//			//cout << "옴?" << endl;
-		//			//cout << i << endl;
-		//			_Fzm[i]->setState(1);
-		//			_Fzm[i]->setGo(true);
-		//		}
-
-		//		if (_Fzm[i]->getState() == 2)
-		//		{
-		//			/*int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
-		//			int zombieCenter[3];
-		//			zombieCenter[i] = (_Fzm[i]->getPos().left + _Fzm[i]->getPos().right) / 2;*/
-		//			if (PLAYER->getPlayerCenter() > _Fzm[i]->getCenter())
-		//			{
-		//				_Fzm[i]->setPosLeft(1);
-		//				_Fzm[i]->setIsLeft(false);
-		//				//cout << "i : " << _Fzm[i]->getIsLeft() << endl;
-		//				
-		//				//cout << "이거냐" << endl;
-		//			}
-		//			else if (PLAYER->getPlayerCenter() <= _Fzm[i]->getCenter())
-		//			{
-		//				_Fzm[i]->setPosRight(1);
-		//				_Fzm[i]->setIsLeft(true);
-		//			}
-
-
-		//		}
-		//	}
-		//}
-
-		for (auto iter = _Fzm.begin(); iter != _Fzm.end(); ++iter)
+		for (int i = 0; i < _Fzm.size(); i++)
 		{
-			(*iter)->UpdateZombie();
-
-			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &(*iter)->getRange()))
+			_Fzm[i]->UpdateZombie();
+		}
+	
+		for (int i = 0; i < _Fzm.size();i++)
+		{
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getRange()))
 			{
-				if (!(*iter)->getGo())
+				if (!_Fzm[i]->getGo())
 				{
-					//cout << "옴?" << endl;
-					//cout << i << endl;
-					(*iter)->setState(1);
-					(*iter)->setGo(true);
+					_Fzm[i]->setState(1);
+					_Fzm[i]->setGo(true);
 				}
-
-				if ((*iter)->getState() == 2)
+				else if (_Fzm[i]->getState() == 2)
 				{
-					/*int playerCenter = (PLAYER->getPlayerPos().left + PLAYER->getPlayerPos().right) / 2;
-					int zombieCenter[3];
-					zombieCenter[i] = (_Fzm[i]->getPos().left + _Fzm[i]->getPos().right) / 2;*/
-					if (PLAYER->getPlayerCenter() > (*iter)->getCenter())
+					if (PLAYER->getPlayerCenter() > _Fzm[i]->getCenter())
 					{
-						(*iter)->setPosLeft(1);
-						(*iter)->setIsLeft(false);
-						//cout << "i : " << _Fzm[i]->getIsLeft() << endl;
-
-						//cout << "이거냐" << endl;
+						_Fzm[i]->setPosLeft(1);
+						_Fzm[i]->setIsLeft(false);
 					}
-					else
+					else if (PLAYER->getPlayerCenter() <= _Fzm[i]->getCenter())
 					{
-						(*iter)->setPosRight(1);
-						(*iter)->setIsLeft(true);
+						_Fzm[i]->setPosRight(1);
+						_Fzm[i]->setIsLeft(true);
 					}
 				}
+				
 			}
 		}
-
+		//좀비 파티클
 		vector<size_t> zombieFM;
 		for (int i = 0; i < _Fzm.size(); i++)
 		{
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 			{
-				//for (Fragment& fragment : _fragments)
-				//  {
-				//	fragment.Update(0.16f);
-				//}
+				_zombieDiePosX = _Fzm[i]->getPos().left;
+				_zombieDiePosY = _Fzm[i]->getPos().top;
+
 				_Fzm[i]->setDie(true);
+				
+				zombieFM.push_back(i);
 			}
+			
 		}
 		
-
-
-
-
-
-
-
-
+		for (size_t i : zombieFM)
+		{
+			POINT position = { _zombieDiePosX, _zombieDiePosY };
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
+		}
+		for (auto it = zombieFM.rbegin(); it != zombieFM.rend(); ++it)
+		{
+			_Fzm.erase(_Fzm.begin() + *it);
+		}
+		// 파편 업데이트
+		for (auto& fragment : _Zfragments)
+		{
+			fragment.Update(0.16f , IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _offsetX, _offsetY);
+		}
 
 		if ((_pPosRc.left + _pPosRc.right) / 2 > 1280)
-		{
-			//_renderBreakGlass = true;
+		{	//_renderBreakGlass = true;
 			//_renderDoor = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
 			_offsetX += 80;
@@ -903,6 +841,49 @@ void Stage1::update(void)
 
 				PLAYER->setPlayerPos(_pPosRc);
 			}
+		}
+		std::vector<size_t> breakIndices;
+
+		// 박스
+		for (size_t i = 0; i < _box2.size(); i++)
+		{
+			
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_box2[i].rc))
+			{
+				if (_box2[i].rc.right-10 < PLAYER->getPlayerPos().left)
+				{
+					PLAYER->setColLeft(true);
+					cout << " ㅇ오른쪽에서박아" << endl;
+				}
+				else if (_box2[i].rc.left+10 > PLAYER->getPlayerPos().right)
+				{
+					PLAYER->setColRight(true);
+					cout << "왼쪽에서박아" << endl;
+				}
+				
+			}
+
+			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_box2[i].rc))
+			{
+				cout << "상자 맞았다" << endl;
+				breakIndices.push_back(i);
+			}
+		}
+		// 파괴된 상자의 인덱스를 사용해 파편 생성
+		for (size_t i : breakIndices)
+		{
+			POINT position = { _box2[i].rc.left, _box2[i].rc.top };
+			createFragments(m_fragments, position, L"Resources/Images/Stage1/Object/BoxBreak.png", 5);
+		}
+		// 상자 목록에서 파괴된 상자를 제거합니다.
+		for (auto it = breakIndices.rbegin(); it != breakIndices.rend(); ++it)
+		{
+			_box2.erase(_box2.begin() + *it);
+		}
+		// 파편 업데이트
+		for (auto& fragment : m_fragments)
+		{
+			fragment.Update(0.16f, IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _offsetX, _offsetY);
 		}
 		moveCamera(400,600,400,1280,2600,800);
 
@@ -1038,14 +1019,18 @@ void Stage1::render(void)
 		if (_currentMap == map4)
 			DrawRectMake(getMemDC(), _obCol);
 
-		for (int i = 0; i < _Fzm.size();i++)
+		if (_currentMap == map6)
 		{
-			if (_Fzm[i]->GetDie() == false)
+			for (int i = 0; i < _Fzm.size(); i++)
 			{
-				DrawRectMake(getMemDC(), _Fzm[i]->getRange());
-				DrawRectMake(getMemDC(), _Fzm[i]->getPos());
+				if (_Fzm[i]->getDie() == false)
+				{
+					DrawRectMake(getMemDC(), _Fzm[i]->getRange());
+					DrawRectMake(getMemDC(), _Fzm[i]->getPos());
+				}
 			}
 		}
+	
 		
 	
 	}
@@ -1057,6 +1042,7 @@ void Stage1::render(void)
 
 	if (_currentMap == map5)
 	{
+	
 		for (auto it = _obj.begin(); it != _obj.end(); ++it)
 		{
 			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
@@ -1081,6 +1067,43 @@ void Stage1::render(void)
 		{
 			_Fzm[i]->render();
 		}
+
+		for (int i = 0; i < _Zfragments.size(); i++)
+		{
+			auto& fragment = _Zfragments[i];
+			switch (i % 3)
+			{
+			case 0:
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					26,
+					34);
+				break;
+			case 1:
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					58,
+					44);
+				break;
+			case 2:
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					46,
+					30);
+				break;
+
+			}
+			cout << i << endl;
+			
+		}
+	/*	for (auto& fragment : _Zfragments)
+		{
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				46,
+				30);
+			
+		}*/
 		//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
 
 		//DrawRectMake(getMemDC(), _bgImage);
@@ -1088,7 +1111,20 @@ void Stage1::render(void)
 
 	if (_currentMap == map7)
 	{
+		
+		for (auto it = _box2.begin(); it != _box2.end(); ++it)
+		{
+			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
+		}
 
+		// 파편 렌더링
+		for (auto& fragment : m_fragments)
+		{
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				72,     // 파편의 너비(width)를 설정합니다.
+				40);    // 파편의 높이(height)를 설정합니다.
+		}
 	}
 
 
@@ -1198,11 +1234,36 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		if (PLAYER->getPlayerPos().left < LcameraOffsetX && _offsetX > LmaxOffsetX)
 		{
 			_offsetX -= 8;
-			_bgImage.left += 8;
-			_bgImage.right += 8;
-			for (int i = 0; i < _Fzm.size(); i++)
+			if (_currentMap == map5)
 			{
-				_Fzm[i]->setPosLeft(8);
+				
+			}
+			if (_currentMap == map6)
+			{
+				_bgImage.left += 8;
+				_bgImage.right += 8;
+				for (int i = 0; i < _Fzm.size(); i++)
+				{
+					_Fzm[i]->setPosLeft(8);
+				}
+				for (auto& fragment : _Zfragments)
+				{
+					fragment.SetPosition(fragment.GetPosition().x + 8, fragment.GetPosition().y);
+
+				}
+			}
+
+			if (_currentMap == map7)
+			{
+				for (int i = 0; i < _box2.size(); i++)
+				{
+					_box2[i].rc.left += 8;
+					_box2[i].rc.right += 8;
+				}
+				for (auto& fragment : m_fragments)
+				{
+					fragment.SetPosition(fragment.GetPosition().x + 8, fragment.GetPosition().y);
+				}
 			}
 			PLAYER->setPlayerPosLeft(8);
 		}
@@ -1212,11 +1273,36 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		if (PLAYER->getPlayerPos().left > RcameraOffsetX && _offsetX < RmaxOffsetX)
 		{
 			_offsetX += 8;
-			_bgImage.left -= 8;
-			_bgImage.right -= 8;
-			for (int i = 0; i < _Fzm.size(); i++)
+			if (_currentMap == map5)
 			{
-				_Fzm[i]->setPosRight(8);
+
+			}
+			if (_currentMap == map6)
+			{
+				_bgImage.left -= 8;
+				_bgImage.right -= 8;
+				//_zombieDiePosX -= 8;
+				for (int i = 0; i < _Fzm.size(); i++)
+				{
+					_Fzm[i]->setPosRight(8);
+				}
+				for (auto& fragment : _Zfragments)
+				{
+					fragment.SetPosition(fragment.GetPosition().x - 8, fragment.GetPosition().y);
+				}
+			}
+			
+			if (_currentMap == map7)
+			{
+				for (int i = 0; i < _box2.size(); i++)
+				{
+					_box2[i].rc.left -= 8;
+					_box2[i].rc.right -= 8;
+				}
+				for (auto& fragment : m_fragments)
+				{
+					fragment.SetPosition(fragment.GetPosition().x - 8, fragment.GetPosition().y);
+				}
 			}
 			PLAYER->setPlayerPosRight(8);
 		}
@@ -1228,11 +1314,36 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 	{
 
 		_offsetY -= cameraOffsetY - PLAYER->getPlayerPos().top;
-		_bgImage.top += cameraOffsetY - PLAYER->getPlayerPos().top;
-		_bgImage.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
-		for (int i = 0; i < _Fzm.size(); i++)
+		if (_currentMap == map5)
 		{
-			_Fzm[i]->setPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+
+		}
+		if (_currentMap == map6)
+		{
+			_bgImage.top += cameraOffsetY - PLAYER->getPlayerPos().top;
+			_bgImage.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+			for (int i = 0; i < _Fzm.size(); i++)
+			{
+				_Fzm[i]->setPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+			}
+			for (auto& fragment : _Zfragments)
+			{
+				fragment.SetPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+			}
+		}
+		
+		if (_currentMap == map7)
+		{
+			for (int i = 0; i < _box2.size(); i++)
+			{
+				_box2[i].rc.top += cameraOffsetY - PLAYER->getPlayerPos().top;
+				_box2[i].rc.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+			}
+			for (auto& fragment : m_fragments)
+			{
+				fragment.SetPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+			}
+
 		}
 		PLAYER->setPlayerPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
 	}
@@ -1240,12 +1351,39 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 	{
 	
 		_offsetY += PLAYER->getPlayerPos().top - cameraOffsetY;
-		_bgImage.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
-		_bgImage.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
-		for (int i = 0; i < _Fzm.size(); i++)
+		if (_currentMap == map5)
 		{
-			_Fzm[i]->setPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+
 		}
+		if (_currentMap == map6)
+		{
+			_bgImage.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
+			_bgImage.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+			for (int i = 0; i < _Fzm.size(); i++)
+			{
+				_Fzm[i]->setPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+			}
+			for (auto& fragment : _Zfragments)
+			{
+				fragment.SetPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+			}
+		}
+
+		if (_currentMap == map7)
+		{
+			for (int i = 0; i < _box2.size(); i++)
+			{
+				_box2[i].rc.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
+				_box2[i].rc.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+			}
+			for (auto& fragment : m_fragments)
+			{
+				fragment.SetPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+			}
+
+		}
+
+		
 		PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
 	}
 
@@ -1292,6 +1430,23 @@ void Stage1::glassBoom()
 			}
 		
 		}
+	}
+}
+
+void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments)
+{
+	const float gravity = 9.81f;
+	for (int i = 0; i < numFragments; i++)
+	{
+		Fragment fragment;
+		fragment.SetPosition(static_cast<float>(position.x), static_cast<float>(position.y));
+		float velocityX = static_cast<float>(rand() % 21 - 10) * 3.0f;
+		float velocityY = static_cast<float>(rand() % 16 - 15) * 3.0f;
+		fragment.SetVelocity(velocityX, velocityY);
+		fragment.SetAcceleration(0, gravity);
+		fragment.SetRotation(RND->getFloat(10.f));
+		fragment.LoadImage(imagePath);
+		fragments.push_back(fragment);
 	}
 }
 

@@ -19,6 +19,6 @@ public:
    // void Render(HDC hdc, int x, int y, float angle);
    
     void LoadImage(wchar_t* filePath);
-    void RotateRender(int x, int y, int width, int height);
-    void rotateImage(REAL delta_angle);
+    void RotateRender(int x, int y, int width, int height, bool render);
+    void rotateImage(REAL delta_angle,bool isColliding);
 };

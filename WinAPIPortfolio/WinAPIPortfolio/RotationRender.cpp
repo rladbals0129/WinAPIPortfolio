@@ -26,7 +26,7 @@ void RotationRender::LoadImage(wchar_t* filePath)
     image = new Image(filePath);
 }
 
-void RotationRender::RotateRender(int x, int y, int width, int height)
+void RotationRender::RotateRender(int x, int y, int width, int height, bool render)
 {
     Gdiplus::Graphics graphics(getMemDC());    
     graphics.SetSmoothingMode(SmoothingModeAntiAlias);
@@ -37,13 +37,19 @@ void RotationRender::RotateRender(int x, int y, int width, int height)
     graphics.TranslateTransform(x, y);
     graphics.RotateTransform(_angle);
     graphics.TranslateTransform(-x, -y);
-
-    graphics.DrawImage(image, x - centerX, y - centerY,width,height);
+    if (render)
+    {
+        graphics.DrawImage(image, x - centerX, y - centerY, width, height);
+    }
+ 
 }
 
-void RotationRender::rotateImage(REAL delta_angle)
+void RotationRender::rotateImage(REAL delta_angle, bool isColliding)
 {
-    _angle += delta_angle;
-    if (_angle >= 360)
-        _angle -= 360;
+    if (!isColliding) 
+    {
+        _angle += delta_angle;
+        if (_angle >= 360)
+            _angle -= 360;
+    }
 }

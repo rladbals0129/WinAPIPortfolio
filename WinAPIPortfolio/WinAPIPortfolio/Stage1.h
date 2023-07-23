@@ -63,16 +63,19 @@ struct BREAKOBJECT
 {
 	RECT rc;
 	bool isBreak;
+
 };
 class Stage1 : public GameNode
 {
 private:
 	RotationRender* _rot;
+
 	RigidBody m_rigidBody;
 	bool m_isDestroyed;
 	std::vector<Fragment> m_fragments;
 	float m_gravity; 
 	vector<BREAKOBJECT> _obj;
+	vector<BREAKOBJECT> _box2;
 
 	
 	//==============
@@ -80,9 +83,12 @@ private:
 	Zombiebot* _zm;
 	vector<Zombiebot*> _Fzm;
 	int _zombieNum;
+	int _zombieDiePosX;
+	int _zombieDiePosY;
 
-
-	vector<Fragment> _Zfragments;
+	int _fragmentCnt;
+	
+	std::vector<Fragment> _Zfragments;
 	//========Àû====
 
 	bool _once;
@@ -96,7 +102,7 @@ private:
 	bool _boom;
 	GlassFragment _gl[50];
 	
-	BREAKOBJECT _box[3];
+	BREAKOBJECT _box[10];
 
 	
 
@@ -182,6 +188,8 @@ public:
 	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 	void glassBoom();
 
+
+	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
 
 };
 
