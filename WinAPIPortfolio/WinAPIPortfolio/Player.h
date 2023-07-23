@@ -20,10 +20,13 @@ private:
 	int _attack;
 	int _hp;
 
+
 	//애니메이션 컨트롤
 	int _cnt;
 	int _idx;
 	bool _isLeft;
+
+	int _alpha;
 
 	int _eyes; //눈애니메이션
 
@@ -112,6 +115,7 @@ public:
 	inline bool getTxtCom() { return _txtCom; }
 	inline bool getDownJump() { return _downJump; }
 	inline bool getGoDownjump() { return _goDownJump; }
+
 	inline int getHp() { return _hp; }
 	
 
@@ -138,7 +142,8 @@ public:
 	inline void setcolCom(bool colCom) { _colCom = colCom; }
 	inline void setDownJump(bool downJump) { _downJump = downJump; }
 	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
-	inline void setHp(int hp) { _hp = hp; }
+
+	inline void setHit(int dmg) { _hp -= dmg; }
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	
 	

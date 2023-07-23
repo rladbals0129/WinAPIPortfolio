@@ -93,6 +93,14 @@ void UIManager::btnEAnim()
 
 }
 
+void UIManager::panalRender(HDC hdc)
+{
+	IMAGEMANAGER->render("체력패널", hdc, 0, 5);
+	IMAGEMANAGER->render("체력바", hdc, 38, 15,PLAYER->getHp(),29);
+	IMAGEMANAGER->render("코인패널", hdc, 0, 53);
+	
+}
+
 void UIManager::txtRender(HDC hdc, string key)
 {
 	IMAGEMANAGER->render(key ,hdc ,PLAYER->getPlayerPos().left - 200, PLAYER->getPlayerPos().top - 200);

@@ -18,7 +18,7 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = true;
+	_createPlayer = false;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -115,6 +115,8 @@ HRESULT Stage1::init(void)
 		}
 	}
 
+	_hitCnt = 0;
+	_hitDelay = false;
 	//적
 
 	//_zm = new Zombiebot;
@@ -740,7 +742,7 @@ void Stage1::update(void)
 		{
 			_Fzm[i]->UpdateZombie();
 		}
-	
+		//좀비 추적범위
 		for (int i = 0; i < _Fzm.size();i++)
 		{
 			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getRange()))
@@ -766,6 +768,31 @@ void Stage1::update(void)
 				
 			}
 		}
+		for (int i = 0; i < _Fzm.size(); i++)
+		{
+			
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getPos()))
+			{
+				if (!_hitDelay)
+				{
+					PLAYER->setHit(_Fzm[i]->getAtk());
+					_hitDelay = true;
+				}
+				if (_hitDelay)
+				{
+					_hitCnt++;
+				}
+				if (_hitCnt > 30)
+				{
+					_hitDelay = false;
+					_hitCnt = 0;
+				}
+				
+			}
+			
+		
+		}
+
 		//좀비 파티클
 		vector<size_t> zombieFM;
 		for (int i = 0; i < _Fzm.size(); i++)
@@ -897,6 +924,7 @@ void Stage1::update(void)
 void Stage1::render(void)
 {
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
+	UI->panalRender(getMemDC());
 
 	if (_currentMap == map1)
 	{

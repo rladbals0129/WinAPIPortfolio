@@ -5,19 +5,23 @@
 
 HRESULT Player::init(void)
 {
+
+	_hp = 155;
+
 	
 	_isLeft = true;
 	_breath = 0;
 	_breathIn = false;
 	_rc = RectMake(630, 550, 74, 74);
 	_cnt = 0;
+	_alpha = 255;
 
 	_down = false;
 	
 	//칼
 	_knife = false;
 	_txtKnife = false;
-	_usingKnife = true;
+	_usingKnife = false;
 	_panalKnife = false;
 
 	//ui
@@ -396,18 +400,18 @@ void Player::render(HDC hdc)
 
 	if (_currentState == IDLE)
 	{
-		
-		IMAGEMANAGER->frameRender("Idle", hdc, _rc.left - 15, _rc.top);
+		_alpha = 130;
+		IMAGEMANAGER->frameAlphaRender("Idle", hdc, _rc.left - 15, _rc.top,_alpha);
 
 		if (_isLeft)
 		{
-			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() +5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f);
-			IMAGEMANAGER->frameRender("기본표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() +5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
 		}
 		else
 		{
-			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f);
-			IMAGEMANAGER->frameRender("기본표정", hdc,IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("기본표정", hdc,IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
 		}
 		
 	
@@ -419,34 +423,34 @@ void Player::render(HDC hdc)
 	
 		if (_isLeft)
 		{
-			IMAGEMANAGER->frameRender("Move", hdc, _rc.left , _rc.top);
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left + 5, _rc.top - 12.5f);
-			IMAGEMANAGER->frameRender("런표정", hdc, _rc.left + 5, _rc.top - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("Move", hdc, _rc.left , _rc.top, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
 
 		}
 		else
 		{
-			IMAGEMANAGER->frameRender("Move", hdc, _rc.left - 30, _rc.top);
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left + 20, _rc.top - 12.5f);
-			IMAGEMANAGER->frameRender("런표정", hdc, _rc.left + 20, _rc.top - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("Move", hdc, _rc.left - 30, _rc.top, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
 
 		}
 	}
 
 	if (_currentState == JUMP)
 	{
-		IMAGEMANAGER->frameRender("Jump", hdc, _rc.left - 15, _rc.top);
+		IMAGEMANAGER->frameAlphaRender("Jump", hdc, _rc.left - 15, _rc.top, _alpha);
 		if (_isLeft)
 		{
 		
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left+5, _rc.top - 12.5f);
-			IMAGEMANAGER->frameRender("기본표정", hdc, _rc.left + 5, _rc.top - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left+5, _rc.top - 12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
 
 		}
 		else
 		{
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left + 20, _rc.top -12.5f);
-			IMAGEMANAGER->frameRender("기본표정", hdc, _rc.left + 20, _rc.top - 12.5f);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 20, _rc.top -12.5f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
 		}
 	}
 
@@ -455,16 +459,16 @@ void Player::render(HDC hdc)
 		//IMAGEMANAGER->frameRender("Crouch", hdc, _rc.left - 15, _rc.top);
 		if (_isLeft)
 		{
-			IMAGEMANAGER->frameRender("Crouch", hdc, _rc.left, _rc.top + 30);
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left +6, _rc.top + 6.f);
-			IMAGEMANAGER->frameRender("숙인표정", hdc, _rc.left +9, _rc.top + 11.f);
-
+			IMAGEMANAGER->frameAlphaRender("Crouch", hdc, _rc.left, _rc.top + 30, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left +6, _rc.top + 6.f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("숙인표정", hdc, _rc.left +9, _rc.top + 11.f, _alpha);
+		
 		}
 		else
 		{
-			IMAGEMANAGER->frameRender("Crouch", hdc, _rc.left, _rc.top + 30);
-			IMAGEMANAGER->frameRender("머리", hdc, _rc.left + 22, _rc.top + 6.f);
-			IMAGEMANAGER->frameRender("숙인표정", hdc, _rc.left + 25, _rc.top + 11.f);
+			IMAGEMANAGER->frameAlphaRender("Crouch", hdc, _rc.left, _rc.top + 30, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 22, _rc.top + 6.f, _alpha);
+			IMAGEMANAGER->frameAlphaRender("숙인표정", hdc, _rc.left + 25, _rc.top + 11.f, _alpha);
 		}
 
 	}
@@ -473,18 +477,18 @@ void Player::render(HDC hdc)
 		
 		if (_isLeft)
 		{
-			IMAGEMANAGER->frameRender("AttackFX", hdc, _rc.left- 90, (_rc.top + _rc.bottom )/ 2 - 70);
-			IMAGEMANAGER->frameRender("Attack", hdc, _rc.left - 60, _rc.top - 45);
-			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 14, IMAGEMANAGER->findImage("머리")->getY() - 16.5f);
-			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 17, IMAGEMANAGER->findImage("머리")->getY() - 11.5f);
+			IMAGEMANAGER->frameAlphaRender("AttackFX", hdc, _rc.left- 90, (_rc.top + _rc.bottom )/ 2 - 70, _alpha);
+			IMAGEMANAGER->frameAlphaRender("Attack", hdc, _rc.left - 60, _rc.top - 45, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 14, IMAGEMANAGER->findImage("머리")->getY() - 16.5f, _alpha);
+			IMAGEMANAGER->alphaRender("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 17, IMAGEMANAGER->findImage("머리")->getY() - 11.5f, _alpha);
 			
 		}
 		else
 		{
-			IMAGEMANAGER->frameRender("AttackFX", hdc, _rc.right-90 , (_rc.top + _rc.bottom) / 2 - 70);
-			IMAGEMANAGER->frameRender("Attack", hdc, _rc.left - 25, _rc.top - 45);
-			IMAGEMANAGER->frameRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 16.5f);
-			IMAGEMANAGER->render("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 24, IMAGEMANAGER->findImage("머리")->getY() - 11.5f);
+			IMAGEMANAGER->frameAlphaRender("AttackFX", hdc, _rc.right-90 , (_rc.top + _rc.bottom) / 2 - 70, _alpha);
+			IMAGEMANAGER->frameAlphaRender("Attack", hdc, _rc.left - 25, _rc.top - 45, _alpha);
+			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 16.5f, _alpha);
+			IMAGEMANAGER->alphaRender("공격표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 24, IMAGEMANAGER->findImage("머리")->getY() - 11.5f, _alpha);
 		
 		}
 		

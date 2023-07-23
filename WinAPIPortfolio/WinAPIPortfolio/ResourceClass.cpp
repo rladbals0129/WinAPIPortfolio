@@ -116,6 +116,10 @@ HRESULT ResourceClass::init()
 		2, 1,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("체력패널", "Resources/Images/UI/hpUI.bmp", 202, 47, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("코인패널", "Resources/Images/UI/coinUI.bmp", 133, 46, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("체력바", "Resources/Images/UI/hpbarUI.bmp", 155, 29, true, RGB(255, 0, 255));
+
 
 	IMAGEMANAGER->addImage("깨지는파티클", "Resources/Images/Effect/Shockwave.bmp", 484, 477, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("달리기이펙트", "Resources/Images/Effect/run.bmp", 120, 200, 3, 2, true, RGB(255, 0, 255));

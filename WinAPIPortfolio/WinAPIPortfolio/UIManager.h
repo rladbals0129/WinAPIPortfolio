@@ -31,6 +31,8 @@ public:
 	void btnERender(HDC hdc);
 	void btnEAnim();
 
+	void panalRender(HDC hdc);
+
 	
 };
 

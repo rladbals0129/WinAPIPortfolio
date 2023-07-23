@@ -104,6 +104,7 @@ public:
 	//===================프레임 랜더=================== 
 	void frameRender(HDC hdc, int destX, int destY);
 	void frameRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY);
+	void frameAlphaRender(HDC hdc, int destX, int destY, BYTE alpha);
 	void frameAlphaRender(HDC hdc, int destX, int destY, int currentFrameX, int currentFrameY, BYTE alpha);
 
 

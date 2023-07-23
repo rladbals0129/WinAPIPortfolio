@@ -91,6 +91,10 @@ private:
 	std::vector<Fragment> _Zfragments;
 	//========Àû====
 
+	bool _hitDelay;
+	int _hitCnt;
+
+
 	bool _once;
 
 	RECT _pPosRc;
