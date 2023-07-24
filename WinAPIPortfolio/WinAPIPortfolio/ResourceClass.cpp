@@ -16,11 +16,27 @@ HRESULT ResourceClass::init()
 		true,
 		RGB(255, 0, 255));
 
-
-	IMAGEMANAGER->addFrameImage("머리", "Resources/Images/Player/TabletFaces.bmp", 
-		46,104,
-		1,2
+	IMAGEMANAGER->addFrameImage("달리기먼지", "Resources/Images/Effect/run.bmp",
+		120,200,
+		3,2,
+		true,
+		RGB(255,0,255));
+	IMAGEMANAGER->addFrameImage("머리", "Resources/Images/Player/TabletFaces.bmp",
+		46, 104,
+		1, 2,
+		true,
+		RGB(255, 0, 255)
 		);
+	IMAGEMANAGER->addFrameImage("개피", "Resources/Images/Player/TabletFaces_battery.bmp",
+		28, 64,
+		1, 2
+		);
+	IMAGEMANAGER->addFrameImage("피격표정", "Resources/Images/Player/TabletFacesHit.bmp",
+		32, 72,
+		1, 2,
+		true,
+		RGB(255, 0, 255)
+	);
 
 	IMAGEMANAGER->addFrameImage("기본표정", "Resources/Images/Player/idleFaceA.bmp",
 		1288, 104,

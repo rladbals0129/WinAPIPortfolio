@@ -7,6 +7,7 @@ HRESULT Player::init(void)
 {
 
 	_hp = 155;
+	_hit = false;
 
 	
 	_isLeft = true;
@@ -15,13 +16,16 @@ HRESULT Player::init(void)
 	_rc = RectMake(630, 550, 74, 74);
 	_cnt = 0;
 	_alpha = 255;
-
+	_mAlpha = 255;
 	_down = false;
-	
+	_knockbackSpeedX = 0.0f;
+	_knockbackSpeedY = 0.0f;
+	_knockbackDistanceX = 0.0f;
+	_knockbackDistanceY = 0.0f;
 	//칼
 	_knife = false;
 	_txtKnife = false;
-	_usingKnife = false;
+	_usingKnife = true;
 	_panalKnife = false;
 
 	//ui
@@ -75,14 +79,17 @@ void Player::update(void)
 {
 	_frame++;
 
-	/*savePosition();
-	if (_colRight)
+	_rc.left += _knockbackSpeedX;
+	_rc.right += _knockbackSpeedX;
+	_rc.top += _knockbackSpeedY;
+	_rc.bottom += _knockbackSpeedY;
+	_knockbackDistanceX += abs(_knockbackSpeedX);
+	_knockbackDistanceY += abs(_knockbackSpeedY);
+	if (_knockbackDistanceX >= _maxKnockbackDistance || _knockbackDistanceY >= _maxKnockbackDistance)
 	{
-		_rc.left = _previousPosition.x;
-		_rc.right = _previousPosition.y;
-	}*/
-
-
+		_knockbackSpeedX = 0.0f;
+		_knockbackSpeedY = 0.0f;
+	}
 
 	if (_isJumping)
 	{
@@ -98,6 +105,9 @@ void Player::update(void)
 		jump();
 		IMAGEMANAGER->findImage("머리")->setY(_rc.top);
 		IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
+		float dustX = _isLeft ? _rc.right - 5 : _rc.left;
+		float dustY = _rc.bottom - 40;
+		_dustEffect.addDust(dustX, dustY, 5); // 점프 시 먼지 5개 생성
 	}
 
 	if (IMAGEMANAGER->findImage("머리")->getY() - _rc.top < - 6.f)
@@ -271,7 +281,7 @@ void Player::update(void)
 	
 	//================================
 	//========공격===========
-	if (KEYMANAGER->isStayKeyDown('S') && _usingKnife)
+	if (KEYMANAGER->isStayKeyDown('S') && _usingKnife && !_hit)
 	{
 		_currentState = ATTACK;
 		_isATK = true;
@@ -371,6 +381,9 @@ void Player::update(void)
 		IMAGEMANAGER->findImage("머리")->setX(_rc.left);
 		IMAGEMANAGER->findImage("런표정")->setX(_rc.left);
 		IMAGEMANAGER->findImage("런표정")->setY(_rc.top);
+		float dustX = _isLeft ? _rc.right - 5 : _rc.left;
+		float dustY = _rc.bottom - 40;
+		_dustEffect.addDust(dustX, dustY, 1); // 달리기 시 먼지 1개 생성
 	}
 
 	if (_currentState == IDLE)
@@ -387,7 +400,7 @@ void Player::update(void)
 		down();
 	}
 	
-
+	_dustEffect.update();
 }
 
 void Player::render(HDC hdc)
@@ -398,20 +411,44 @@ void Player::render(HDC hdc)
 		DrawRectMake(hdc, _rangeATK);
 	}
 
+	
 	if (_currentState == IDLE)
 	{
-		_alpha = 130;
+		//_alpha = 130;
 		IMAGEMANAGER->frameAlphaRender("Idle", hdc, _rc.left - 15, _rc.top,_alpha);
 
 		if (_isLeft)
 		{
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() +5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, IMAGEMANAGER->findImage("머리")->getX() + 5, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("기본표정", hdc,
+					IMAGEMANAGER->findImage("머리")->getX() + 5,
+					IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			}
+			else //x+6 y+5
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc, 
+					IMAGEMANAGER->findImage("머리")->getX() + 11,
+					IMAGEMANAGER->findImage("머리")->getY() - 6.5f, _alpha);
+			}
 		}
 		else
 		{
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("기본표정", hdc,IMAGEMANAGER->findImage("머리")->getX() + 20, IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("기본표정", hdc,
+					IMAGEMANAGER->findImage("머리")->getX() + 20, 
+					IMAGEMANAGER->findImage("머리")->getY() - 12.5f, _alpha);
+			}
+			else //x + 8 y + 6
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					IMAGEMANAGER->findImage("머리")->getX() + 28,
+					IMAGEMANAGER->findImage("머리")->getY() - 6.5f, _alpha);
+
+			}
 		}
 		
 	
@@ -424,15 +461,34 @@ void Player::render(HDC hdc)
 		if (_isLeft)
 		{
 			IMAGEMANAGER->frameAlphaRender("Move", hdc, _rc.left , _rc.top, _alpha);
+			
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
+			//IMAGEMANAGER->frameAlphaRender("달리기먼지", hdc, _rc.right - 5, _rc.bottom - 40, _mAlpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 11, _rc.top - 6.5f, _alpha);
+			}
 
 		}
 		else
 		{
 			IMAGEMANAGER->frameAlphaRender("Move", hdc, _rc.left - 30, _rc.top, _alpha);
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
+			//IMAGEMANAGER->frameAlphaRender("달리기먼지", hdc, _rc.left, _rc.bottom - 40, _mAlpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("런표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 28, _rc.top - 6.5f, _alpha);
+			}
 
 		}
 	}
@@ -444,13 +500,31 @@ void Player::render(HDC hdc)
 		{
 		
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left+5, _rc.top - 12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 5, _rc.top - 12.5f, _alpha);
+
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 11, _rc.top - 6.5f, _alpha);
+			}
 
 		}
 		else
 		{
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 20, _rc.top -12.5f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("기본표정", hdc, _rc.left + 20, _rc.top - 12.5f, _alpha);
+
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 28, _rc.top - 6.5f, _alpha);
+			}
 		}
 	}
 
@@ -461,14 +535,36 @@ void Player::render(HDC hdc)
 		{
 			IMAGEMANAGER->frameAlphaRender("Crouch", hdc, _rc.left, _rc.top + 30, _alpha);
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left +6, _rc.top + 6.f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("숙인표정", hdc, _rc.left +9, _rc.top + 11.f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("숙인표정", hdc,
+					_rc.left +9,
+					_rc.top + 11.f, _alpha);
+
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 13,
+					_rc.top + 12.f, _alpha);
+			}
 		
 		}
 		else
 		{
 			IMAGEMANAGER->frameAlphaRender("Crouch", hdc, _rc.left, _rc.top + 30, _alpha);
 			IMAGEMANAGER->frameAlphaRender("머리", hdc, _rc.left + 22, _rc.top + 6.f, _alpha);
-			IMAGEMANAGER->frameAlphaRender("숙인표정", hdc, _rc.left + 25, _rc.top + 11.f, _alpha);
+			if (!_hit)
+			{
+				IMAGEMANAGER->frameAlphaRender("숙인표정", hdc,
+					_rc.left + 25, _rc.top + 11.f, _alpha);
+
+			}
+			else
+			{
+				IMAGEMANAGER->frameAlphaRender("피격표정", hdc,
+					_rc.left + 30, _rc.top + 12.f, _alpha);
+			}
 		}
 
 	}
@@ -531,7 +627,9 @@ void Player::render(HDC hdc)
 		}
 		
 	}
-
+	
+		
+	_dustEffect.render(hdc);
 
 }
 
@@ -681,6 +779,40 @@ void Player::move(void)
 
 		}
 
+	}
+}
+
+void Player::moveEF(void)
+{
+	if (_isLeft)
+	{
+		_mCnt++;
+		IMAGEMANAGER->findImage("달리기먼지")->setFrameY(1);
+		if (_mCnt % 5 == 0)
+		{
+			_mIdx++;
+			if (_mIdx > 3)
+			{
+				_mIdx = 0;
+				_mCnt = 0;
+			}
+			IMAGEMANAGER->findImage("달리기먼지")->setFrameX(_mIdx);
+		}
+	}
+	else
+	{
+		_mCnt++;
+		IMAGEMANAGER->findImage("달리기먼지")->setFrameY(0);
+		if (_mCnt % 5 == 0)
+		{
+			_mIdx--;
+			if (_mIdx < 0)
+			{
+				_mIdx = 3;
+				_mCnt = 0;
+			}
+			IMAGEMANAGER->findImage("달리기먼지")->setFrameX(_mIdx);
+		}
 	}
 }
 
@@ -984,6 +1116,20 @@ void Player::AttackDown(void)
 	IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
 }
 
+void Player::Hit(void)
+{
+	
+	if (_isLeft)
+	{
+		IMAGEMANAGER->findImage("피격표정")->setFrameY(1);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage("피격표정")->setFrameY(0);
+	}
+
+}
+
 void Player::titlePlayer(HDC hdc)
 {
 	_isLeft = true;
@@ -1029,4 +1175,48 @@ Player::Player()
 
 Player::~Player()
 {
+}
+
+
+
+void DustEffect::update()
+{
+	for (auto& dust : _dustList) {
+		if (dust.alive) {
+			dust.frameCount++;
+			dust.y += dust.vy;
+			if (dust.frameCount % 15 == 0) {
+				dust.frameX++;
+			}
+			// 먼지가 사라져야 할 때 조건을 추가합니다.
+			if (dust.frameX > 4) {
+				dust.alive = false;
+			}
+		}
+	}
+}
+
+void DustEffect::render(HDC hdc)
+{
+	for (const auto& dust : _dustList) {
+		if (dust.alive) {
+			IMAGEMANAGER->findImage("달리기먼지")->frameRender(hdc, dust.x, dust.y, dust.frameX, dust.frameY);
+		}
+	}
+}
+
+void DustEffect::addDust(float x, float y, int count)
+{
+	for (int i = 0; i < count; i++) {
+		Dust newDust;
+		newDust.x = x;
+		newDust.y = y;
+		newDust.vx = 0; // 추후 x축 이동을 위한 값(옵션)
+		newDust.vy = -0.5f; // 연출에 따라 원하는 값으로 설정
+		newDust.frameX = 0;
+		newDust.frameY = 0;
+		newDust.frameCount = 0;
+		newDust.alive = true;
+		_dustList.push_back(newDust);
+	}
 }

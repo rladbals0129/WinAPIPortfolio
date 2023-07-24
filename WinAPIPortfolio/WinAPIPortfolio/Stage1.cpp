@@ -18,14 +18,12 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = false;
+	_createPlayer = true;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
 	//화면흔들기
-	_shakeScreen = false;
-	_shakeDuration = 0;
-	_shakeAmount = 50;
+
 	//유리깨지기
 	_breakFX = false;
 	_breakSizeX = 0;
@@ -85,12 +83,13 @@ HRESULT Stage1::init(void)
 	_explosion = false;
 
 	//박스 792 440
-
+	//m_rigidBody.SetPosition(PLAYER->getPosition());
+	//m_rigidBody.SetGravity(3.81f);
 	_rot = new RotationRender;
 	_rot->init();
-	m_rigidBody.SetPosition(0.0f, 0.0f);
-	m_rigidBody.SetVelocity(0.0f, 0.0f);
-	m_rigidBody.SetAcceleration(0.0f, 0.0f);
+	//m_rigidBody.SetPosition(PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top);
+	//m_rigidBody.SetVelocity(0.0f, 0.0f);
+	//m_rigidBody.SetAcceleration(0.0f, 0.0f);
 	m_gravity = 9.81f;
 	m_isDestroyed = false;
 	for (int i = 0; i < 3; i++)
@@ -120,6 +119,8 @@ HRESULT Stage1::init(void)
 	//적
 
 	//_zm = new Zombiebot;
+	_knockBackMagnitude = 10.0f;
+
 
 	_zombieNum = 3;
 	_fragmentCnt = 0;
@@ -128,30 +129,10 @@ HRESULT Stage1::init(void)
 	{
 		_zm = new Zombiebot;
 		_zm->init();
-		_zm->setPos(200 - (i * 300), 670);
+		_zm->setPos(200 - (i * 300), 670);   //670
 		_Fzm.push_back(_zm);
-	//	SAFE_DELETE(_zm);
+	
 	}
-
-	//for (int i = 0; i < _Fzm.size(); i++)
-	//{
-	//	_Fzm[i]->setIsLeft(true);
-
-	//	cout << _Fzm[i]->getIsLeft();
-	//}
-
-	/*for (int i = 0; i < _Fzm.size(); i++)
-	{
-		_Fzm[i]->init();
-	}*/
-
-	
-	/*for (auto it = _Fzm.begin(); it != _Fzm.end(); ++it)
-	{
-		cout << it->getPos().left << endl;
-	}*/
-	
-
 	return S_OK;
 }
 
@@ -166,6 +147,7 @@ void Stage1::update(void)
 		PLAYER->update();
 		
 	}
+	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
 	//m_rigidBody.Update(0.016f);
 	
 	_pPosRc.left = PLAYER->getPlayerPos().left;
@@ -190,10 +172,6 @@ void Stage1::update(void)
 	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.right + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY)); //g134
 	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.left + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY));
 
-	//cout << "lb : " << Rlb << "    rb : " << Rrb << endl;
-	//cout << "GCL : " << GCL << "    GCR : " << GCR << endl;
-
-	//cout << _pPosRc.left << " " << _pPosRc.bottom << endl;
 	//바닥
 	if (Rlb == 131 || Rrb == 131)
 	{
@@ -282,8 +260,9 @@ void Stage1::update(void)
 			if (KEYMANAGER->isOnceKeyDown('E'))
 			{
 				_glassIdx++;
-				_shakeScreen = true;
-				_shakeDuration = 10;
+				applyShake(_initialShakeDuration);
+				//_shakeScreen = true;
+				//_shakeDuration1 = 10;
 			/*	if (_glassIdx == 4 && !_explosion)
 				{
 					_explosion = true;
@@ -291,11 +270,11 @@ void Stage1::update(void)
 			
 			}
 			IMAGEMANAGER->findImage("유리관")->setFrameX(_glassIdx);
-			if (_glassIdx < 4)
+			/*if (_glassIdx < 4)
 			{
 				shakeScreen(3840, 0,50);
 
-			}
+			}*/
 			
 			/*if (_explosion)
 			{
@@ -459,8 +438,8 @@ void Stage1::update(void)
 			PLAYER->setcolCom(false);
 			_upBtnRender = false;
 		}
-
 	
+
 	}
 
 	if (_currentMap == map2)
@@ -712,6 +691,7 @@ void Stage1::update(void)
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_obj[i].rc))
 			{
 				cout << "상자 맞았다" << endl;
+				applyShake(_initialShakeDuration);
 				breakIndices.push_back(i);			
 			}
 		}
@@ -767,7 +747,32 @@ void Stage1::update(void)
 				}
 				
 			}
+			else
+			{
+				if (_Fzm[i]->getState() == 2)
+				{
+					_zomIdleCnt++;
+					if (_zomIdleCnt % RND->getFromIntTo(200,500) == 0)
+					{
+						_zomIdle = !_zomIdle;
+					}
+
+					if (_zomIdle)
+					{
+						_Fzm[i]->setIsLeft(false);
+						_Fzm[i]->setPosLeft(1);
+					}
+					else
+					{
+						_Fzm[i]->setIsLeft(true);
+						_Fzm[i]->setPosRight(1);
+					}
+					
+				}
+			}
+
 		}
+		
 		for (int i = 0; i < _Fzm.size(); i++)
 		{
 			
@@ -775,24 +780,42 @@ void Stage1::update(void)
 			{
 				if (!_hitDelay)
 				{
-					PLAYER->setHit(_Fzm[i]->getAtk());
+					PLAYER->setDmg(_Fzm[i]->getAtk());
+					
+					PLAYER->setHit(true);
 					_hitDelay = true;
+					//넉백
+					float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+					float knockBackY = 0; //-_knockBackMagnitude;  
+					PLAYER->setKnockback(knockBackX, knockBackY);
+					//======
+					applyShake(_initialShakeDuration);
 				}
-				if (_hitDelay)
-				{
-					_hitCnt++;
-				}
-				if (_hitCnt > 30)
-				{
-					_hitDelay = false;
-					_hitCnt = 0;
-				}
-				
 			}
 			
 		
 		}
-
+		
+		
+		
+		if (_hitDelay)
+		{
+			PLAYER->Hit();
+			_hitCnt++;
+			if (_hitCnt % 5 == 0)
+			{
+				PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
+			}
+		}
+		if (_hitCnt > 100)
+		{
+			PLAYER->setAlpha(255);
+			PLAYER->setHit(false);
+			_hitDelay = false;
+			_hitCnt = 0;
+		}
+		
+		//cout << PLAYER->getHit() << endl;
 		//좀비 파티클
 		vector<size_t> zombieFM;
 		for (int i = 0; i < _Fzm.size(); i++)
@@ -801,9 +824,11 @@ void Stage1::update(void)
 			{
 				_zombieDiePosX = _Fzm[i]->getPos().left;
 				_zombieDiePosY = _Fzm[i]->getPos().top;
-
+				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+				float knockBackY = 0;  
+				PLAYER->setKnockback(knockBackX, knockBackY);
 				_Fzm[i]->setDie(true);
-				
+				applyShake(_initialShakeDuration);
 				zombieFM.push_back(i);
 			}
 			
@@ -812,9 +837,9 @@ void Stage1::update(void)
 		for (size_t i : zombieFM)
 		{
 			POINT position = { _zombieDiePosX, _zombieDiePosY };
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 2);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 2);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 2);
 		}
 		for (auto it = zombieFM.rbegin(); it != zombieFM.rend(); ++it)
 		{
@@ -893,6 +918,7 @@ void Stage1::update(void)
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_box2[i].rc))
 			{
 				cout << "상자 맞았다" << endl;
+				applyShake(_initialShakeDuration);
 				breakIndices.push_back(i);
 			}
 		}
@@ -914,7 +940,7 @@ void Stage1::update(void)
 		}
 		moveCamera(400,600,400,1280,2600,800);
 
-
+		
 	}
 	
 
@@ -923,9 +949,10 @@ void Stage1::update(void)
 
 void Stage1::render(void)
 {
-	IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
+	//IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
+	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
 	UI->panalRender(getMemDC());
-
+	
 	if (_currentMap == map1)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
@@ -1121,7 +1148,7 @@ void Stage1::render(void)
 				break;
 
 			}
-			cout << i << endl;
+		
 			
 		}
 	/*	for (auto& fragment : _Zfragments)
@@ -1159,8 +1186,7 @@ void Stage1::render(void)
 
 	char ptMouse[128];
 	char ptOffset[128];
-	//cout << " offset X : " << _offsetX << endl;
-	//cout << " offset Y : " << _offsetY << endl;
+
 	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
 	wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
 	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
@@ -1223,35 +1249,6 @@ void Stage1::efKnife()
 		}
 		IMAGEMANAGER->findImage("일본도이펙트")->setFrameX(_knifeIdx);
 	}
-	
-}
-
-void Stage1::shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount)
-{
-	_shakeAmount = shakeAmount;
-	if (_shakeScreen && _shakeDuration > 0)
-	{
-		_offsetX += RND->getFromIntTo(_shakeAmount,_shakeAmount * 2) - _shakeAmount;
-		_offsetY += RND->getInt(_shakeAmount) - _shakeAmount * 2;
-		
-		_shakeDuration--;
-		if (_shakeDuration % 2== 0)
-		{
-			_offsetX = currntOffsetX;
-			_offsetY = currntOffsetY;
-			
-		}
-
-		if (_shakeDuration < 0)
-		{
-			_offsetX = currntOffsetX;
-			_offsetY = currntOffsetY;
-			_shakeScreen = false;
-		}
-	}
-
-	
-
 	
 }
 
@@ -1461,6 +1458,27 @@ void Stage1::glassBoom()
 	}
 }
 
+void Stage1::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY)
+{
+	if (shakeDuration > 0)
+	{
+		shakeDuration -= 0.016f; // 상황에 따라 실제 deltaTime으로 변경됩니다.
+
+		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
+		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
+	}
+	else
+	{
+		shakeOffsetX = 0.0f;
+		shakeOffsetY = 0.0f;
+	}
+}
+
+void Stage1::applyShake(float shakeDuration)
+{
+	_shakeDuration = shakeDuration;
+}
+
 void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments)
 {
 	const float gravity = 9.81f;
@@ -1477,6 +1495,7 @@ void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& posi
 		fragments.push_back(fragment);
 	}
 }
+
 
 
 

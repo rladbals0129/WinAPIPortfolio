@@ -1,7 +1,27 @@
 #pragma once
+
 #include "SingletonBase.h"
 
 
+class DustEffect {
+public:
+	void update();
+	void render(HDC hdc);
+	void addDust(float x, float y, int count);
+
+private:
+	struct Dust {
+		float x;
+		float y;
+		float vx; 
+		float vy;
+		int frameX;
+		int frameY;
+		int frameCount;
+		bool alive;
+	};
+	std::vector<Dust> _dustList;
+};
 
 class Player :public SingletonBase<Player>
 {
@@ -13,20 +33,23 @@ private:
 		UPATTACK,DOWNATTACK
 	};
 	STATE _currentState;
-
+	DustEffect _dustEffect;
 	RECT _rc;
 	//플레이어 스펙
 	int _speed;
 	int _attack;
 	int _hp;
-
-
+	
 	//애니메이션 컨트롤
 	int _cnt;
 	int _idx;
 	bool _isLeft;
 
 	int _alpha;
+	//달리기 이펙트
+	int _mCnt;
+	int _mIdx;
+	int _mAlpha;
 
 	int _eyes; //눈애니메이션
 
@@ -80,6 +103,16 @@ private:
 	bool _downJump;
 	bool _goDownJump;
 
+	//피격
+	bool _hit;
+	int _hcnt;
+	int _hidx;
+	//넉백
+	float _knockbackSpeedX;
+	float _knockbackSpeedY;
+	float _knockbackDistanceX;
+	float _knockbackDistanceY;
+	const float _maxKnockbackDistance = 100.0f;
 public:	
 	HRESULT init(void);
 	void release(void);
@@ -88,12 +121,16 @@ public:
 
 	void idle(void);
 	void move(void);
+	void moveEF(void);
 	void jump(void);
 	void down(void);
 	void clap(void);
 	void Attack(void);
 	void AttackUP(void);
 	void AttackDown(void);
+
+	void Hit(void);
+
 
 	void titlePlayer(HDC hdc);
 
@@ -117,10 +154,14 @@ public:
 	inline bool getGoDownjump() { return _goDownJump; }
 
 	inline int getHp() { return _hp; }
-	
+	inline int getAlpha() { return _alpha; }
+	inline bool getHit() { return _hit; }
 
+	bool getIsLeft() { return _isLeft; }
+	inline float getKnocback() { return _knockbackSpeedX, _knockbackSpeedY; }
 	
 	inline void setIdle() { _currentState = IDLE; }
+	//inline void setStateHit() { _currentState = HIT; }
 
 	//inline void setATKRange(RECT rangeATK) { _rangeATK = rangeATK; }
 
@@ -130,6 +171,7 @@ public:
 	inline void setPlayerPosTop(int y) { _rc.top += y; _rc.bottom += y; }
 	inline void setPlayerPos(RECT rc) { _rc = rc; }
 	inline void setIsJumping(bool isJumping) { _isJumping = isJumping; }
+	inline void setPlayerPos(int x, int y) { _rc.left = x; _rc.right = x + 74; _rc.top = y; _rc.bottom = y + 74; }
 	inline void setPlayerPos(int left, int top, int right, int bottom) { _rc.left = left; _rc.top = top; _rc.right = right; _rc.bottom = bottom; }
 	inline void setIsGravity(bool isGravity) { _isGravity = isGravity; }
 	inline void setColRight(bool colRight) { _colRight = colRight; }
@@ -143,7 +185,17 @@ public:
 	inline void setDownJump(bool downJump) { _downJump = downJump; }
 	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
 
-	inline void setHit(int dmg) { _hp -= dmg; }
+	inline void setDmg(int dmg) { _hp -= dmg; }
+	inline void setHit(bool hit) { _hit = hit; }
+	inline void setAlpha(int alpha) { _alpha = alpha; }
+	void setKnockback(float knockbackSpeedX, float knockbackSpeedY)
+	{
+		_knockbackSpeedX = knockbackSpeedX;
+		_knockbackSpeedY = knockbackSpeedY;
+		_knockbackDistanceX = 0.0f;
+		_knockbackDistanceY = 0.0f;
+	}
+
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	
 	

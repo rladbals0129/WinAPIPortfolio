@@ -69,6 +69,7 @@ class Stage1 : public GameNode
 {
 private:
 	RotationRender* _rot;
+	float _knockBackMagnitude;
 
 	RigidBody m_rigidBody;
 	bool m_isDestroyed;
@@ -89,6 +90,8 @@ private:
 	int _fragmentCnt;
 	
 	std::vector<Fragment> _Zfragments;
+	bool _zomIdle;
+	int _zomIdleCnt;
 	//========적====
 
 	bool _hitDelay;
@@ -125,10 +128,6 @@ private:
 	int _readyCnt;
 	bool _createPlayer;
 
-	//화면 흔들림
-	bool _shakeScreen;
-	int _shakeDuration;
-	int _shakeAmount;
 	//깨지기 이펙트 사이즈
 	int _breakSizeX;
 	int _breakSizeY;
@@ -170,6 +169,13 @@ private:
 
 	//==========
 
+	float _shakeDuration;
+	float _shakeOffsetX;
+	float _shakeOffsetY;
+
+	const float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
+	const float _initialShakeMagnitude = 15.0f; // 흔들기 강도
+
 
 	
 public:
@@ -182,18 +188,19 @@ public:
 	void openDoorR();
 	void openDoorL();
 	//====파편=====
-	void addFragment(const Fragment& fragment);
+//	void addFragment(const Fragment& fragment);
 	//=======
 
 	void efKnife();
 	
 
-	void shakeScreen(int currntOffsetX, int currntOffsetY, int shakeAmount);
 	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 	void glassBoom();
 
-
+	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
+	void applyShake(float shakeDuration);
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
+
 
 };
 

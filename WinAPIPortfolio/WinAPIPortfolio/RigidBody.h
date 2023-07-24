@@ -30,6 +30,7 @@ public:
     void SetPosition(float x, float y) { m_position.x = x; m_position.y = y; }
     void SetVelocity(float x, float y) { m_velocity.x = x; m_velocity.y = y; }
     
+    void SetGravity(float x) { m_gravity = x; }
     void SetPosTop(int y) { m_position.y += y; }
     void SetPosBottom(int y) { m_position.y -= y; }
     void SetAcceleration(float x, float y) { m_acceleration.x = x; m_acceleration.y = y; }
