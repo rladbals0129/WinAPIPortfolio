@@ -9,7 +9,16 @@ HRESULT UIManager::init()
 	_enterIdx = 0;
 	_ECnt = 0;
 	_EIdx = 0;
+
+	_lowHPCnt = 0;
+	_lowHpX = 0;
+	_lowHpY = 0;
+	_lowHpWidth = 1280;
+	_lowHpHeight = 800;
+
+
 	return S_OK;
+
 }
 
 void UIManager::release()
@@ -93,12 +102,29 @@ void UIManager::btnEAnim()
 
 }
 
-void UIManager::panalRender(HDC hdc)
+void UIManager::panalHpRender(HDC hdc)
 {
 	IMAGEMANAGER->render("체력패널", hdc, 0, 5);
 	IMAGEMANAGER->render("체력바", hdc, 38, 15,PLAYER->getHp(),29);
 	IMAGEMANAGER->render("코인패널", hdc, 0, 53);
 	
+}
+
+void UIManager::lowHpUpdate()
+{
+	_lowHPCnt++;
+	if (_lowHPCnt % 10 == 0)
+	{
+		_lowHpX = 20 - _lowHpX;
+		_lowHpY = 20 - _lowHpY;
+		_lowHpWidth = 1260 - _lowHpWidth;
+		_lowHpHeight = 780 - _lowHpHeight;
+	}
+}
+
+void UIManager::lowHpRender(HDC hdc)
+{
+	IMAGEMANAGER->render("개피화면", hdc, _lowHpX, _lowHpY, _lowHpWidth, _lowHpHeight);
 }
 
 void UIManager::txtRender(HDC hdc, string key)

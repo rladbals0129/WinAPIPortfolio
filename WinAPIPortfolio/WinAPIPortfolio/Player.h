@@ -1,19 +1,14 @@
 #pragma once
-
 #include "SingletonBase.h"
 
 
 class DustEffect {
-public:
-	void update();
-	void render(HDC hdc);
-	void addDust(float x, float y, int count);
 
 private:
 	struct Dust {
 		float x;
 		float y;
-		float vx; 
+		float vx;
 		float vy;
 		int frameX;
 		int frameY;
@@ -21,6 +16,40 @@ private:
 		bool alive;
 	};
 	std::vector<Dust> _dustList;
+
+public:
+	void update();
+	void render(HDC hdc);
+	void addDust(float x, float y, int count);
+	void setLeft(float x) 
+	{
+		for (auto& dust : _dustList)
+		{
+			dust.x -= x;
+		}
+	}
+	void setTop(float y)
+	{
+		for (auto& dust : _dustList)
+		{
+			dust.y -= y;
+		}
+	}
+	void setRight(float x) 
+	{
+		for (auto& dust : _dustList)
+		{
+			dust.x += x;
+		}
+	}
+	void setBottom(float y) 
+	{
+		for (auto& dust : _dustList) 
+		{
+			dust.y += y;
+		}
+	}
+
 };
 
 class Player :public SingletonBase<Player>
@@ -33,7 +62,11 @@ private:
 		UPATTACK,DOWNATTACK
 	};
 	STATE _currentState;
-	DustEffect _dustEffect;
+
+	
+	int _dustCnt;
+	bool _jumpDust;
+
 	RECT _rc;
 	//ÇÃ·¹ÀÌ¾î ½ºÆå
 	int _speed;
@@ -107,12 +140,19 @@ private:
 	bool _hit;
 	int _hcnt;
 	int _hidx;
+	//µþÇÇ
+	bool _battery;
+	int _batteryCnt;
 	//³Ë¹é
 	float _knockbackSpeedX;
 	float _knockbackSpeedY;
 	float _knockbackDistanceX;
 	float _knockbackDistanceY;
 	const float _maxKnockbackDistance = 100.0f;
+
+	//¼Õ/Ä®
+	int _katanaCnt;
+	int _handCnt;
 public:	
 	HRESULT init(void);
 	void release(void);
@@ -131,7 +171,7 @@ public:
 
 	void Hit(void);
 
-
+	DustEffect _dustEffect;
 	void titlePlayer(HDC hdc);
 
 	inline STATE getState() { return _currentState; }

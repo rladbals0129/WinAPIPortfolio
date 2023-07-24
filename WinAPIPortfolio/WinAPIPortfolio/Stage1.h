@@ -70,7 +70,6 @@ class Stage1 : public GameNode
 private:
 	RotationRender* _rot;
 	float _knockBackMagnitude;
-
 	RigidBody m_rigidBody;
 	bool m_isDestroyed;
 	std::vector<Fragment> m_fragments;

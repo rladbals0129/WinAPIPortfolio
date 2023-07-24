@@ -16,7 +16,6 @@ private:
 public:
     HRESULT init(void);
     void release(void);
-   // void Render(HDC hdc, int x, int y, float angle);
    
     void LoadImage(wchar_t* filePath);
     void RotateRender(int x, int y, int width, int height, bool render);

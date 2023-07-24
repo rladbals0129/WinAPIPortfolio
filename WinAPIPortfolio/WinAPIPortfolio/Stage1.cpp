@@ -18,7 +18,7 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = true;
+	_createPlayer = false;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -145,7 +145,8 @@ void Stage1::update(void)
 	if (_createPlayer)
 	{
 		PLAYER->update();
-		
+		PLAYER->_dustEffect.update();
+	
 	}
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
 	//m_rigidBody.Update(0.016f);
@@ -781,7 +782,6 @@ void Stage1::update(void)
 				if (!_hitDelay)
 				{
 					PLAYER->setDmg(_Fzm[i]->getAtk());
-					
 					PLAYER->setHit(true);
 					_hitDelay = true;
 					//넉백
@@ -943,7 +943,10 @@ void Stage1::update(void)
 		
 	}
 	
-
+	if (PLAYER->getHp() < 30)
+	{
+		UI->lowHpUpdate();
+	}
 
 } 
 
@@ -951,7 +954,13 @@ void Stage1::render(void)
 {
 	//IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
-	UI->panalRender(getMemDC());
+
+	if (PLAYER->getHp() < 30)
+	{
+		UI->lowHpRender(getMemDC());
+	}
+
+	UI->panalHpRender(getMemDC());
 	
 	if (_currentMap == map1)
 	{
@@ -1108,8 +1117,8 @@ void Stage1::render(void)
 		{
 			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
 				static_cast<int>(fragment.GetPosition().y),
-				72,     // 파편의 너비(width)를 설정합니다.
-				40);    // 파편의 높이(height)를 설정합니다.
+				72,     // 파편의 너비 설정
+				40);    // 파편의 높이 설정
 		}
 	
 	}
@@ -1177,8 +1186,8 @@ void Stage1::render(void)
 		{
 			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
 				static_cast<int>(fragment.GetPosition().y),
-				72,     // 파편의 너비(width)를 설정합니다.
-				40);    // 파편의 높이(height)를 설정합니다.
+				72,     // 파편의 너비 설정
+				40);    // 파편의 높이 설정
 		}
 	}
 
@@ -1259,6 +1268,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		if (PLAYER->getPlayerPos().left < LcameraOffsetX && _offsetX > LmaxOffsetX)
 		{
 			_offsetX -= 8;
+			PLAYER->_dustEffect.setRight(8.f);
 			if (_currentMap == map5)
 			{
 				
@@ -1298,6 +1308,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		if (PLAYER->getPlayerPos().left > RcameraOffsetX && _offsetX < RmaxOffsetX)
 		{
 			_offsetX += 8;
+			PLAYER->_dustEffect.setLeft(8.f);
 			if (_currentMap == map5)
 			{
 
@@ -1339,6 +1350,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 	{
 
 		_offsetY -= cameraOffsetY - PLAYER->getPlayerPos().top;
+	
 		if (_currentMap == map5)
 		{
 

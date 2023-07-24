@@ -14,6 +14,12 @@ private:
 	int _ECnt;
 	int _EIdx;
 
+	int _lowHPCnt;
+	int _lowHpX;
+	int _lowHpY;
+	int _lowHpWidth;
+	int _lowHpHeight;
+
 public:
 	HRESULT init();
 	void release();
@@ -31,7 +37,9 @@ public:
 	void btnERender(HDC hdc);
 	void btnEAnim();
 
-	void panalRender(HDC hdc);
+	void panalHpRender(HDC hdc);
+	void lowHpUpdate();
+	void lowHpRender(HDC hdc);
 
 	
 };

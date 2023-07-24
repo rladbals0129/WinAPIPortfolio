@@ -16,9 +16,9 @@ HRESULT ResourceClass::init()
 		true,
 		RGB(255, 0, 255));
 
-	IMAGEMANAGER->addFrameImage("달리기먼지", "Resources/Images/Effect/run.bmp",
-		120,200,
-		3,2,
+	IMAGEMANAGER->addFrameImage("달리기먼지", "Resources/Images/Effect/dust.bmp",
+		96,32,
+		3,1,
 		true,
 		RGB(255,0,255));
 	IMAGEMANAGER->addFrameImage("머리", "Resources/Images/Player/TabletFaces.bmp",
@@ -28,9 +28,14 @@ HRESULT ResourceClass::init()
 		RGB(255, 0, 255)
 		);
 	IMAGEMANAGER->addFrameImage("개피", "Resources/Images/Player/TabletFaces_battery.bmp",
-		28, 64,
+		32, 72,
 		1, 2
 		);
+	IMAGEMANAGER->addImage("개피화면", "Resources/Images/UI/UI-CriticalEnergyIndicator.bmp",
+		1280, 800,
+		true,
+		RGB(255,0,255)
+	);
 	IMAGEMANAGER->addFrameImage("피격표정", "Resources/Images/Player/TabletFacesHit.bmp",
 		32, 72,
 		1, 2,
@@ -135,6 +140,7 @@ HRESULT ResourceClass::init()
 	IMAGEMANAGER->addImage("체력패널", "Resources/Images/UI/hpUI.bmp", 202, 47, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("코인패널", "Resources/Images/UI/coinUI.bmp", 133, 46, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("체력바", "Resources/Images/UI/hpbarUI.bmp", 155, 29, true, RGB(255, 0, 255));
+	
 
 
 	IMAGEMANAGER->addImage("깨지는파티클", "Resources/Images/Effect/Shockwave.bmp", 484, 477, true, RGB(255, 0, 255));
@@ -175,6 +181,16 @@ HRESULT ResourceClass::init()
 		RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("일본도획득", "Resources/Images/UI/getKnifeUI.bmp", 1280, 800,true,RGB(255,0,255)); 
 	
+	IMAGEMANAGER->addFrameImage("손", "Resources/Images/Player/Weapon/hand.bmp",
+		40, 64,
+		1, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("칼", "Resources/Images/Player/Weapon/useknife.bmp",
+		140, 80,
+		1, 2,
+		true,
+		RGB(255, 0, 255));
 	
 	
 	
