@@ -25,7 +25,7 @@ HRESULT Player::init(void)
 	//Į
 	_knife = false;
 	_txtKnife = false;
-	_usingKnife = false;
+	_usingKnife = true;
 	_panalKnife = false;
 
 	//ui
@@ -1314,8 +1314,10 @@ Player::~Player()
 
 void DustEffect::update()
 {
-	for (auto& dust : _dustList) {
-		if (dust.alive) {
+	for (auto& dust : _dustList) 
+	{
+		if (dust.alive) 
+		{
 			dust.frameCount++;
 		
 			if (PLAYER->getIsLeft())

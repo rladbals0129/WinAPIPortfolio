@@ -48,7 +48,7 @@ void Fragment::Update(float deltaTime , HDC hdc, int offsetX, int offsetY)
             {
                 _cnt++;
             }         
-            if (_cnt <140)
+            if (_cnt <80)
             {
                 if (_cnt % 20 == 0)
                 {
@@ -56,14 +56,14 @@ void Fragment::Update(float deltaTime , HDC hdc, int offsetX, int offsetY)
                 }
                
             }
-            else if (_cnt >= 140 && _cnt < 200)
+            else if (_cnt >= 80 && _cnt < 140)
             {
                 if (_cnt % 5 == 0)
                 {
                     m_render = !m_render;
                 }
             }
-            if (_cnt > 200)
+            if (_cnt > 140)
             {
                 m_render = false;
                 _initCnt = true;

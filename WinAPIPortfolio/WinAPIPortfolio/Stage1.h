@@ -4,6 +4,7 @@
 #include "RigidBody.h"
 #include "Fragment.h"
 #include "Zombiebot.h"
+#include "BoxBreakEffect.h"
 
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
@@ -76,8 +77,8 @@ private:
 	float m_gravity; 
 	vector<BREAKOBJECT> _obj;
 	vector<BREAKOBJECT> _box2;
-
-	
+	BoxBreakEffect _slashEffect;
+	bool createBoxEF;
 	//==============
 	CRATEENEMYPOS _createPos;
 	Zombiebot* _zm;

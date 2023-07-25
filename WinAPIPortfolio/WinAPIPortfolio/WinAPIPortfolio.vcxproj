@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoxBreakEffect.h" />
     <ClInclude Include="CommonMacroFunction.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FontManager.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Zombiebot.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoxBreakEffect.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Fragment.cpp" />

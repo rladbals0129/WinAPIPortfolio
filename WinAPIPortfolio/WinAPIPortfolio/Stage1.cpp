@@ -18,7 +18,7 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = false;
+	_createPlayer = true;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -248,7 +248,6 @@ void Stage1::update(void)
 		
 	}
 
-	
 
 	
 	
@@ -693,6 +692,34 @@ void Stage1::update(void)
 			{
 				cout << "상자 맞았다" << endl;
 				applyShake(_initialShakeDuration);
+				createBoxEF = true;
+				if (createBoxEF)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+					}
+
+					float slashX = _obj[i].rc.left;
+					float slashY = (_obj[i].rc.top + _obj[i].rc.bottom) / 2;
+					_slashEffect.addSlashEffect(slashX, slashY, 1,"베기");
+				}
+				createBoxEF = false;
+
 				breakIndices.push_back(i);			
 			}
 		}
@@ -712,7 +739,7 @@ void Stage1::update(void)
 		{
 			fragment.Update(0.16f, IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),_offsetX,_offsetY);
 		}
-		//moveCamera(400,600, 600, 6420, 800);
+	//	moveCamera(0,1280,400,0,1280,800);
 
 	}
 
@@ -829,6 +856,33 @@ void Stage1::update(void)
 				PLAYER->setKnockback(knockBackX, knockBackY);
 				_Fzm[i]->setDie(true);
 				applyShake(_initialShakeDuration);
+				createBoxEF = true;
+				if (createBoxEF)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom+40 , _Fzm[i]->getPos().bottom+100);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom, _Fzm[i]->getPos().bottom+40);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom, _Fzm[i]->getPos().bottom+40);
+						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+					}
+
+					float slashX = _Fzm[i]->getPos().left;
+					float slashY = (_Fzm[i]->getPos().top + _Fzm[i]->getPos().bottom) / 2;
+					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+				}
+				createBoxEF = false;
 				zombieFM.push_back(i);
 			}
 			
@@ -837,9 +891,12 @@ void Stage1::update(void)
 		for (size_t i : zombieFM)
 		{
 			POINT position = { _zombieDiePosX, _zombieDiePosY };
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 2);
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 2);
-			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 2);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
+			createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
 		}
 		for (auto it = zombieFM.rbegin(); it != zombieFM.rend(); ++it)
 		{
@@ -919,6 +976,33 @@ void Stage1::update(void)
 			{
 				cout << "상자 맞았다" << endl;
 				applyShake(_initialShakeDuration);
+				createBoxEF = true;
+				if (createBoxEF)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
+						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+					}
+
+					float slashX = _obj[i].rc.left;
+					float slashY = (_obj[i].rc.top + _obj[i].rc.bottom) / 2;
+					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+				}
+				createBoxEF = false;
 				breakIndices.push_back(i);
 			}
 		}
@@ -948,13 +1032,15 @@ void Stage1::update(void)
 		UI->lowHpUpdate();
 	}
 
+	_slashEffect.update();
+
 } 
 
 void Stage1::render(void)
 {
 	//IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
-
+	_slashEffect.render(getMemDC());
 	if (PLAYER->getHp() < 30)
 	{
 		UI->lowHpRender(getMemDC());
@@ -1192,7 +1278,7 @@ void Stage1::render(void)
 	}
 
 
-
+	
 	char ptMouse[128];
 	char ptOffset[128];
 
@@ -1269,6 +1355,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		{
 			_offsetX -= 8;
 			PLAYER->_dustEffect.setRight(8.f);
+			_slashEffect.setRight(8.f);
 			if (_currentMap == map5)
 			{
 				
@@ -1309,6 +1396,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		{
 			_offsetX += 8;
 			PLAYER->_dustEffect.setLeft(8.f);
+			_slashEffect.setLeft(8.f);
 			if (_currentMap == map5)
 			{
 
@@ -1350,10 +1438,19 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 	{
 
 		_offsetY -= cameraOffsetY - PLAYER->getPlayerPos().top;
+		_slashEffect.setBottom(cameraOffsetY - PLAYER->getPlayerPos().top);
 	
 		if (_currentMap == map5)
 		{
-
+			for (int i = 0; i < _obj.size(); i++)
+			{
+				_obj[i].rc.top += cameraOffsetY - PLAYER->getPlayerPos().top;
+				_obj[i].rc.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+			}
+			for (auto& fragment : m_fragments)
+			{
+				fragment.SetPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
+			}
 		}
 		if (_currentMap == map6)
 		{
@@ -1388,9 +1485,18 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 	{
 	
 		_offsetY += PLAYER->getPlayerPos().top - cameraOffsetY;
+		_slashEffect.setTop(PLAYER->getPlayerPos().top - cameraOffsetY);
 		if (_currentMap == map5)
 		{
-
+			for (int i = 0; i < _box2.size(); i++)
+			{
+				_obj[i].rc.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
+				_obj[i].rc.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+			}
+			for (auto& fragment : m_fragments)
+			{
+				fragment.SetPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
+			}
 		}
 		if (_currentMap == map6)
 		{
@@ -1498,8 +1604,8 @@ void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& posi
 	{
 		Fragment fragment;
 		fragment.SetPosition(static_cast<float>(position.x), static_cast<float>(position.y));
-		float velocityX = static_cast<float>(rand() % 21 - 10) * 3.0f;
-		float velocityY = static_cast<float>(rand() % 16 - 15) * 3.0f;
+		float velocityX = static_cast<float>(rand() % 21 - 10) * 2.0f;
+		float velocityY = static_cast<float>(rand() % 16 - 15) * 2.0f;
 		fragment.SetVelocity(velocityX, velocityY);
 		fragment.SetAcceleration(0, gravity);
 		fragment.SetRotation(RND->getFloat(10.f));
@@ -1507,7 +1613,3 @@ void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& posi
 		fragments.push_back(fragment);
 	}
 }
-
-
-
-

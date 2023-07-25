@@ -165,6 +165,9 @@
     <ClInclude Include="Zombiebot.h">
       <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
     </ClInclude>
+    <ClInclude Include="BoxBreakEffect.h">
+      <Filter>소스 파일\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -232,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="Zombiebot.cpp">
       <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxBreakEffect.cpp">
+      <Filter>소스 파일\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
