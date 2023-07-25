@@ -168,6 +168,12 @@
     <ClInclude Include="BoxBreakEffect.h">
       <Filter>소스 파일\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Tutorial.h">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="ZombieManager.h">
+      <Filter>소스 파일\GameObjectClass\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -238,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="BoxBreakEffect.cpp">
       <Filter>소스 파일\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tutorial.cpp">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="ZombieManager.cpp">
+      <Filter>소스 파일\GameObjectClass\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

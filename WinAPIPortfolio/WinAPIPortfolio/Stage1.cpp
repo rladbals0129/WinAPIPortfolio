@@ -18,7 +18,7 @@ HRESULT Stage1::init(void)
 
 	_glassIdx = 0;
 
-	_createPlayer = true;
+	_createPlayer = false;
 	_readyPlayer = false;
 	_readyCnt = 0;
 	_readyIdx = 0;
@@ -118,14 +118,10 @@ HRESULT Stage1::init(void)
 	_hitDelay = false;
 	//적
 
-	//_zm = new Zombiebot;
 	_knockBackMagnitude = 10.0f;
 
-
-	_zombieNum = 3;
-	_fragmentCnt = 0;
 	//===========
-	for (int i = 0; i < _zombieNum; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		_zm = new Zombiebot;
 		_zm->init();
@@ -862,24 +858,24 @@ void Stage1::update(void)
 					for (int k = 0; k < 8; k++)
 					{
 						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom+40 , _Fzm[i]->getPos().bottom+100);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top , _Fzm[i]->getPos().top+50);
 						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
 					}
 					for (int j = 0; j < 3; j++)
 					{
 						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom, _Fzm[i]->getPos().bottom+40);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top +50);
 						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
 					}
 					for (int j = 0; j < 3; j++)
 					{
 						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().bottom, _Fzm[i]->getPos().bottom+40);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top+50);
 						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
 					}
 
 					float slashX = _Fzm[i]->getPos().left;
-					float slashY = (_Fzm[i]->getPos().top + _Fzm[i]->getPos().bottom) / 2;
+					float slashY = _Fzm[i]->getPos().top;
 					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
 				}
 				createBoxEF = false;
@@ -981,25 +977,25 @@ void Stage1::update(void)
 				{
 					for (int k = 0; k < 8; k++)
 					{
-						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
-						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						float EFX = RND->getFromIntTo(_box2[i].rc.left, _box2[i].rc.right);
+						float EFY = RND->getFromIntTo(_box2[i].rc.bottom - 40, _box2[i].rc.bottom);
 						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
 					}
 					for (int j = 0; j < 3; j++)
 					{
-						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
-						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						float EFX = RND->getFromIntTo(_box2[i].rc.left, _box2[i].rc.right);
+						float EFY = RND->getFromIntTo(_box2[i].rc.bottom - 40, _box2[i].rc.bottom);
 						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
 					}
 					for (int j = 0; j < 3; j++)
 					{
-						float EFX = RND->getFromIntTo(_obj[i].rc.left, _obj[i].rc.right);
-						float EFY = RND->getFromIntTo(_obj[i].rc.bottom - 40, _obj[i].rc.bottom);
+						float EFX = RND->getFromIntTo(_box2[i].rc.left, _box2[i].rc.right);
+						float EFY = RND->getFromIntTo(_box2[i].rc.bottom - 40, _box2[i].rc.bottom);
 						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
 					}
 
-					float slashX = _obj[i].rc.left;
-					float slashY = (_obj[i].rc.top + _obj[i].rc.bottom) / 2;
+					float slashX = _box2[i].rc.left;
+					float slashY = (_box2[i].rc.top + _box2[i].rc.bottom) / 2;
 					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
 				}
 				createBoxEF = false;
@@ -1047,11 +1043,11 @@ void Stage1::render(void)
 	}
 
 	UI->panalHpRender(getMemDC());
-	
+
 	if (_currentMap == map1)
 	{
 		_obCol = RectMake(130, 580, 100, 100);
-		
+
 
 		if (_renderBreakGlass)
 		{
@@ -1060,7 +1056,7 @@ void Stage1::render(void)
 		}
 		else if (!_createPlayer)
 		{
-			IMAGEMANAGER->frameRender("유리관", getMemDC(),602,420);
+			IMAGEMANAGER->frameRender("유리관", getMemDC(), 602, 420);
 			IMAGEMANAGER->findImage("유리관플레이어")->setX(640);
 			IMAGEMANAGER->findImage("유리관플레이어")->setY(480);
 			IMAGEMANAGER->render("유리관플레이어", getMemDC(), 640, 480);
@@ -1068,12 +1064,12 @@ void Stage1::render(void)
 			//RECT test = RectMake(625, 480, 76, 72);
 			//DrawRectMake(getMemDC(), test);
 		}
-	
+
 		if (_breakFX)
 		{
 			IMAGEMANAGER->render("깨지는파티클", getMemDC(), _breakStartX, _breakStartY, _breakSizeX, _breakSizeY);
 		}
-	
+
 		for (int i = 0; i < 50; i++)
 		{
 			if (!_gl[i].isGlass) continue;
@@ -1097,7 +1093,7 @@ void Stage1::render(void)
 
 
 
-		
+
 		if (_upBtnRender)
 		{
 			UI->btnUPRender(getMemDC());
@@ -1105,17 +1101,17 @@ void Stage1::render(void)
 		if (PLAYER->getTxtCom())
 		{
 			UI->txtRender(getMemDC(), "컴퓨터텍스트");
-			
+
 			UI->btnEnterRender(getMemDC(), "컴퓨터텍스트");
 
 		}
 
-		
+
 	}
 
 	if (_currentMap == map2 && _renderDoor)
 	{
-		IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0 , _cutDoorR, 55, 225);
+		IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
 
 	}
 	if (_currentMap == map3 && _renderDoor)
@@ -1145,14 +1141,14 @@ void Stage1::render(void)
 
 			UI->btnEnterRender(getMemDC(), "일본도텍스트");
 
-		//	IMAGEMANAGER->render("일본도텍스트", getMemDC(), _pPosRc.left-200, _pPosRc.top-200);
-			
-		//	IMAGEMANAGER->frameRender("엔터키", getMemDC(), _pPosRc.left+240, _pPosRc.top + 3);
+			//	IMAGEMANAGER->render("일본도텍스트", getMemDC(), _pPosRc.left-200, _pPosRc.top-200);
+
+			//	IMAGEMANAGER->frameRender("엔터키", getMemDC(), _pPosRc.left+240, _pPosRc.top + 3);
 
 		}
 		if (PLAYER->getPanalKnife())
 		{
-			IMAGEMANAGER->render("일본도획득", getMemDC(),0, _panalOffsetY);
+			IMAGEMANAGER->render("일본도획득", getMemDC(), 0, _panalOffsetY);
 		}
 		if (!_knifeGet)
 		{
@@ -1180,19 +1176,19 @@ void Stage1::render(void)
 				}
 			}
 		}
-	
-		
-	
+
+
+
 	}
 	if (_createPlayer)
 	{
 		PLAYER->render(getMemDC());
 
-	}	
+	}
 
 	if (_currentMap == map5)
 	{
-	
+
 		for (auto it = _obj.begin(); it != _obj.end(); ++it)
 		{
 			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
@@ -1206,7 +1202,7 @@ void Stage1::render(void)
 				72,     // 파편의 너비 설정
 				40);    // 파편의 높이 설정
 		}
-	
+
 	}
 
 
@@ -1243,25 +1239,25 @@ void Stage1::render(void)
 				break;
 
 			}
-		
-			
-		}
-	/*	for (auto& fragment : _Zfragments)
-		{
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				46,
-				30);
-			
-		}*/
-		//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
 
-		//DrawRectMake(getMemDC(), _bgImage);
+
+		}
+		/*	for (auto& fragment : _Zfragments)
+			{
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					46,
+					30);
+
+			}*/
+			//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
+
+			//DrawRectMake(getMemDC(), _bgImage);
 	}
 
 	if (_currentMap == map7)
 	{
-		
+
 		for (auto it = _box2.begin(); it != _box2.end(); ++it)
 		{
 			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
@@ -1278,12 +1274,16 @@ void Stage1::render(void)
 	}
 
 
-	
+
 	char ptMouse[128];
 	char ptOffset[128];
-
+	char test[128] = "안녕하세요";
+	
 	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
 	wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
+	
+	
+	
 	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
 	TextOut(getMemDC(), 100, 120, ptOffset, strlen(ptOffset));
 

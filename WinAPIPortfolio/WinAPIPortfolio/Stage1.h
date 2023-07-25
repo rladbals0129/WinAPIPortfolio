@@ -54,12 +54,6 @@ struct GlassFragment
 	int speed;
 };
 
-struct CRATEENEMYPOS
-{
-	int x, y;
-	int width, height;
-};
-
 struct BREAKOBJECT
 {
 	RECT rc;
@@ -70,7 +64,7 @@ class Stage1 : public GameNode
 {
 private:
 	RotationRender* _rot;
-	float _knockBackMagnitude;
+	
 	RigidBody m_rigidBody;
 	bool m_isDestroyed;
 	std::vector<Fragment> m_fragments;
@@ -80,20 +74,17 @@ private:
 	BoxBreakEffect _slashEffect;
 	bool createBoxEF;
 	//==============
-	CRATEENEMYPOS _createPos;
+
 	Zombiebot* _zm;
 	vector<Zombiebot*> _Fzm;
-	int _zombieNum;
 	int _zombieDiePosX;
 	int _zombieDiePosY;
-
-	int _fragmentCnt;
 	
 	std::vector<Fragment> _Zfragments;
 	bool _zomIdle;
 	int _zomIdleCnt;
 	//========Àû====
-
+	float _knockBackMagnitude;
 	bool _hitDelay;
 	int _hitCnt;
 

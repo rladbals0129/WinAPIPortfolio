@@ -16,7 +16,7 @@ private:
 	int _arrowIdxR;
 
 	bool _StartGame;
-
+	bool _StartTutorial;
 	
 
 public:
@@ -26,6 +26,10 @@ public:
 	void render(void);
 
 	bool getStartGame() { return _StartGame; }
+	bool getStartTutorial() { return _StartTutorial; }
+
+	void setStartGame(bool x) { _StartGame = x; }
+	void setStartTutorial(bool x) { _StartTutorial = x; }
 
 	void animSelectL(void);
 	void animSelectR(void);

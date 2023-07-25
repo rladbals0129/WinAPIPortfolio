@@ -25,7 +25,7 @@ HRESULT Player::init(void)
 	//칼
 	_knife = false;
 	_txtKnife = false;
-	_usingKnife = true;
+	_usingKnife = false;
 	_panalKnife = false;
 
 	//ui
@@ -1285,6 +1285,7 @@ void Player::titlePlayer(HDC hdc)
 	
 	IMAGEMANAGER->findImage("머리")->setX(_rc.left);
 	IMAGEMANAGER->findImage("기본표정")->setX(_rc.left);
+
 
 	
 	//idle();

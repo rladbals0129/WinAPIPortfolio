@@ -223,8 +223,9 @@ HRESULT ResourceClass::init()
 	IMAGEMANAGER->addFrameImage("좀비기상", "Resources/Images/Enemy/Zombie/Zombiebot_wake.bmp", 200, 70, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("좀비이동", "Resources/Images/Enemy/Zombie/Zombiebot_move.bmp", 396, 172, 4, 2, true, RGB(255, 0, 255));
 
-
-	
+	IMAGEMANAGER->addImage("버튼", "Resources/Images/UI/button.bmp", 200, 100);
+	IMAGEMANAGER->addImage("튜토리얼", "Resources/Images/Stage1/tutorial.bmp", 1280, 800);
+	IMAGEMANAGER->addImage("튜토리얼픽셀", "Resources/Images/Stage1/_tutorial.bmp", 1280, 800);
 	
 	
 	return S_OK;

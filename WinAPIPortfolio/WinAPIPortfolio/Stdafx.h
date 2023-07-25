@@ -46,7 +46,9 @@ using namespace std;
 
 #include <Vfw.h>
 #pragma comment(lib, "vfw32.lib")
-
+#define PI 3.141592f
+#define RADIAN(dig)  (PI * dig) / 180.f
+#define GRAVITY  0.5f;
 #define RND RandomFunction::getSingleton()
 #define KEYMANAGER KeyManager::getSingleton()
 #define IMAGEMANAGER ImageManager::getSingleton()

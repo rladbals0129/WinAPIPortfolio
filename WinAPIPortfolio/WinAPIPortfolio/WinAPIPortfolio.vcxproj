@@ -175,10 +175,12 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TempSoundManager.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="VideoPlayer.h" />
     <ClInclude Include="WinAPIPortfolio.h" />
     <ClInclude Include="Zombiebot.h" />
+    <ClInclude Include="ZombieManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BoxBreakEffect.cpp" />
@@ -202,10 +204,12 @@
     </ClCompile>
     <ClCompile Include="TempSoundManager.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VideoPlayer.cpp" />
     <ClCompile Include="WinAPIPortfolio.cpp" />
     <ClCompile Include="Zombiebot.cpp" />
+    <ClCompile Include="ZombieManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WinAPIPortfolio.rc" />

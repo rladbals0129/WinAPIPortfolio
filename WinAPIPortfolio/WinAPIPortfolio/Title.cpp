@@ -13,6 +13,7 @@ HRESULT Title::init(void)
 	_arrowIdxL = 0;
 	_arrowCntR = 0;
 	_arrowIdxR = 6;
+	_StartTutorial = false;
 	_StartGame = false;
 	for (int i = 0; i < 3; i++)
 	{
@@ -56,7 +57,7 @@ void Title::update(void)
 			
 			break;
 		case 1:
-
+			_StartTutorial = true;
 			break;
 		case 2:
 			PostQuitMessage(0);

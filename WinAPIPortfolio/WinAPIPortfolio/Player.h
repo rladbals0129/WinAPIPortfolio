@@ -187,7 +187,6 @@ public:
 
 	inline bool getKnife() { return _knife; }
 	inline bool getTxtKnife() { return _txtKnife; }
-	inline bool getUsingKnife() { return _usingKnife; }
 	inline bool getPanalKnife() { return _panalKnife; }
 	inline bool getTxtCom() { return _txtCom; }
 	inline bool getDownJump() { return _downJump; }
@@ -235,6 +234,12 @@ public:
 		_knockbackDistanceX = 0.0f;
 		_knockbackDistanceY = 0.0f;
 	}
+
+	//튜토리얼관련
+	bool getUsingKnife() { return _usingKnife; }
+	void setUsingKnife(bool x) { _usingKnife = x; }
+	//==============================
+
 
 	//void setPanalCom(bool panalCom) { _panalCom = panalCom; }
 	

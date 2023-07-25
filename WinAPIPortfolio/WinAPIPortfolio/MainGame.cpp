@@ -8,6 +8,7 @@ HRESULT MainGame::init()
 	_title = new Title;
 	_intro = new IntroScene;
 	_stage1 = new Stage1;
+	_tutorial = new Tutorial;
 
 	_title->init();
 	
@@ -15,6 +16,7 @@ HRESULT MainGame::init()
 
 	_playVideo = false;
 	_startStage1 = false;
+	_startTutorial = false;
 	
 	assert(_currentScene != nullptr); 	// <->
 
@@ -27,9 +29,11 @@ void MainGame::release(void)
 	_title->release();
 	_intro->release();
 	_stage1->release();
+	_tutorial->relese();
 	SAFE_DELETE(_title);
 	SAFE_DELETE(_intro);
 	SAFE_DELETE(_stage1);
+	SAFE_DELETE(_tutorial);
 }
 
 void MainGame::update(void)
@@ -44,6 +48,22 @@ void MainGame::update(void)
 			_playVideo = true;
 		}
 		_currentScene = _intro;
+		_title->setStartGame(false);
+	}
+	if (_title->getStartTutorial())
+	{
+		_tutorial->init();
+		_currentScene = _tutorial;
+		_title->setStartTutorial(false);
+	}
+	if (_tutorial->getGoTitle())
+	{
+	
+		_currentScene = _title;
+
+		_tutorial->setGoTitle(false);
+		
+		
 	}
 	if (_intro->getNextScene())
 	{
