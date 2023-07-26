@@ -8,13 +8,18 @@
 class ZombieManager : public GameNode
 {
 public:
-    ZombieManager();
-    ~ZombieManager();
 
+	HRESULT init();
     void createZombie(int x, int y);
-    void update();
+    void update(int offsetX,int offsetY);
     void render();
     std::vector<Zombiebot*>& getZombies();
+	void setShakeOffset(float& shakeOffsetX, float& shakeOffsetY)
+	{
+		_shakeOffsetX = &shakeOffsetX;
+		_shakeOffsetY = &shakeOffsetY;
+	}
+	void applyShake(float shakeDuration);
 
 private:
 	BoxBreakEffect _slashEffect;
@@ -36,13 +41,13 @@ private:
 	float _knockBackMagnitude;
 	//화면흔들림
 	float _shakeDuration;
-	float _shakeOffsetX;
-	float _shakeOffsetY;
+	float *_shakeOffsetX = nullptr;
+    float *_shakeOffsetY = nullptr;
 	const float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
 	const float _initialShakeMagnitude = 15.0f; // 흔들기 강도
 
-	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
-	void applyShake(float shakeDuration);
+	void updateShakeEffect();
+	
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
 
 };

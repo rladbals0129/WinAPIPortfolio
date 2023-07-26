@@ -13,6 +13,7 @@ HRESULT Player::init(void)
 	_isLeft = true;
 	_breath = 0;
 	_breathIn = false;
+	
 	_rc = RectMake(630, 550, 74, 74);
 	_cnt = 0;
 	_alpha = 255;
@@ -27,7 +28,8 @@ HRESULT Player::init(void)
 	_txtKnife = false;
 	_usingKnife = false;
 	_panalKnife = false;
-
+	//ÃÑ
+	_usingGun = true;
 	//ui
 	_txtCom = false;
 	_colCom = false;
@@ -129,7 +131,7 @@ void Player::update(void)
 	
 	
 	
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !KEYMANAGER->isStayKeyDown(VK_RIGHT)&&!_down && !_colLeft &&!_isATK)
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !KEYMANAGER->isStayKeyDown(VK_RIGHT)&&!_down && !_colLeft &&!_isATK&&!shoot)
 	{
 		_isLeft = true;
 		if (_currentState != JUMP)
@@ -154,7 +156,7 @@ void Player::update(void)
 		if (_currentState != JUMP)
 		_currentState = IDLE;
 	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !KEYMANAGER->isStayKeyDown(VK_LEFT) && !_down && !_colRight && !_isATK)
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !KEYMANAGER->isStayKeyDown(VK_LEFT) && !_down && !_colRight && !_isATK &&!shoot)
 	{
 		_isLeft = false;
 		if (_currentState != JUMP)
@@ -191,7 +193,7 @@ void Player::update(void)
 		_currentState = IDLE;
 	}
 	//===========Á¡ÇÁ===========
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && !_isJumping)
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && !_isJumping && !shoot)
 	{
 		_jumpDust = true;
 		if (!_downJump)
@@ -293,7 +295,7 @@ void Player::update(void)
 	
 	//================================
 	//========°ø°Ý===========
-	if (KEYMANAGER->isStayKeyDown('S') && _usingKnife && !_hit)
+	if (KEYMANAGER->isStayKeyDown('S') && _usingKnife && !_hit && !shoot)
 	{
 		_currentState = ATTACK;
 		_isATK = true;
@@ -355,7 +357,31 @@ void Player::update(void)
 		_rangeATK = RectMake(_rc.right, _rc.top - 15, 0, 0);
 	}
 
-
+	if (KEYMANAGER->isStayKeyDown('W') && _usingGun)
+	{
+		shoot = true;
+		_currentState = GUN;
+	}
+	if (KEYMANAGER->isOnceKeyUp('W'))
+	{
+		shoot = false;
+	}
+	if (_currentState == GUN)
+	{
+		IMAGEMANAGER->findImage("¸Ó¸®")->setX(_rc.left);
+		IMAGEMANAGER->findImage("°ø°ÝÇ¥Á¤")->setX(_rc.left);
+		IMAGEMANAGER->findImage("°ø°ÝÇ¥Á¤")->setY(_rc.top);
+		idle();
+		shot();
+		fire();
+		_bulletCnt++;
+		if (_bulletCnt % 3 == 0)
+		{
+			float bulletX = _isLeft ?  _rc.left : _rc.right - 5 ;
+			float bulletY = _rc.bottom - 40;
+			_bullet.addBullet(bulletX, bulletY, 1);
+		}
+	}
 	if (_currentState == ATTACK)
 	{
 		IMAGEMANAGER->findImage("¸Ó¸®")->setX(_rc.left);
@@ -378,15 +404,6 @@ void Player::update(void)
 		IMAGEMANAGER->findImage("°ø°ÝÇ¥Á¤")->setY(_rc.top);
 		AttackDown();
 	}
-
-	
-	
-
-
-	
-
-
-	
 
 	if (_currentState == MOVE)
 	{
@@ -425,8 +442,11 @@ void Player::update(void)
 			_battery = !_battery;
 		}
 	}
+	_bullet.update();
+
 	_katanaCnt = (_katanaCnt + 1) % 360;
 	_handCnt = (_handCnt + 1) % 360;
+	_gunReaction = (_gunReaction + 1) % 360;
 
 }
 
@@ -442,6 +462,10 @@ void Player::render(HDC hdc)
 	//float xOffset
 	float yOffset = sin(_handCnt * 0.1) * 5;
 	float yKatanaOffset = sin(_katanaCnt * 0.08) * 3;
+	float X_gunReaction = cos(_gunReaction * 1) * 2; //°­µµ/¹üÀ§
+	float Y_gunReaction = sin(_gunReaction * 0.1) * 2; //°­µµ/¹üÀ§
+	_bullet.render(hdc);
+
 	if (_currentState == IDLE)
 	{
 		
@@ -521,7 +545,31 @@ void Player::render(HDC hdc)
 		
 	
 	}
+	if (_currentState == GUN)
+	{
+		IMAGEMANAGER->frameAlphaRender("Idle", hdc, _rc.left - 15, _rc.top, _alpha);
+		if (_isLeft)
+		{
+			IMAGEMANAGER->frameAlphaRender("¸Ó¸®", hdc, IMAGEMANAGER->findImage("¸Ó¸®")->getX() + 5, IMAGEMANAGER->findImage("¸Ó¸®")->getY() - 12.5f, _alpha);
+			IMAGEMANAGER->alphaRender("°ø°ÝÇ¥Á¤", hdc, IMAGEMANAGER->findImage("¸Ó¸®")->getX() + 8, IMAGEMANAGER->findImage("¸Ó¸®")->getY() - 6.5f, _alpha);
+			IMAGEMANAGER->frameRender("ÃÑ1", hdc, _rc.left-90+ X_gunReaction, _rc.top+10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ2", hdc, _rc.left-30+ X_gunReaction, _rc.top+10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ±âÈ­¿°", hdc, _rc.left - 110 + X_gunReaction, _rc.top + 10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ±âÈ­¿°", hdc, _rc.left - 190 + X_gunReaction, _rc.top + 10 + Y_gunReaction);
+			//_createBulletPosX = 
+		}
+		else
+		{
+			IMAGEMANAGER->frameAlphaRender("¸Ó¸®", hdc, IMAGEMANAGER->findImage("¸Ó¸®")->getX() + 20, IMAGEMANAGER->findImage("¸Ó¸®")->getY() - 12.5f, _alpha);
+			IMAGEMANAGER->alphaRender("°ø°ÝÇ¥Á¤", hdc, IMAGEMANAGER->findImage("¸Ó¸®")->getX() + 24, IMAGEMANAGER->findImage("¸Ó¸®")->getY() - 7.5f, _alpha);
+			IMAGEMANAGER->frameRender("ÃÑ1", hdc, _rc.left+20+ X_gunReaction, _rc.top+10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ2", hdc, _rc.left+80+ X_gunReaction, _rc.top+10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ±âÈ­¿°", hdc, _rc.left +80 + X_gunReaction, _rc.top + 10 + Y_gunReaction);
+			IMAGEMANAGER->frameRender("ÃÑ±âÈ­¿°", hdc, _rc.left +160 + X_gunReaction, _rc.top + 10 + Y_gunReaction);
 
+		}
+		
+	}
 	if (_currentState == MOVE)
 	{
 		
@@ -721,6 +769,7 @@ void Player::render(HDC hdc)
 		}
 		
 	}
+	
 
 	if (_currentState == UPATTACK)
 	{
@@ -763,6 +812,7 @@ void Player::render(HDC hdc)
 	
 		
 	_dustEffect.render(hdc);
+	
 
 }
 
@@ -1249,6 +1299,90 @@ void Player::AttackDown(void)
 	IMAGEMANAGER->findImage("±âº»Ç¥Á¤")->setY(_rc.top);
 }
 
+void Player::shot(void)
+{
+	if (_isLeft)
+	{
+		
+		_gunAnimCnt++;
+		IMAGEMANAGER->findImage("ÃÑ1")->setFrameY(1);
+		IMAGEMANAGER->findImage("ÃÑ2")->setFrameY(1);
+		//IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameY(1);
+		if (_gunAnimCnt % 4 == 0)
+		{
+			_gunAnimIdx--;
+			if (_gunAnimIdx < 0 )
+			{
+				_gunAnimIdx = 7;
+				_gunAnimCnt = 0;
+			}
+			IMAGEMANAGER->findImage("ÃÑ1")->setFrameX(_gunAnimIdx);
+			IMAGEMANAGER->findImage("ÃÑ2")->setFrameX(_gunAnimIdx);
+			//IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameX(_gunAnimIdx);
+		}
+	}
+	else
+	{
+		_gunAnimCnt++;
+		IMAGEMANAGER->findImage("ÃÑ1")->setFrameY(0);
+		IMAGEMANAGER->findImage("ÃÑ2")->setFrameY(0);
+		//IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameY(0);
+		if (_gunAnimCnt % 4 == 0)
+		{
+			_gunAnimIdx++;
+			if (_gunAnimIdx > 7)
+			{
+				_gunAnimIdx = 0;
+				_gunAnimCnt = 0;
+			}
+			IMAGEMANAGER->findImage("ÃÑ1")->setFrameX(_gunAnimIdx);
+			IMAGEMANAGER->findImage("ÃÑ2")->setFrameX(_gunAnimIdx);
+		//	IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameX(_gunAnimIdx);
+		}
+
+	}
+
+}
+
+void Player::fire(void)
+{
+	if (_isLeft)
+	{
+
+		_fireCnt++;
+		IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameY(1);
+		if (_fireCnt % 3 == 0)
+		{
+			_fireIdx--;
+			if (_fireIdx < 0)
+			{
+				_fireIdx = 5;
+				_fireCnt = 0;
+			}
+			
+			IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameX(_fireIdx);
+		}
+	}
+	else
+	{
+		_fireCnt++;
+		
+		IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameY(0);
+		if (_fireCnt % 3 == 0)
+		{
+			_fireIdx++;
+			if (_fireIdx > 5)
+			{
+				_fireIdx = 0;
+				_fireCnt = 0;
+			}
+			
+			IMAGEMANAGER->findImage("ÃÑ±âÈ­¿°")->setFrameX(_fireIdx);
+		}
+
+	}
+}
+
 void Player::Hit(void)
 {
 	
@@ -1338,6 +1472,7 @@ void DustEffect::update()
 			if (dust.frameX > 4)
 			{
 				dust.alive = false;
+				
 			}
 			
 		}
@@ -1355,7 +1490,8 @@ void DustEffect::render(HDC hdc)
 
 void DustEffect::addDust(float x, float y, int count)
 {
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < count; i++) 
+	{
 		Dust newDust;
 		newDust.x = x + (i*10);
 		newDust.y = y;
@@ -1367,5 +1503,63 @@ void DustEffect::addDust(float x, float y, int count)
 		newDust.alive = true;
 	
 		_dustList.push_back(newDust);
+	}
+}
+
+void FireBullet::update()
+{
+	for (auto& bullet : _bulletList)
+	{
+		if (bullet.alive)
+		{
+			bullet.frameCount++;
+			
+			if (PLAYER->getIsLeft())
+			{
+				bullet.frameY = 1;
+				bullet.x += bullet.vx;
+			}
+			else
+			{
+				bullet.frameY = 0;
+				bullet.x -= bullet.vx;
+			}
+			bullet.col = RectMake(bullet.x, bullet.y, 10, 100);
+			if (bullet.frameCount % 20 == 0)
+			{
+				//bullet.col = RectMake(bullet.x, bullet.y, 0, 0);
+				bullet.alive = false;
+			}
+
+		}
+	}
+}
+
+void FireBullet::render(HDC hdc)
+{
+	for (const auto& _bullet: _bulletList) 
+	{
+		if (_bullet.alive)
+		{
+			IMAGEMANAGER->findImage("ÃÑ¾Ë")->frameRender(hdc, _bullet.x, _bullet.y, _bullet.frameX, _bullet.frameY);
+		}
+	}
+}
+
+void FireBullet::addBullet(float x, float y, int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		Bullet newBullet;
+		newBullet.x = x + (i * 10);
+		newBullet.y = y;
+		newBullet.vx = -30;
+		newBullet.vy = 0;
+		newBullet.frameX = 0;
+		newBullet.frameY = 0;
+		newBullet.frameCount = 0;
+		newBullet.alive = true;
+
+		_bulletList.push_back(newBullet);
 	}
 }

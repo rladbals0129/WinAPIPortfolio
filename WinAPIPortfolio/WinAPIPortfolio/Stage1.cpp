@@ -129,6 +129,10 @@ HRESULT Stage1::init(void)
 		_Fzm.push_back(_zm);
 	
 	}
+
+	//_zombieManager.createZombie(600, 600);
+	//_zombieManager.init();
+	//_zombieManager.setShakeOffset(_shakeOffsetX, _shakeOffsetY);
 	return S_OK;
 }
 
@@ -138,6 +142,7 @@ void Stage1::release(void)
 
 void Stage1::update(void)
 {
+	//_zombieManager.update(_offsetX,_offsetY);
 	if (_createPlayer)
 	{
 		PLAYER->update();
@@ -843,6 +848,48 @@ void Stage1::update(void)
 		vector<size_t> zombieFM;
 		for (int i = 0; i < _Fzm.size(); i++)
 		{
+
+			if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
+			{
+				_zombieDiePosX = _Fzm[i]->getPos().left;
+				_zombieDiePosY = _Fzm[i]->getPos().top;
+				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+				float knockBackY = 0;
+				PLAYER->setKnockback(knockBackX, knockBackY);
+				_Fzm[i]->setDie(true);
+				applyShake(_initialShakeDuration);
+				createBoxEF = true;
+				if (createBoxEF)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+						float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+					}
+
+					float slashX = _Fzm[i]->getPos().left;
+					float slashY = _Fzm[i]->getPos().top;
+					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+				}
+				createBoxEF = false;
+				zombieFM.push_back(i);
+			}
+		}
+		for (int i = 0; i < _Fzm.size(); i++)
+		{
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 			{
 				_zombieDiePosX = _Fzm[i]->getPos().left;
@@ -881,6 +928,7 @@ void Stage1::update(void)
 				createBoxEF = false;
 				zombieFM.push_back(i);
 			}
+
 			
 		}
 		
@@ -1023,6 +1071,11 @@ void Stage1::update(void)
 		
 	}
 	
+	if (PLAYER->getShoot())
+	{
+		_initialShakeDuration = 0.1f;
+		applyShake(_initialShakeDuration);
+	}
 	if (PLAYER->getHp() < 30)
 	{
 		UI->lowHpUpdate();
@@ -1034,8 +1087,10 @@ void Stage1::update(void)
 
 void Stage1::render(void)
 {
+	
 	//IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
+	//_zombieManager.render();
 	_slashEffect.render(getMemDC());
 	if (PLAYER->getHp() < 30)
 	{
@@ -1356,6 +1411,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 			_offsetX -= 8;
 			PLAYER->_dustEffect.setRight(8.f);
 			_slashEffect.setRight(8.f);
+			PLAYER->_bullet.setRight(8.f);
 			if (_currentMap == map5)
 			{
 				
@@ -1396,6 +1452,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		{
 			_offsetX += 8;
 			PLAYER->_dustEffect.setLeft(8.f);
+			PLAYER->_bullet.setLeft(8.f);
 			_slashEffect.setLeft(8.f);
 			if (_currentMap == map5)
 			{

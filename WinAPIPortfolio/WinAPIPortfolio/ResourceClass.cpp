@@ -191,7 +191,24 @@ HRESULT ResourceClass::init()
 		1, 2,
 		true,
 		RGB(255, 0, 255));
-	
+	IMAGEMANAGER->addFrameImage("√—1", "Resources/Images/Player/Weapon/p90Shoot.bmp",
+		560, 144,
+		7, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("√—2", "Resources/Images/Player/Weapon/p90Shoot.bmp",
+		560, 144,
+		7, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("√—±‚»≠ø∞", "Resources/Images/Player/Weapon/FXMuzzleFlash32_4.bmp",
+		650, 160,
+		5, 2, true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("√—æÀ", "Resources/Images/Player/Weapon/FXBullet.bmp",
+		34, 36,
+		1, 2, true,
+		RGB(255, 0, 255));
 	
 	
 	IMAGEMANAGER->addImage("πË∞ÊΩ√√º", "Resources/Images/Stage1/Object/bgDumi.bmp", 600, 300, true, RGB(255, 0, 255));

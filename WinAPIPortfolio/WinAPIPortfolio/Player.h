@@ -52,6 +52,73 @@ public:
 
 };
 
+class FireBullet {
+
+private:
+	struct Bullet {
+		RECT col;
+		float x;
+		float y;
+		float vx;
+		float vy;
+		int frameX;
+		int frameY;
+		int frameCount;
+		bool alive;
+	};
+	std::vector<Bullet> _bulletList;
+
+public:
+	void update();
+	void render(HDC hdc);
+	void addBullet(float x, float y, int count);
+
+	RECT getPos()
+	{
+		for (auto& bullet : _bulletList)
+		{
+			if (bullet.alive)
+			{
+				return 	bullet.col;
+
+			}
+		}
+	}
+
+	
+
+	void setAlive(bool alive) { for (auto& bullet : _bulletList) { bullet.alive = alive; } }
+	void setLeft(float x)
+	{
+		for (auto& bullet : _bulletList)
+		{
+			bullet.x -= x;
+		}
+	}
+	void setTop(float y)
+	{
+		for (auto& bullet : _bulletList)
+		{
+			bullet.y -= y;
+		}
+	}
+	void setRight(float x)
+	{
+		for (auto& bullet : _bulletList)
+		{
+			bullet.x += x;
+		}
+	}
+	void setBottom(float y)
+	{
+		for (auto& bullet : _bulletList)
+		{
+			bullet.y += y;
+		}
+	}
+
+};
+
 class Player :public SingletonBase<Player>
 {
 private:
@@ -59,7 +126,8 @@ private:
 		IDLE, MOVE,
 		JUMP, SLAP,
 		DOWN, ATTACK,
-		UPATTACK,DOWNATTACK
+		UPATTACK,DOWNATTACK,
+		GUN
 	};
 	STATE _currentState;
 
@@ -150,9 +218,29 @@ private:
 	float _knockbackDistanceY;
 	const float _maxKnockbackDistance = 100.0f;
 
-	//¼Õ/Ä®
+	//¼Õ/Ä® µé°íÀÖ´Â ¾Ö´Ï¸ÞÀÌ¼Ç
 	int _katanaCnt;
 	int _handCnt;
+
+	//ÃÑ
+	bool shoot;
+	int _gunCnt;
+	int _gunAnimCnt;
+	int _gunAnimIdx;
+	bool _usingGun;
+	int _gunReaction; // ¹Ýµ¿
+
+	//ÃÑ¾Ë
+	int _bulletCnt;
+
+	//ÃÑ±âÈ­¿°
+	int _fireCnt;
+	int _fireIdx;
+
+	int _createBulletPosX;
+	int _createBulletPosY;
+
+
 public:	
 	HRESULT init(void);
 	void release(void);
@@ -169,9 +257,15 @@ public:
 	void AttackUP(void);
 	void AttackDown(void);
 
+	void shot(void);
+	void fire(void);
+	
+
+
 	void Hit(void);
 
 	DustEffect _dustEffect;
+	FireBullet _bullet;
 	void titlePlayer(HDC hdc);
 
 	inline STATE getState() { return _currentState; }
@@ -191,6 +285,9 @@ public:
 	inline bool getTxtCom() { return _txtCom; }
 	inline bool getDownJump() { return _downJump; }
 	inline bool getGoDownjump() { return _goDownJump; }
+
+	inline bool getUsingGun() { return _usingGun; }
+	inline bool getShoot() { return shoot; }
 
 	inline int getHp() { return _hp; }
 	inline int getAlpha() { return _alpha; }
@@ -223,6 +320,7 @@ public:
 	inline void setcolCom(bool colCom) { _colCom = colCom; }
 	inline void setDownJump(bool downJump) { _downJump = downJump; }
 	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
+	inline void setUsingGun(bool usingGun) { _usingGun = usingGun; }
 
 	inline void setDmg(int dmg) { _hp -= dmg; }
 	inline void setHit(bool hit) { _hit = hit; }

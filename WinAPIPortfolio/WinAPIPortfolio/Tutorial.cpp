@@ -14,6 +14,10 @@ HRESULT Tutorial::init()
 	_rot->init();
 	//Àû
 
+	_zombieManager.init();
+	_zombieManager.setShakeOffset(_shakeOffsetX, _shakeOffsetY);
+
+
 	_knockBackMagnitude = 10.0f;
 
 
@@ -26,7 +30,7 @@ HRESULT Tutorial::init()
 
 	//¹öÆ°//
 	const vector<string> buttonTexts = {
-	"Á»ºñ »ý¼º", "¹«±â »ç¿ë"  };
+	"Á»ºñ »ý¼º", "ÀÏº»µµ »ç¿ë" ,"P90 »ç¿ë"};
 	for (int i = 0; i < buttonTexts.size(); i++)
 	{
 		int x = (i < 4) ? 0 : 1280 - _buttonWidth;
@@ -66,10 +70,16 @@ void Tutorial::update()
 		}
 	}
 	//====================================================
-	updateZombie();
+	//updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
+	_zombieManager.update(0,0);
+	//updateZombie();
 
-	_slashEffect.update();
-	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
+	//_slashEffect.update();
+	if (PLAYER->getShoot())
+	{
+		_initialShakeDuration = 0.1;
+		_zombieManager.applyShake(_initialShakeDuration);
+	}
 }
 
 void Tutorial::render()
@@ -91,17 +101,179 @@ void Tutorial::render()
 		FONTMANAGER->drawText(getMemDC(), button.rect.left + 25, button.rect.top + 30, "Orange Kid", 30, FW_BOLD, (char*)button.text.c_str(), static_cast<int>(button.text.length()), RGB(255, 255, 255));
 	}
 
-
-
-
 	_slashEffect.render(getMemDC());
 	//ÇÃ·¹ÀÌ¾î
 	PLAYER->render(getMemDC());
 	PLAYER->_dustEffect.update();
 	//====
-	renderZombie();
+	_zombieManager.render();
+	//renderZombie();
 }
 
+
+void Tutorial::playerPixel()
+{
+	_pPosRc.left = PLAYER->getPlayerPos().left;
+	_pPosRc.right = PLAYER->getPlayerPos().right;
+	_pPosRc.top = PLAYER->getPlayerPos().top;
+	_pPosRc.bottom = PLAYER->getPlayerPos().bottom;
+	//==ÇÈ¼¿ Ãæµ¹==
+	int Rlb = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.bottom + 3));
+	int Rlbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left, _pPosRc.bottom - 5));
+
+	int Rrb = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.bottom ));
+	int Rrbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.bottom - 5));
+
+	int Rlt = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.top )); //r131
+	int Rrt = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.top ));
+
+	int Glb = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.bottom ));
+	int Grb = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, _pPosRc.bottom ));
+	int Glt = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.top ));
+	int Grt = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, _pPosRc.top )); //g134
+
+	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, (_pPosRc.top + _pPosRc.bottom) / 2 )); //g134
+	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , (_pPosRc.top + _pPosRc.bottom) / 2 ));
+
+	//¹Ù´Ú
+	if (Rlb == 131 || Rrb == 131)
+	{
+		if (Rlbup == 131 || Rrbup == 131)
+		{
+			PLAYER->setPlayerPosBottom(7);
+		}
+		PLAYER->setGoDownJump(false);
+		PLAYER->setIsJumping(false);
+	}
+	else {
+
+		PLAYER->setIsJumping(true);
+
+	}
+	if (Rlb == 176 || Rrb == 176)
+	{
+		PLAYER->setDownJump(true);
+		PLAYER->setIsJumping(false);
+	}
+	else
+	{
+		PLAYER->setDownJump(false);
+		//PLAYER->setIsJumping(true);
+	}
+	//¼¾ÅÍ°ª Àå¾Ö¹°
+	if (GCR == 134)
+	{
+		PLAYER->setColRight(true);
+	}
+	else {
+		PLAYER->setColRight(false);
+	}
+	if (GCL == 134)
+	{
+		PLAYER->setColLeft(true);
+	}
+	else {
+		PLAYER->setColLeft(false);
+	}
+
+
+
+	//¿À¸¥ÂÊ ¸·Èù°÷
+	if (Grt == 134 && Grb == 134)
+	{
+		PLAYER->setPlayerPosRight(8);
+
+	}
+	/*else
+	{
+		PLAYER->setColRight(false);
+	}*/
+
+	//¿ÞÂÊ¸·Èù°÷
+	if (Glt == 134 && Glb == 134)
+	{
+		PLAYER->setPlayerPosLeft(8);
+	}
+	//else
+	//{
+	//	//PLAYER->setColLeft(false);
+	//}
+
+	//À§ÂÊ¸·Èù°÷
+	if (Glt == 134 && Grt == 134)
+	{
+		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
+
+	}
+	else
+	{
+
+	}
+}
+
+void Tutorial::onButtonClick(int buttonIndex)
+{
+	switch (buttonIndex)
+	{
+	case 0: // Á»ºñ »ý¼º ¹öÆ°
+		_zombieManager.createZombie(800, 600);
+		//createZombie(800,600);
+		break;
+	case 1: // Ä® »ç¿ë ¹öÆ°
+		PLAYER->setUsingKnife(!PLAYER->getUsingKnife());
+		break;
+	case 2:
+		PLAYER->setUsingGun(!PLAYER->getUsingGun());
+		break;
+		
+	}
+}
+
+void Tutorial::createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments)
+{
+	const float gravity = 9.81f;
+	for (int i = 0; i < numFragments; i++)
+	{
+		Fragment fragment;
+		fragment.SetPosition(static_cast<float>(position.x), static_cast<float>(position.y));
+		float velocityX = static_cast<float>(rand() % 21 - 10) * 2.0f;
+		float velocityY = static_cast<float>(rand() % 16 - 15) * 2.0f;
+		fragment.SetVelocity(velocityX, velocityY);
+		fragment.SetAcceleration(0, gravity);
+		fragment.SetRotation(RND->getFloat(10.f));
+		fragment.LoadImage(imagePath);
+		fragments.push_back(fragment);
+	}
+}
+
+
+void Tutorial::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY)
+{
+	if (shakeDuration > 0)
+	{
+		shakeDuration -= 0.016f; // »óÈ²¿¡ µû¶ó ½ÇÁ¦ deltaTimeÀ¸·Î º¯°æµË´Ï´Ù.
+
+		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
+		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
+	}
+	else
+	{
+		shakeOffsetX = 0.0f;
+		shakeOffsetY = 0.0f;
+	}
+}
+
+void Tutorial::applyShake(float shakeDuration)
+{
+	_shakeDuration = shakeDuration;
+}
+
+
+
+
+
+
+/*
 void Tutorial::createZombie(int x, int y)
 {
 	_zm = new Zombiebot;
@@ -182,7 +354,7 @@ void Tutorial::updateZombie()
 				_hitDelay = true;
 				//³Ë¹é
 				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
-				float knockBackY = 0; //-_knockBackMagnitude;  
+				float knockBackY = 0; //-_knockBackMagnitude;
 				PLAYER->setKnockback(knockBackX, knockBackY);
 				//======
 				applyShake(_initialShakeDuration);
@@ -316,154 +488,6 @@ void Tutorial::renderZombie()
 	}
 }
 
-void Tutorial::playerPixel()
-{
-	_pPosRc.left = PLAYER->getPlayerPos().left;
-	_pPosRc.right = PLAYER->getPlayerPos().right;
-	_pPosRc.top = PLAYER->getPlayerPos().top;
-	_pPosRc.bottom = PLAYER->getPlayerPos().bottom;
-	//==ÇÈ¼¿ Ãæµ¹==
-	int Rlb = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.bottom + 3));
-	int Rlbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left, _pPosRc.bottom - 5));
-
-	int Rrb = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.bottom ));
-	int Rrbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.bottom - 5));
-
-	int Rlt = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.top )); //r131
-	int Rrt = GetRValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right , _pPosRc.top ));
-
-	int Glb = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.bottom ));
-	int Grb = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, _pPosRc.bottom ));
-	int Glt = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , _pPosRc.top ));
-	int Grt = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, _pPosRc.top )); //g134
-
-	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.right, (_pPosRc.top + _pPosRc.bottom) / 2 )); //g134
-	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("Æ©Åä¸®¾óÇÈ¼¿")->getMemDC(), _pPosRc.left , (_pPosRc.top + _pPosRc.bottom) / 2 ));
-
-	//¹Ù´Ú
-	if (Rlb == 131 || Rrb == 131)
-	{
-		if (Rlbup == 131 || Rrbup == 131)
-		{
-			PLAYER->setPlayerPosBottom(7);
-		}
-		PLAYER->setGoDownJump(false);
-		PLAYER->setIsJumping(false);
-	}
-	else {
-
-		PLAYER->setIsJumping(true);
-
-	}
-	if (Rlb == 176 || Rrb == 176)
-	{
-		PLAYER->setDownJump(true);
-		PLAYER->setIsJumping(false);
-	}
-	else
-	{
-		PLAYER->setDownJump(false);
-		//PLAYER->setIsJumping(true);
-	}
-	//¼¾ÅÍ°ª Àå¾Ö¹°
-	if (GCR == 134)
-	{
-		PLAYER->setColRight(true);
-	}
-	else {
-		PLAYER->setColRight(false);
-	}
-	if (GCL == 134)
-	{
-		PLAYER->setColLeft(true);
-	}
-	else {
-		PLAYER->setColLeft(false);
-	}
 
 
-
-	//¿À¸¥ÂÊ ¸·Èù°÷
-	if (Grt == 134 && Grb == 134)
-	{
-		PLAYER->setPlayerPosRight(8);
-
-	}
-	/*else
-	{
-		PLAYER->setColRight(false);
-	}*/
-
-	//¿ÞÂÊ¸·Èù°÷
-	if (Glt == 134 && Glb == 134)
-	{
-		PLAYER->setPlayerPosLeft(8);
-	}
-	//else
-	//{
-	//	//PLAYER->setColLeft(false);
-	//}
-
-	//À§ÂÊ¸·Èù°÷
-	if (Glt == 134 && Grt == 134)
-	{
-		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
-
-	}
-	else
-	{
-
-	}
-}
-
-void Tutorial::onButtonClick(int buttonIndex)
-{
-	switch (buttonIndex)
-	{
-	case 0: // Á»ºñ »ý¼º ¹öÆ°
-		createZombie(800,600);
-		break;
-	case 1: // ¹«±â »ç¿ë ¹öÆ°
-		PLAYER->setUsingKnife(true);
-		break;
-		
-	}
-}
-
-void Tutorial::createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments)
-{
-	const float gravity = 9.81f;
-	for (int i = 0; i < numFragments; i++)
-	{
-		Fragment fragment;
-		fragment.SetPosition(static_cast<float>(position.x), static_cast<float>(position.y));
-		float velocityX = static_cast<float>(rand() % 21 - 10) * 2.0f;
-		float velocityY = static_cast<float>(rand() % 16 - 15) * 2.0f;
-		fragment.SetVelocity(velocityX, velocityY);
-		fragment.SetAcceleration(0, gravity);
-		fragment.SetRotation(RND->getFloat(10.f));
-		fragment.LoadImage(imagePath);
-		fragments.push_back(fragment);
-	}
-}
-
-void Tutorial::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY)
-{
-	if (shakeDuration > 0)
-	{
-		shakeDuration -= 0.016f; // »óÈ²¿¡ µû¶ó ½ÇÁ¦ deltaTimeÀ¸·Î º¯°æµË´Ï´Ù.
-
-		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
-		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
-	}
-	else
-	{
-		shakeOffsetX = 0.0f;
-		shakeOffsetY = 0.0f;
-	}
-}
-
-void Tutorial::applyShake(float shakeDuration)
-{
-	_shakeDuration = shakeDuration;
-}
+*/

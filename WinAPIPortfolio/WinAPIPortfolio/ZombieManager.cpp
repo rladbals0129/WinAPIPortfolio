@@ -1,6 +1,14 @@
 #include "Stdafx.h"
 #include "ZombieManager.h"
 
+HRESULT ZombieManager::init()
+{
+	_knockBackMagnitude = 10.0f;
+
+
+	return S_OK;
+}
+
 void ZombieManager::createZombie(int x, int y)
 {
     Zombiebot* newZombie = new Zombiebot;
@@ -11,9 +19,13 @@ void ZombieManager::createZombie(int x, int y)
     _Fzm.push_back(newZombie);
 }
 
-void ZombieManager::update()
+void ZombieManager::update(int offsetX,int offsetY)
 {
+
+	_slashEffect.update();
+	updateShakeEffect();
 	//좀비 상태처리
+
 	for (int i = 0; i < _Fzm.size(); i++)
 	{
 		_Fzm[i]->UpdateZombie();
@@ -113,6 +125,7 @@ void ZombieManager::update()
 	//cout << PLAYER->getHit() << endl;
 	//좀비 파티클
 	vector<size_t> zombieFM;
+
 	for (int i = 0; i < _Fzm.size(); i++)
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
@@ -153,7 +166,46 @@ void ZombieManager::update()
 			createBoxEF = false;
 			zombieFM.push_back(i);
 		}
+		
 
+	}
+	for (int i = 0; i < _Fzm.size(); i++)
+	{
+
+		if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
+		{
+			_zombieDiePosX = _Fzm[i]->getPos().left;
+			_zombieDiePosY = _Fzm[i]->getPos().top;
+			_Fzm[i]->setDie(true);
+			createBoxEF = true;
+			if (createBoxEF)
+			{
+				for (int k = 0; k < 8; k++)
+				{
+					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+				}
+				for (int j = 0; j < 3; j++)
+				{
+					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+				}
+				for (int j = 0; j < 3; j++)
+				{
+					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+				}
+
+				float slashX = _Fzm[i]->getPos().left;
+				float slashY = _Fzm[i]->getPos().top;
+				_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+			}
+			createBoxEF = false;
+			zombieFM.push_back(i);
+		}
 	}
 
 	for (size_t i : zombieFM)
@@ -173,8 +225,9 @@ void ZombieManager::update()
 	// 파편 업데이트
 	for (auto& fragment : _Zfragments)
 	{
-		fragment.Update(0.16f, IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), 0, 0);
+		fragment.Update(0.16f, IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), offsetX, offsetY);
 	}
+
 }
 
 void ZombieManager::render()
@@ -184,7 +237,7 @@ void ZombieManager::render()
 	{
 		_Fzm[i]->render();
 	}
-
+	_slashEffect.render(getMemDC());
 	for (int i = 0; i < _Zfragments.size(); i++)
 	{
 		auto& fragment = _Zfragments[i];
@@ -220,19 +273,19 @@ std::vector<Zombiebot*>& ZombieManager::getZombies()
     return _Fzm;
 }
 
-void ZombieManager::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY)
+void ZombieManager::updateShakeEffect()
 {
-	if (shakeDuration > 0)
+	if (_shakeDuration > 0)
 	{
-		shakeDuration -= 0.016f; // 상황에 따라 실제 deltaTime으로 변경됩니다.
+		_shakeDuration -= 0.016f;
 
-		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
-		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
+		*_shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * _shakeDuration / _initialShakeDuration);
+		*_shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * _shakeDuration / _initialShakeDuration);
 	}
 	else
 	{
-		shakeOffsetX = 0.0f;
-		shakeOffsetY = 0.0f;
+		*_shakeOffsetX = 0.0f;
+		*_shakeOffsetY = 0.0f;
 	}
 }
 

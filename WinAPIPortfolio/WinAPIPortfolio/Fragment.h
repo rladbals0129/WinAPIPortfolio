@@ -14,9 +14,10 @@ private:
 
     int _cnt;
     bool _initCnt;
+    bool _goUpdate;
 
 public:
-    Fragment() : m_rotation(0.0f),m_shouldRotate(true), m_render(true),_cnt(0){}
+    Fragment() : m_rotation(0.0f),m_shouldRotate(true), m_render(true),_cnt(0),_goUpdate(true){}
 
     void SetRotation(float rotation) { m_rotation = rotation; }
     float GetRotation() const { return m_rotation; }

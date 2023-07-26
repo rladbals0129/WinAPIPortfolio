@@ -5,6 +5,7 @@
 #include "Fragment.h"
 #include "Zombiebot.h"
 #include "BoxBreakEffect.h"
+#include "ZombieManager.h"
 
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
@@ -164,10 +165,10 @@ private:
 	float _shakeOffsetX;
 	float _shakeOffsetY;
 
-	const float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
-	const float _initialShakeMagnitude = 15.0f; // 흔들기 강도
+	 float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
+	 float _initialShakeMagnitude = 15.0f; // 흔들기 강도
 
-
+	ZombieManager _zombieManager;
 	
 public:
 

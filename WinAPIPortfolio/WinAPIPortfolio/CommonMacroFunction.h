@@ -57,3 +57,28 @@ inline void EllipaseMakeCenter(HDC hdc, int x, int y, int redius)
 {
 	Ellipse(hdc, x - redius, y - redius, x + redius, y + redius);
 }
+void drawLineWithThickness(HDC hdc, int startX, int startY, int endX, int endY, int thickness)
+{
+  
+    HPEN hOldPen;
+
+   
+    LOGPEN logPen;
+    logPen.lopnColor = RGB(0, 0, 0);
+    logPen.lopnStyle = PS_SOLID;
+    logPen.lopnWidth.x = thickness;
+
+  
+    HPEN hPen = CreatePenIndirect(&logPen);
+    hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+   
+    MoveToEx(hdc, startX, startY, NULL);
+    LineTo(hdc, endX, endY);
+
+   
+    SelectObject(hdc, hOldPen);
+
+   
+    DeleteObject(hPen);
+}
