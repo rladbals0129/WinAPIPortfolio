@@ -162,6 +162,7 @@
     <ClInclude Include="Intro.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Kunai.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomFunction.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="Kunai.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceClass.cpp" />

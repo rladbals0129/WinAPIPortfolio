@@ -7,6 +7,7 @@
 #include "BoxBreakEffect.h"
 #include "ZombieManager.h"
 
+
 #define PI 3.141592f
 #define RADIAN(dig)  (PI * dig) / 180.f
 #define GRAVITY  0.5f;
@@ -65,6 +66,7 @@ class Stage1 : public GameNode
 {
 private:
 	RotationRender* _rot;
+	
 	
 	RigidBody m_rigidBody;
 	bool m_isDestroyed;
@@ -159,7 +161,8 @@ private:
 	bool _upBtnRender;
 	bool _txtComputer1;
 
-	//==========
+	//==========Äí³ªÀÌ
+	Kunai* _kunai;
 
 	float _shakeDuration;
 	float _shakeOffsetX;
@@ -169,6 +172,9 @@ private:
 	 float _initialShakeMagnitude = 15.0f; // Èçµé±â °­µµ
 
 	ZombieManager _zombieManager;
+
+	float _lerpSpeed;
+
 	
 public:
 

@@ -40,7 +40,10 @@ HRESULT Player::init(void)
 	_colRight = false;
 	_colLeft = false;
 	_colTop = false;
-
+	//쿠나이
+	_kunai = new Kunai;
+	_kunai->init();
+	_lerpSpeed = 1.f;
 
 
 	//점프
@@ -64,7 +67,9 @@ HRESULT Player::init(void)
 	
 	//하단점프
 	_downJump = false;
-
+	//벽점프
+	_canLeftWallJump = false;
+	_canRightWallJump = false;
 	return S_OK;
 }
 
@@ -88,6 +93,7 @@ void Player::update(void)
 	_rc.bottom += _knockbackSpeedY;
 	_knockbackDistanceX += abs(_knockbackSpeedX);
 	_knockbackDistanceY += abs(_knockbackSpeedY);
+	_kunai->update();
 	if (_knockbackDistanceX >= _maxKnockbackDistance || _knockbackDistanceY >= _maxKnockbackDistance)
 	{
 		_knockbackSpeedX = 0.0f;
@@ -193,7 +199,7 @@ void Player::update(void)
 		_currentState = IDLE;
 	}
 	//===========점프===========
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && !_isJumping && !shoot)
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && (!_isJumping || _canLeftWallJump || _canRightWallJump) && !shoot)
 	{
 		_jumpDust = true;
 		if (!_downJump)
@@ -375,7 +381,7 @@ void Player::update(void)
 		shot();
 		fire();
 		_bulletCnt++;
-		if (_bulletCnt % 3 == 0)
+		if (_bulletCnt % 5 == 0)
 		{
 			float bulletX = _isLeft ?  _rc.left : _rc.right - 5 ;
 			float bulletY = _rc.bottom - 40;
@@ -810,7 +816,7 @@ void Player::render(HDC hdc)
 	}
 	
 	
-		
+	_kunai->render(hdc);
 	_dustEffect.render(hdc);
 	
 

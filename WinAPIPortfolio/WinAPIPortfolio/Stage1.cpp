@@ -5,9 +5,10 @@
 HRESULT Stage1::init(void)
 {
 	PLAYER->init();
-	//_rot->LoadImageA(L"Resources/Images/Stage1/Object/BoxBreak.png");
+	//_rot->LoadImageA();
 
-
+	
+	
 
 
 	_currentMap = map1;
@@ -129,7 +130,9 @@ HRESULT Stage1::init(void)
 		_Fzm.push_back(_zm);
 	
 	}
-
+	//_kunai = new Kunai;
+	//_kunai->init();
+	_lerpSpeed = 0.1f;
 	//_zombieManager.createZombie(600, 600);
 	//_zombieManager.init();
 	//_zombieManager.setShakeOffset(_shakeOffsetX, _shakeOffsetY);
@@ -147,6 +150,7 @@ void Stage1::update(void)
 	{
 		PLAYER->update();
 		PLAYER->_dustEffect.update();
+		//_kunai->update();
 	
 	}
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
@@ -173,6 +177,119 @@ void Stage1::update(void)
 
 	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.right + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY)); //g134
 	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.left + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY));
+
+	int LKT[60];
+	for (int i = 0; i < 60; i++)
+	{
+		LKT[i] = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+			PLAYER->getKunai()->getLeftKuniaPos().left +_offsetX + i,
+			PLAYER->getKunai()->getLeftKuniaPos().top + _offsetY));
+		//cout << LKT[i] << endl;
+	}
+	int RKT[60];
+	for (int i = 0; i < 60; i++)
+	{
+		RKT[i] = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
+			PLAYER->getKunai()->getRightKuniaPos().left + _offsetX + i,
+			PLAYER->getKunai()->getRightKuniaPos().top + _offsetY));
+		//cout << RKT[i] << endl;
+	}
+	
+	for (int i = 0; i < 60; i++)
+	{
+		if (LKT[i] == 134)
+		{
+			//cout << "왼벽 맞았다" << endl;
+			PLAYER->getKunai()->setLeftStuck(true);
+			POINT leftCollision;
+			leftCollision.x = PLAYER->getKunai()->getLeftKuniaPos().left + i + 90;
+			leftCollision.y = PLAYER->getKunai()->getLeftKuniaPos().top+20;
+			PLAYER->getKunai()->setLeftWallCollision(leftCollision);
+			//cout << PLAYER->getKunai()->getLeftWallCollision().x << endl;
+			break;
+		}
+	}
+	for (int i = 0; i < 60; i++)
+	{
+		if (RKT[i] == 134)
+		{
+			PLAYER->getKunai()->setRightStuck(true);
+			POINT rightCollision;
+			rightCollision.x = PLAYER->getKunai()->getRightKuniaPos().left + i - 100 ;
+			rightCollision.y = PLAYER->getKunai()->getRightKuniaPos().top+20;
+			PLAYER->getKunai()->setRightWallCollision(rightCollision);
+			break;
+			//cout << "오른벽 맞앗다" << endl;
+		}
+	}
+	
+	if (!PLAYER->getKunai()->getLeftFlying())
+	{
+		if (PLAYER->getKunai()->getLeftStuck())
+		{
+			float targetPosX = PLAYER->getKunai()->getLeftWallCollision().x;
+			float targetPosY = PLAYER->getKunai()->getLeftWallCollision().y;
+			PLAYER->setPosX(PLAYER->getPosX() + (targetPosX - PLAYER->getPosX()) * _lerpSpeed);
+			PLAYER->setPosY(PLAYER->getPosY() + (targetPosY - PLAYER->getPosY()) * _lerpSpeed);
+			if (abs(PLAYER->getPosX() - targetPosX) < 1.f && abs(PLAYER->getPosY() - targetPosY) < 1.f)
+			{
+
+				PLAYER->setPosX(targetPosX);
+				PLAYER->setPosY(targetPosY);
+				PLAYER->getKunai()->setLeftStuck(false);
+				
+			}
+		}
+	}
+
+	if (!PLAYER->getKunai()->getLeftFlying() && PLAYER->getKunai()->getLeftStuck())
+	{
+	
+		PLAYER->setIsCanLeftWallJump(true);
+		PLAYER->setGravity(0);
+		PLAYER->setIsJumping(false);
+	}
+	else 
+	{
+		PLAYER->setIsCanLeftWallJump(false);
+		PLAYER->setGravity(8);
+		PLAYER->setIsJumping(true);
+	}
+
+
+	if (!PLAYER->getKunai()->getRightFlying())
+	{
+		if (PLAYER->getKunai()->getRightStuck())
+		{
+			float targetPosX = PLAYER->getKunai()->getRightWallCollision().x;
+			float targetPosY = PLAYER->getKunai()->getRightWallCollision().y;
+			PLAYER->setPosX(PLAYER->getPosX() + (targetPosX - PLAYER->getPosX()) * _lerpSpeed);
+			PLAYER->setPosY(PLAYER->getPosY() + (targetPosY - PLAYER->getPosY()) * _lerpSpeed);
+			PLAYER->setIsJumping(false);
+			if (abs(PLAYER->getPosX() - targetPosX) < 1.f && abs(PLAYER->getPosY() - targetPosY) < 1.f)
+			{
+				PLAYER->setPosX(targetPosX);
+				PLAYER->setPosY(targetPosY);
+				PLAYER->getKunai()->setRightStuck(false);
+			}
+		}
+
+	}
+	if (!PLAYER->getKunai()->getRightFlying() && PLAYER->getKunai()->getRightStuck()) 
+	{
+	
+		PLAYER->setIsCanRightWallJump(true);
+		PLAYER->setGravity(0);
+		PLAYER->setIsJumping(false);
+	}
+	else {
+		PLAYER->setIsCanRightWallJump(false);
+		PLAYER->setGravity(8);
+		PLAYER->setIsJumping(true);
+	}
+
+
+
 
 	//바닥
 	if (Rlb == 131 || Rrb == 131)
@@ -1088,7 +1205,7 @@ void Stage1::update(void)
 void Stage1::render(void)
 {
 	
-	//IMAGEMANAGER->render("스테이지1", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
+	
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
 	//_zombieManager.render();
 	_slashEffect.render(getMemDC());
@@ -1238,7 +1355,7 @@ void Stage1::render(void)
 	if (_createPlayer)
 	{
 		PLAYER->render(getMemDC());
-
+		//_kunai->render(getMemDC());
 	}
 
 	if (_currentMap == map5)

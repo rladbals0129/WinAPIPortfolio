@@ -12,12 +12,15 @@ private:
     ULONG_PTR gdiplusToken;
     Image* image;
     REAL _angle;
+    Image* kunai1;
+    Image* kunai2;
 
 public:
     HRESULT init(void);
     void release(void);
-   
     void LoadImage(wchar_t* filePath);
+
     void RotateRender(int x, int y, int width, int height, bool render);
     void rotateImage(REAL delta_angle,bool isColliding);
+
 };

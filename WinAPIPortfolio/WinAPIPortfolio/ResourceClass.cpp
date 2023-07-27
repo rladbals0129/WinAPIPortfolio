@@ -209,7 +209,16 @@ HRESULT ResourceClass::init()
 		34, 36,
 		1, 2, true,
 		RGB(255, 0, 255));
-	
+	IMAGEMANAGER->addFrameImage("쿠나이1", "Resources/Images/Player/Weapon/kunai.bmp",
+		60, 160,
+		1, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("쿠나이2", "Resources/Images/Player/Weapon/kunai.bmp",
+		60, 160,
+		1, 2,
+		true,
+		RGB(255, 0, 255));
 	
 	IMAGEMANAGER->addImage("배경시체", "Resources/Images/Stage1/Object/bgDumi.bmp", 600, 300, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("상자", "Resources/Images/Stage1/Object/Box.bmp", 120, 80, true, RGB(255, 0, 255));

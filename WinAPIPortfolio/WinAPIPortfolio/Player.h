@@ -1,5 +1,6 @@
 #pragma once
 #include "SingletonBase.h"
+#include "Kunai.h"
 
 
 class DustEffect {
@@ -131,7 +132,7 @@ private:
 	};
 	STATE _currentState;
 
-	
+	Kunai* _kunai;
 	int _dustCnt;
 	bool _jumpDust;
 
@@ -240,6 +241,10 @@ private:
 	int _createBulletPosX;
 	int _createBulletPosY;
 
+	float _lerpSpeed;
+	bool _canLeftWallJump;
+	bool _canRightWallJump;
+
 
 public:	
 	HRESULT init(void);
@@ -263,10 +268,12 @@ public:
 
 
 	void Hit(void);
-
+	
 	DustEffect _dustEffect;
 	FireBullet _bullet;
 	void titlePlayer(HDC hdc);
+
+	Kunai* getKunai() { return _kunai; }
 
 	inline STATE getState() { return _currentState; }
 	inline RECT getPlayerPos() { return _rc; }
@@ -309,6 +316,13 @@ public:
 	inline void setIsJumping(bool isJumping) { _isJumping = isJumping; }
 	inline void setPlayerPos(int x, int y) { _rc.left = x; _rc.right = x + 74; _rc.top = y; _rc.bottom = y + 74; }
 	inline void setPlayerPos(int left, int top, int right, int bottom) { _rc.left = left; _rc.top = top; _rc.right = right; _rc.bottom = bottom; }
+
+	float getPosX() { return _rc.left; }
+	float getPosY() { return _rc.top; }
+	void setPosX(float x) { _rc.left = x; _rc.right = x + 74; }
+	void setPosY(float y) { _rc.top = y; _rc.bottom = y + 74; }
+	void setGravity(float gravity) { _gravity = gravity; }
+
 	inline void setIsGravity(bool isGravity) { _isGravity = isGravity; }
 	inline void setColRight(bool colRight) { _colRight = colRight; }
 	inline void setColLeft(bool colLeft) { _colLeft = colLeft; }
@@ -332,6 +346,11 @@ public:
 		_knockbackDistanceX = 0.0f;
 		_knockbackDistanceY = 0.0f;
 	}
+
+	
+
+	void setIsCanLeftWallJump(bool canLeftWallJump) { _canLeftWallJump = canLeftWallJump; }
+	void setIsCanRightWallJump(bool canRightWallJump) { _canRightWallJump = canRightWallJump; }
 
 	//튜토리얼관련
 	bool getUsingKnife() { return _usingKnife; }
