@@ -5,18 +5,19 @@
 class Kunai 
 {
 private:
-    RECT _rc1; //쿠나이 위치 왼쪽
-    RECT _rc2; //쿠나이 위치 오른쪽
-    int speed; // 쿠나이의 속도
-    float angle; // 쿠나이의 회전 각도
-    bool isFlying;
-    bool isLeftFlying; // 쿠나이가 날아가는지 아닌지를 검사하는 변수
-    bool isRightFlying; 
-    bool _render;
+    RECT _rc1; 
+    RECT _rc2; 
+    int speed; 
+    float angle; 
 
+    bool isFlying;
+
+    bool isLeftFlying;
+    bool isRightFlying; 
+   
     bool isLeftThrown;
     bool isRightThrown;
-
+    float radian;
     float DistanceX;
     float DistanceY;
 
@@ -25,7 +26,22 @@ private:
     POINT leftWallCollision;
     POINT rightWallCollision;
 
+    bool createL_Rope;
+    bool createR_Rope;
+    vector<pair<int, int>> L_pathPoints;
+    vector<pair<int, int>> R_pathPoints;
+    
+    bool EfLeft;
+    int lCnt;
+    int lIdx;
+    bool EfRight;
+    int rCnt;
+    int rIdx;
    
+    bool leftAnimFinished;
+    bool rightAnimFinished;
+
+    bool inputQ, inputE;
 
 public :
     HRESULT init();
@@ -51,9 +67,15 @@ public :
     const POINT& getLeftWallCollision() const { return leftWallCollision; }
     const POINT& getRightWallCollision() const { return rightWallCollision; }
     
+
+
+    void eraseLeftPathPoints(size_t count);
+    void eraseRightPathPoints(size_t count);
    // void setPosition(int x, int y) { this->x = x; this->y = y; }
 
-    
+
+    void kunaiLeftHitWallEF();
+    void kunaiRightHitWallEF();
     
 };
 

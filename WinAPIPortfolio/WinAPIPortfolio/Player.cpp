@@ -29,21 +29,22 @@ HRESULT Player::init(void)
 	_usingKnife = false;
 	_panalKnife = false;
 	//ÃÑ
-	_usingGun = true;
+	_usingGun = false;
 	//ui
 	_txtCom = false;
 	_colCom = false;
-	
+	//Äí³ªÀÌ
+	_usingKunai = false;
+	_kunai = new Kunai;
+	_kunai->init();
+	_lerpSpeed = 1.f;
 	
 	//ÀÌµ¿
 	_speed = 8.0f;
 	_colRight = false;
 	_colLeft = false;
 	_colTop = false;
-	//Äí³ªÀÌ
-	_kunai = new Kunai;
-	_kunai->init();
-	_lerpSpeed = 1.f;
+	
 
 
 	//Á¡ÇÁ
@@ -93,7 +94,11 @@ void Player::update(void)
 	_rc.bottom += _knockbackSpeedY;
 	_knockbackDistanceX += abs(_knockbackSpeedX);
 	_knockbackDistanceY += abs(_knockbackSpeedY);
-	_kunai->update();
+	if (_usingKunai)
+	{
+		_kunai->update();
+	}
+	
 	if (_knockbackDistanceX >= _maxKnockbackDistance || _knockbackDistanceY >= _maxKnockbackDistance)
 	{
 		_knockbackSpeedX = 0.0f;
@@ -252,28 +257,36 @@ void Player::update(void)
 	
 	//========================================
 	//===ÀÏº»µµ È¹µæ===
-	if (KEYMANAGER->isOnceKeyDown(VK_UP) && (_knife || _colCom))
+	if (KEYMANAGER->isOnceKeyDown(VK_UP) && (_knife || _colCom || _colKunai || _colGun))
 	{
 		if (_colCom)
 		{
 			_txtCom = true;
 		}
-		else
+		else if (_knife)
 		{
 			_txtKnife = true;
+		}
+		else if (_colKunai)
+		{
+			_txtKunai = true;
+		}
+		else if (_colGun)
+		{
+			_txtGun = true;
 		}
 		
 		
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_UP)) {}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && (_txtKnife || _txtCom))
+	if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && (_txtKnife || _txtCom || _txtKunai || _txtGun))
 	{
 		if (_txtCom)
 		{
 			_txtCom = false;
 		}
-		else
+		else if (_txtKnife)
 		{
 			_txtKnife = false;
 			_panalKnife = true;
@@ -281,6 +294,19 @@ void Player::update(void)
 
 			cout << "¾ò´Ù" << endl;
 			_usingKnife = true;
+		}
+		else if (_txtKunai)
+		{
+			_txtKunai = false;
+			_panalKunai = true;
+
+			_usingKunai = true;
+		}
+		else
+		{
+			_txtGun = false;
+			_panalGun = true;
+			_usingGun = true;
 		}
 	
 	}
@@ -815,8 +841,11 @@ void Player::render(HDC hdc)
 		
 	}
 	
+	if (_usingKunai)
+	{
+		_kunai->render(hdc);
+	}
 	
-	_kunai->render(hdc);
 	_dustEffect.render(hdc);
 	
 

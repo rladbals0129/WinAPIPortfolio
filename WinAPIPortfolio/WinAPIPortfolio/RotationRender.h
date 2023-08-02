@@ -12,8 +12,6 @@ private:
     ULONG_PTR gdiplusToken;
     Image* image;
     REAL _angle;
-    Image* kunai1;
-    Image* kunai2;
 
 public:
     HRESULT init(void);

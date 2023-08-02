@@ -163,6 +163,7 @@
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Kunai.h" />
+    <ClInclude Include="KunaiCollision.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomFunction.h" />
@@ -172,6 +173,8 @@
     <ClInclude Include="RotationRender.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage2.h" />
+    <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TempSoundManager.h" />
@@ -195,12 +198,15 @@
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Kunai.cpp" />
+    <ClCompile Include="KunaiCollision.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceClass.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RotationRender.cpp" />
     <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage2.cpp" />
+    <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>

@@ -16,21 +16,17 @@ HRESULT Tutorial::init()
 
 	_zombieManager.init();
 	_zombieManager.setShakeOffset(_shakeOffsetX, _shakeOffsetY);
-
+	_kunaiCol = new KunaiCollision;
+	_kunaiCol->init();
 
 	_knockBackMagnitude = 10.0f;
 
-
-	//플레이어 무기
-	
-
-	//좀비
 
 	
 
 	//버튼//
 	const vector<string> buttonTexts = {
-	"좀비 생성", "일본도 사용" ,"P90 사용"};
+	"좀비 생성", "일본도 사용" ,"P90 사용" , "쿠나이 사용"};
 	for (int i = 0; i < buttonTexts.size(); i++)
 	{
 		int x = (i < 4) ? 0 : 1280 - _buttonWidth;
@@ -72,9 +68,9 @@ void Tutorial::update()
 	//====================================================
 	//updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
 	_zombieManager.update(0,0);
+
 	//updateZombie();
 
-	//_slashEffect.update();
 	if (PLAYER->getShoot())
 	{
 		_initialShakeDuration = 0.1;
@@ -84,11 +80,13 @@ void Tutorial::update()
 
 void Tutorial::render()
 {
-    IMAGEMANAGER->render("튜토리얼", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, 1280,800);
+    IMAGEMANAGER->render("튜토리얼", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY);
+
     if (KEYMANAGER->isToggleKey(VK_F1))
     {
-        IMAGEMANAGER->render("튜토리얼픽셀", getMemDC(), 0, 0, 1280, 800);
+        IMAGEMANAGER->render("튜토리얼픽셀", getMemDC(), 0, 0);
     }
+
 	UI->panalHpRender(getMemDC());
 
 
@@ -135,7 +133,10 @@ void Tutorial::playerPixel()
 	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.right, (_pPosRc.top + _pPosRc.bottom) / 2 )); //g134
 	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.left , (_pPosRc.top + _pPosRc.bottom) / 2 ));
 
-	//바닥
+	if (PLAYER->getUsingKunai())
+	{
+		_kunaiCol->kunaiCollision(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), 0, 0);
+	}
 	if (Rlb == 131 || Rrb == 131)
 	{
 		if (Rlbup == 131 || Rrbup == 131)
@@ -158,7 +159,7 @@ void Tutorial::playerPixel()
 	else
 	{
 		PLAYER->setDownJump(false);
-		//PLAYER->setIsJumping(true);
+		
 	}
 	//센터값 장애물
 	if (GCR == 134)
@@ -184,20 +185,14 @@ void Tutorial::playerPixel()
 		PLAYER->setPlayerPosRight(8);
 
 	}
-	/*else
-	{
-		PLAYER->setColRight(false);
-	}*/
+
 
 	//왼쪽막힌곳
 	if (Glt == 134 && Glb == 134)
 	{
 		PLAYER->setPlayerPosLeft(8);
 	}
-	//else
-	//{
-	//	//PLAYER->setColLeft(false);
-	//}
+
 
 	//위쪽막힌곳
 	if (Glt == 134 && Grt == 134)
@@ -205,10 +200,7 @@ void Tutorial::playerPixel()
 		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
 
 	}
-	else
-	{
 
-	}
 }
 
 void Tutorial::onButtonClick(int buttonIndex)
@@ -225,6 +217,8 @@ void Tutorial::onButtonClick(int buttonIndex)
 	case 2:
 		PLAYER->setUsingGun(!PLAYER->getUsingGun());
 		break;
+	case 3:
+		PLAYER->setUsingKunai(!PLAYER->getUsingKunai());
 		
 	}
 }

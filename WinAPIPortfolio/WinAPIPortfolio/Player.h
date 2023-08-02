@@ -184,6 +184,18 @@ private:
 	bool _txtKnife;
 	bool _usingKnife;
 	bool _panalKnife;
+	
+	//Äí³ªÀÌÈ¹µæ
+	bool _kunai1;
+	bool  _colKunai;
+	bool _txtKunai;
+	bool _panalKunai;
+
+	//ÃÑ È¹µæ
+	bool _gun1;
+	bool  _colGun;
+	bool _txtGun;
+	bool _panalGun;
 
 	//1ÄÄÅÍ
 	bool _txtCom;
@@ -240,10 +252,11 @@ private:
 
 	int _createBulletPosX;
 	int _createBulletPosY;
-
+	//Äí³ªÀÌ
 	float _lerpSpeed;
 	bool _canLeftWallJump;
 	bool _canRightWallJump;
+	bool _usingKunai;
 
 
 public:	
@@ -293,8 +306,16 @@ public:
 	inline bool getDownJump() { return _downJump; }
 	inline bool getGoDownjump() { return _goDownJump; }
 
+	inline bool getColKunai() { return _colKunai; }
+	inline bool getTxtKunai() { return _txtKunai; }
+	inline bool getPanalKunai() { return _panalKunai; }
+
 	inline bool getUsingGun() { return _usingGun; }
 	inline bool getShoot() { return shoot; }
+
+	inline bool getColGun() { return _colGun; }
+	inline bool getTxtGun() { return _txtGun; }
+	inline bool getPanalGun() { return _panalGun; }
 
 	inline int getHp() { return _hp; }
 	inline int getAlpha() { return _alpha; }
@@ -319,6 +340,7 @@ public:
 
 	float getPosX() { return _rc.left; }
 	float getPosY() { return _rc.top; }
+	bool getUsingKunai() { return _usingKunai; }
 	void setPosX(float x) { _rc.left = x; _rc.right = x + 74; }
 	void setPosY(float y) { _rc.top = y; _rc.bottom = y + 74; }
 	void setGravity(float gravity) { _gravity = gravity; }
@@ -332,6 +354,16 @@ public:
 	inline void setPanalKnife(bool panalKnife) { _panalKnife = panalKnife; }
 	inline void setTxtCom(bool txtCom) { _txtCom = txtCom; }
 	inline void setcolCom(bool colCom) { _colCom = colCom; }
+
+	inline void setcolKunai(bool colKunai) { _colKunai = colKunai; }
+	inline void setTxtKunai(bool txtKunai) { _txtKunai = txtKunai; }
+	inline void setPanalKunai(bool panalKunai) { _panalKunai = panalKunai; }
+
+	inline void setcolGun(bool colGun) { _colGun = colGun; }
+	inline void setTxtGun(bool txtGun) { _txtGun = txtGun; }
+	inline void setPanalGun(bool panalGun) { _panalGun = panalGun; }
+
+
 	inline void setDownJump(bool downJump) { _downJump = downJump; }
 	inline void setGoDownJump(bool goDoinJump) { _goDownJump = goDoinJump; }
 	inline void setUsingGun(bool usingGun) { _usingGun = usingGun; }
@@ -346,6 +378,7 @@ public:
 		_knockbackDistanceX = 0.0f;
 		_knockbackDistanceY = 0.0f;
 	}
+	void setUsingKunai(bool kunai) { _usingKunai = kunai; }
 
 	
 

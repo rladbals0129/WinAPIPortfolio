@@ -47,7 +47,6 @@ private:
 	const float _initialShakeMagnitude = 15.0f; // Èçµé±â °­µµ
 
 	void updateShakeEffect();
-	
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
-
+	void cameraCalibration();
 };

@@ -5,9 +5,10 @@
 #include "Fragment.h"
 #include "Zombiebot.h"
 #include "BoxBreakEffect.h"
-#include "Stage1.h"
 #include "Title.h"
 #include "ZombieManager.h" 
+#include "KunaiCollision.h"
+
 struct Button
 {
 	RECT rect;
@@ -37,8 +38,11 @@ private:
 	bool _goTitle;
 	
 	RotationRender* _rot;
+
+	KunaiCollision* _kunaiCol;
+
+
 	
-	Stage1 _st;
 	//≈∏∞›¿Ã∆Â∆Æ
 	BoxBreakEffect _slashEffect;
 	bool createBoxEF;
@@ -90,11 +94,6 @@ public:
 
 	void setGoTitle(bool x) { _goTitle = x; }
 	
-	void createZombie(int x,int y);
-	void updateZombie();
-	void renderZombie();
-
-
 	void playerPixel();
 
 	void onButtonClick(int buttonIndex);

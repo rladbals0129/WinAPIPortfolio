@@ -119,6 +119,12 @@ HRESULT ResourceClass::init()
 	
 	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö1", "Resources/Images/Stage1/_tStage1-1.bmp", 8960,1600); //7680 1440
 	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö1ÇÈ¼¿", "Resources/Images/Stage1/tStage1-1.bmp", 8960, 1600 );
+
+	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö2", "Resources/Images/Stage2/Stage2.bmp", 5120, 2400); 
+	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö2ÇÈ¼¿", "Resources/Images/Stage2/_Stage2.bmp", 5120, 2400);
+
+	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö3", "Resources/Images/Stage3/Stage3.bmp", 6400, 800);
+	IMAGEMANAGER->addImage("½ºÅ×ÀÌÁö3ÇÈ¼¿", "Resources/Images/Stage3/_Stage3.bmp", 6400, 800);
 	
 	IMAGEMANAGER->addImage("±úÁøÀ¯¸®¾Æ·¡", "Resources/Images/Stage1/Object/breakGlassTubeDown.bmp", 146, 51,true,RGB(255,0,255));
 	IMAGEMANAGER->addImage("±úÁøÀ¯¸®À§", "Resources/Images/Stage1/Object/breakGlassTubeUP.bmp", 146, 51,true,RGB(255,0,255));
@@ -180,7 +186,40 @@ HRESULT ResourceClass::init()
 		true,
 		RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("ÀÏº»µµÈ¹µæ", "Resources/Images/UI/getKnifeUI.bmp", 1280, 800,true,RGB(255,0,255)); 
+	IMAGEMANAGER->addImage("Äí³ªÀÌÈ¹µæ", "Resources/Images/UI/getKunaiPanal.bmp", 1280, 800, true, RGB(255, 0, 255));
 	
+	IMAGEMANAGER->addImage("Äí³ªÀÌ", "Resources/Images/Stage1/Object/kunai1.bmp",
+		58, 26,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("Äí³ªÀÌÀÌÆåÆ®", "Resources/Images/Stage1/Object/Knife_particle.bmp",
+		980, 50,
+		7, 1,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Äí³ªÀÌÅØ½ºÆ®", "Resources/Images/UI/kunaiTXT.bmp",
+		312, 165,
+		true,
+		RGB(255, 0, 255));
+
+	
+		IMAGEMANAGER->addImage("ÃÑÈ¹µæ", "Resources/Images/UI/getGunPanal.bmp", 1280, 800, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("ÃÑ", "Resources/Images/Stage2/Gun.bmp",
+		80, 60,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("ÃÑÀÌÆåÆ®", "Resources/Images/Stage1/Object/Knife_particle.bmp",
+		980, 50,
+		7, 1,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ÃÑÅØ½ºÆ®", "Resources/Images/UI/txtGun.bmp",
+		312, 165,
+		true,
+		RGB(255, 0, 255));
+		
+
 	IMAGEMANAGER->addFrameImage("¼Õ", "Resources/Images/Player/Weapon/hand.bmp",
 		40, 64,
 		1, 2,
@@ -217,6 +256,14 @@ HRESULT ResourceClass::init()
 	IMAGEMANAGER->addFrameImage("Äí³ªÀÌ2", "Resources/Images/Player/Weapon/kunai.bmp",
 		60, 160,
 		1, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("Äí³ªÀÌº®1", "Resources/Images/Effect/FXKunaiHitWall.bmp", 350, 72,
+		5,2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("Äí³ªÀÌº®2", "Resources/Images/Effect/FXKunaiHitWall.bmp", 350, 72,
+		5, 2,
 		true,
 		RGB(255, 0, 255));
 	

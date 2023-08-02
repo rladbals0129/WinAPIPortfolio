@@ -14,7 +14,7 @@ HRESULT Stage1::init(void)
 	_currentMap = map1;
 	_offsetX = 3840;
 	_offsetY = 0;
-
+	_switchScreen = false;
 
 
 	_glassIdx = 0;
@@ -57,24 +57,22 @@ HRESULT Stage1::init(void)
 		_gl[i].glass = RectMakeCenter(_gl[i].createX, _gl[i].createY, 72, 76);
 
 	}
-	_bgImage = RectMake(150, 600, 440, 300);
+	
 
 
 	_cutDoorL = 0;
 	_cutDoorR = 0;
 	_renderDoor = true;
-
+	_renderKunai = true;
 	_knifeGet = false;
 	_UIknifeRender = false;
 	_obCol = RectMake(900, 537, 140, 100);
+
+
+	_kunaigetCOl = RectMake(300, 600, 100, 100);
+
 	_knifeCnt = 0;
 	_knifeIdx = 0;
-
-	_keyUPCnt = 0;
-	_keyUPIdx = 0;
-
-	_enterCnt = 0;
-	_enterIdx = 0;
 
 	_panalCnt = 0;
 	_panalOffsetY = 800;
@@ -83,16 +81,12 @@ HRESULT Stage1::init(void)
 	_txtComputer1 = false;
 	_explosion = false;
 
-	//박스 792 440
-	//m_rigidBody.SetPosition(PLAYER->getPosition());
-	//m_rigidBody.SetGravity(3.81f);
+
 	_rot = new RotationRender;
 	_rot->init();
-	//m_rigidBody.SetPosition(PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top);
-	//m_rigidBody.SetVelocity(0.0f, 0.0f);
-	//m_rigidBody.SetAcceleration(0.0f, 0.0f);
-	m_gravity = 9.81f;
-	m_isDestroyed = false;
+
+	
+	
 	for (int i = 0; i < 3; i++)
 	{	
 		_box[i].rc = RectMake(792, 440 + (i * 70), 120, 80);
@@ -130,12 +124,7 @@ HRESULT Stage1::init(void)
 		_Fzm.push_back(_zm);
 	
 	}
-	//_kunai = new Kunai;
-	//_kunai->init();
-	_lerpSpeed = 0.1f;
-	//_zombieManager.createZombie(600, 600);
-	//_zombieManager.init();
-	//_zombieManager.setShakeOffset(_shakeOffsetX, _shakeOffsetY);
+	_kunaiCOl.init();
 	return S_OK;
 }
 
@@ -145,7 +134,7 @@ void Stage1::release(void)
 
 void Stage1::update(void)
 {
-	//_zombieManager.update(_offsetX,_offsetY);
+	
 	if (_createPlayer)
 	{
 		PLAYER->update();
@@ -154,7 +143,7 @@ void Stage1::update(void)
 	
 	}
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
-	//m_rigidBody.Update(0.016f);
+	
 	
 	_pPosRc.left = PLAYER->getPlayerPos().left;
 	_pPosRc.right = PLAYER->getPlayerPos().right;
@@ -177,116 +166,11 @@ void Stage1::update(void)
 
 	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.right + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY)); //g134
 	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _pPosRc.left + _offsetX, (_pPosRc.top + _pPosRc.bottom) / 2 + _offsetY));
-
-	int LKT[60];
-	for (int i = 0; i < 60; i++)
+	if (PLAYER->getUsingKunai() && _createPlayer)
 	{
-		LKT[i] = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
-			PLAYER->getKunai()->getLeftKuniaPos().left +_offsetX + i,
-			PLAYER->getKunai()->getLeftKuniaPos().top + _offsetY));
-		//cout << LKT[i] << endl;
-	}
-	int RKT[60];
-	for (int i = 0; i < 60; i++)
-	{
-		RKT[i] = GetGValue(GetPixel(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(),
-			PLAYER->getKunai()->getRightKuniaPos().left + _offsetX + i,
-			PLAYER->getKunai()->getRightKuniaPos().top + _offsetY));
-		//cout << RKT[i] << endl;
+		_kunaiCOl.kunaiCollision(IMAGEMANAGER->findImage("스테이지1픽셀")->getMemDC(), _offsetX,_offsetY);
 	}
 	
-	for (int i = 0; i < 60; i++)
-	{
-		if (LKT[i] == 134)
-		{
-			//cout << "왼벽 맞았다" << endl;
-			PLAYER->getKunai()->setLeftStuck(true);
-			POINT leftCollision;
-			leftCollision.x = PLAYER->getKunai()->getLeftKuniaPos().left + i + 90;
-			leftCollision.y = PLAYER->getKunai()->getLeftKuniaPos().top+20;
-			PLAYER->getKunai()->setLeftWallCollision(leftCollision);
-			//cout << PLAYER->getKunai()->getLeftWallCollision().x << endl;
-			break;
-		}
-	}
-	for (int i = 0; i < 60; i++)
-	{
-		if (RKT[i] == 134)
-		{
-			PLAYER->getKunai()->setRightStuck(true);
-			POINT rightCollision;
-			rightCollision.x = PLAYER->getKunai()->getRightKuniaPos().left + i - 100 ;
-			rightCollision.y = PLAYER->getKunai()->getRightKuniaPos().top+20;
-			PLAYER->getKunai()->setRightWallCollision(rightCollision);
-			break;
-			//cout << "오른벽 맞앗다" << endl;
-		}
-	}
-	
-	if (!PLAYER->getKunai()->getLeftFlying())
-	{
-		if (PLAYER->getKunai()->getLeftStuck())
-		{
-			float targetPosX = PLAYER->getKunai()->getLeftWallCollision().x;
-			float targetPosY = PLAYER->getKunai()->getLeftWallCollision().y;
-			PLAYER->setPosX(PLAYER->getPosX() + (targetPosX - PLAYER->getPosX()) * _lerpSpeed);
-			PLAYER->setPosY(PLAYER->getPosY() + (targetPosY - PLAYER->getPosY()) * _lerpSpeed);
-			if (abs(PLAYER->getPosX() - targetPosX) < 1.f && abs(PLAYER->getPosY() - targetPosY) < 1.f)
-			{
-
-				PLAYER->setPosX(targetPosX);
-				PLAYER->setPosY(targetPosY);
-				PLAYER->getKunai()->setLeftStuck(false);
-				
-			}
-		}
-	}
-
-	if (!PLAYER->getKunai()->getLeftFlying() && PLAYER->getKunai()->getLeftStuck())
-	{
-	
-		PLAYER->setIsCanLeftWallJump(true);
-		PLAYER->setGravity(0);
-		PLAYER->setIsJumping(false);
-	}
-	else 
-	{
-		PLAYER->setIsCanLeftWallJump(false);
-		PLAYER->setGravity(8);
-		PLAYER->setIsJumping(true);
-	}
-
-
-	if (!PLAYER->getKunai()->getRightFlying())
-	{
-		if (PLAYER->getKunai()->getRightStuck())
-		{
-			float targetPosX = PLAYER->getKunai()->getRightWallCollision().x;
-			float targetPosY = PLAYER->getKunai()->getRightWallCollision().y;
-			PLAYER->setPosX(PLAYER->getPosX() + (targetPosX - PLAYER->getPosX()) * _lerpSpeed);
-			PLAYER->setPosY(PLAYER->getPosY() + (targetPosY - PLAYER->getPosY()) * _lerpSpeed);
-			PLAYER->setIsJumping(false);
-			if (abs(PLAYER->getPosX() - targetPosX) < 1.f && abs(PLAYER->getPosY() - targetPosY) < 1.f)
-			{
-				PLAYER->setPosX(targetPosX);
-				PLAYER->setPosY(targetPosY);
-				PLAYER->getKunai()->setRightStuck(false);
-			}
-		}
-
-	}
-	if (!PLAYER->getKunai()->getRightFlying() && PLAYER->getKunai()->getRightStuck()) 
-	{
-	
-		PLAYER->setIsCanRightWallJump(true);
-		PLAYER->setGravity(0);
-		PLAYER->setIsJumping(false);
-	}
-	else {
-		PLAYER->setIsCanRightWallJump(false);
-		PLAYER->setGravity(8);
-		PLAYER->setIsJumping(true);
-	}
 
 
 
@@ -340,20 +224,14 @@ void Stage1::update(void)
 		PLAYER->setPlayerPosRight(8);
 		
 	}
-	/*else 
-	{
-		PLAYER->setColRight(false);
-	}*/
+
 	
 	//왼쪽막힌곳
 	if (Glt == 134 && Glb == 134)
 	{
 		PLAYER->setPlayerPosLeft(8);
 	}
-	//else
-	//{
-	//	//PLAYER->setColLeft(false);
-	//}
+
 
 	//위쪽막힌곳
 	if (Glt == 134 && Grt == 134)
@@ -361,10 +239,7 @@ void Stage1::update(void)
 		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
 	
 	}
-	else
-	{
-		
-	}
+
 
 
 	
@@ -475,23 +350,11 @@ void Stage1::update(void)
 
 					_gl[i].speedY = -_gl[i].speedY * 0.8;
 					_gl[i].speedX = _gl[i].speedX * 0.5;
-					_gl[i].bounce = -_gl[i].bounce;
-					// 
-					// 
-						//_gl[i].speedX = _gl[i].speedX / 1.5f;
-
-
-
+					_gl[i].bounce = -_gl[i].bounce;	
 				}
 
 				if (GLB == 134 || GLT == 134 || GRB == 134 || GRT == 134)
-				{
-
-					//_gl[i].bounceY = -_gl[i].bounceY;
-					//_gl[i].speedY = -_gl[i].speedY * -1.5;
-					//_gl[i].glass.top += 10;
-					//_gl[i].glass.bottom += 10;
-					
+				{	
 					_gl[i].speedX *= 0.5;
 					_gl[i].speedY *= 0.5f;
 				}
@@ -529,9 +392,10 @@ void Stage1::update(void)
 			_renderBreakGlass = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
+			_switchScreen = true;
 			if (_offsetX == 5120 && _offsetY == 0)
 			{
-				
+				_switchScreen = false;
 				_renderDoor = true;
 				_currentMap = map2;
 				PLAYER->setPlayerPos(_pPosRc);
@@ -566,10 +430,12 @@ void Stage1::update(void)
 		{
 			_renderBreakGlass = true;
 			_renderDoor = false;
+			_switchScreen = true;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX -= 80;
 			if (_offsetX == 3840 && _offsetY == 0)
 			{
+				_switchScreen = false;
 				_currentMap = map1;
 				
 				PLAYER->setPlayerPos(_pPosRc);
@@ -583,9 +449,11 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top-40, 74, 74);
 			_offsetX += 80;
+			_switchScreen = true;
 			if (_offsetX == 6400 && _offsetY == 0)
 			{
 				_cutDoorR = 0;
+				_switchScreen = false;
 				_renderDoor = true;
 				_currentMap = map3;
 				PLAYER->setPlayerPos(_pPosRc);
@@ -603,8 +471,10 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
+			_switchScreen = true;
 			if (_offsetX == 5120 && _offsetY == 0)
 			{
+				_switchScreen = false;
 				_cutDoorR = 170;
 				_renderDoor = true;
 				_currentMap = map2;
@@ -620,8 +490,10 @@ void Stage1::update(void)
 			_renderKnife = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX += 80;
+			_switchScreen = true;
 			if (_offsetX == 7680 && _offsetY == 0)
 			{
+				_switchScreen = false;
 				_cutDoorL = 170;
 				_renderDoor = true;
 				_renderKnife = true;
@@ -630,32 +502,6 @@ void Stage1::update(void)
 			}
 		}
 
-		//여기서부터
-		//if ((_pPosRc.bottom + _pPosRc.top) / 2 > 800)
-		//{
-		//	_offsetY += 20;
-		//		//PLAYER->getColTop();
-		//	_pPosRc = RectMake(PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top - 400, 74, 74);
-		//	if (_offsetY == 800)
-		//	{
-		//		cout << Rlb << endl;
-		//		cout << "offsetY = " << _offsetY << endl;
-		//		_currentMap = map5;
-		//		
-		//		PLAYER->setPlayerPos(_pPosRc);
-		//	}
-		//	
-		//}
-	//	cout << _offsetY << endl;
-
-
-
-		/*if (PLAYER->getPlayerPos().top < 400)
-		{
-
-			_offsetY -= 400 - PLAYER->getPlayerPos().top;
-			PLAYER->setPlayerPosTop(400 - PLAYER->getPlayerPos().top);
-		}*/
 		if (PLAYER->getGoDownjump())
 		{
 			if (PLAYER->getPlayerPos().top > 600 && _offsetY < 800)
@@ -672,11 +518,6 @@ void Stage1::update(void)
 				}
 			}
 		}
-	
-
-
-
-
 	}
 
 	if (_currentMap == map4)
@@ -686,10 +527,12 @@ void Stage1::update(void)
 			_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 40, 74, 74);
 			_offsetX -= 80;
+			_switchScreen = true;
 			_renderKnife = false;
 			if (_offsetX == 6400 && _offsetY == 0)
 			{
 				_renderDoor = true;
+				_switchScreen = false;
 				_cutDoorR = 170;
 				_cutDoorL = 0;
 				_currentMap = map3;
@@ -764,21 +607,12 @@ void Stage1::update(void)
 		{
 
 			_offsetY -= 400 - PLAYER->getPlayerPos().top;
-			/*for (auto _iter = _obj.begin(); _iter != _obj.end(); ++_iter)
-			{
-				_iter->rc.top += 400 - PLAYER->getPlayerPos().top;
-				_iter->rc.bottom += 400 - PLAYER->getPlayerPos().bottom;
-			}*/
 			PLAYER->setPlayerPosTop(400 - PLAYER->getPlayerPos().top);
 		}
 		if (PLAYER->getPlayerPos().top > 400 && _offsetY < 800)
 		{
 			_offsetY += PLAYER->getPlayerPos().top - 400;
-			/*for (auto _iter = _obj.begin(); _iter != _obj.end(); ++_iter)
-			{
-				_iter->rc.top -= PLAYER->getPlayerPos().top - 600;
-				_iter->rc.bottom -= PLAYER->getPlayerPos().bottom - 600;
-			}*/
+	
 			PLAYER->setPlayerPosBottom(PLAYER->getPlayerPos().top - 400);
 		}
 
@@ -788,8 +622,10 @@ void Stage1::update(void)
 			//_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top -80, 74, 74);
 			_offsetX -= 80;
+			_switchScreen = true;
 			if (_offsetX == 5120)
 			{
+				_switchScreen = false;
 				_currentMap = map6;
 
 				PLAYER->setPlayerPos(_pPosRc);
@@ -1074,9 +910,11 @@ void Stage1::update(void)
 			//_renderDoor = false;
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
 			_offsetX += 80;
+			_switchScreen = true;
 			if (_offsetX == 6400)
 			{
 				_currentMap = map5;
+				_switchScreen = false;
 
 				PLAYER->setPlayerPos(_pPosRc);
 			}
@@ -1089,8 +927,10 @@ void Stage1::update(void)
 			//_renderDoor = false;
 			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 80, 74, 74);
 			_offsetX -= 80;
+			_switchScreen = true;
 			if (_offsetX == 2600)
 			{
+				_switchScreen = false;
 				_currentMap = map7;
 
 				PLAYER->setPlayerPos(_pPosRc);
@@ -1103,15 +943,47 @@ void Stage1::update(void)
 		{
 			//_renderBreakGlass = true;
 			//_renderDoor = false;
+
 			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_switchScreen = true;
 			_offsetX += 80;
 			if (_offsetX == 3880)
 			{
+				_switchScreen = false;
 				_currentMap = map6;
 
 				PLAYER->setPlayerPos(_pPosRc);
 			}
 		}
+		if ((_pPosRc.left + _pPosRc.right) / 2 < 0 && _offsetY > 600)
+		{
+
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_offsetX -= 80;
+			_switchScreen = true;
+			if (_offsetX == 0)
+			{
+				_switchScreen = false;
+				_currentMap = map8;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+		if ((_pPosRc.left + _pPosRc.right) / 2 < 0 && _offsetY < 600)
+		{
+
+			_pPosRc = RectMake(1180, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_offsetX -= 80;
+			_switchScreen = true;
+			if (_offsetX == 0)
+			{
+				_switchScreen = false;
+				_currentMap = map9;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+
 		std::vector<size_t> breakIndices;
 
 		// 박스
@@ -1173,7 +1045,7 @@ void Stage1::update(void)
 			POINT position = { _box2[i].rc.left, _box2[i].rc.top };
 			createFragments(m_fragments, position, L"Resources/Images/Stage1/Object/BoxBreak.png", 5);
 		}
-		// 상자 목록에서 파괴된 상자를 제거합니다.
+		// 상자 목록에서 파괴된 상자를 제거
 		for (auto it = breakIndices.rbegin(); it != breakIndices.rend(); ++it)
 		{
 			_box2.erase(_box2.begin() + *it);
@@ -1187,6 +1059,91 @@ void Stage1::update(void)
 
 		
 	}
+
+
+	if (_currentMap == map8)
+	{
+		if ((_pPosRc.left + _pPosRc.right) / 2 > 1280)
+		{
+	
+			_pPosRc = RectMake(0, PLAYER->getPlayerPos().top - 80, 74, 74);
+			_switchScreen = true;
+			_offsetX += 80;
+			if (_offsetX == 1280)
+			{
+				_switchScreen = false;
+				_currentMap = map7;
+
+				PLAYER->setPlayerPos(_pPosRc);
+			}
+		}
+		efKunai();
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_kunaigetCOl) && !_kunaiGet)
+		{
+			_UIkunaiRender = true;
+			UI->btnUPAnim();
+
+			PLAYER->setcolKunai(true);
+			if (PLAYER->getUsingKunai())
+			{
+				PLAYER->setcolKunai(false);
+			}
+			if (PLAYER->getTxtKunai())
+			{
+				_kunaiGet = true;
+				_renderKunai = false;
+			}
+
+		}
+		else
+		{
+			_UIkunaiRender = false;
+			PLAYER->setcolKunai(false);
+		}
+		if (PLAYER->getTxtKunai())
+		{
+			UI->btnEndterAnim();
+		}
+
+		if (PLAYER->getPanalKunai())
+		{
+			_panalKunaiCnt++;
+			if (_panalKunaiOffsetY > 0 && _panalKunaiCnt < 200)
+			{
+				_panalKunaiOffsetY -= 50;
+			}
+
+			if (_panalKunaiCnt > 200)
+			{
+				if (_panalKunaiOffsetY <= 800)
+				{
+					_panalKunaiOffsetY += 50;
+				}
+				else
+				{
+					_panalKunaiCnt = 0;
+					PLAYER->setPanalKunai(false);
+				}
+
+
+
+			}
+			PLAYER->setcolKunai(false);
+			//cout << _panalCnt << endl;
+
+		}
+
+	}
+
+	if (_currentMap == map9)
+	{
+		if ((_pPosRc.left + _pPosRc.right) / 2 < 150)
+		{
+			_goStage2 = true;
+			cout << "stage2" << endl;
+		}
+	
+	}
 	
 	if (PLAYER->getShoot())
 	{
@@ -1197,7 +1154,7 @@ void Stage1::update(void)
 	{
 		UI->lowHpUpdate();
 	}
-
+	//_zombieManager.update(_offsetX, _offsetY);
 	_slashEffect.update();
 
 } 
@@ -1207,7 +1164,6 @@ void Stage1::render(void)
 	
 	
 	IMAGEMANAGER->render("스테이지1", getMemDC(), 0 - _shakeOffsetX, 0 - _shakeOffsetY, _offsetX, _offsetY, 8960, 1600);
-	//_zombieManager.render();
 	_slashEffect.render(getMemDC());
 	if (PLAYER->getHp() < 30)
 	{
@@ -1216,248 +1172,281 @@ void Stage1::render(void)
 
 	UI->panalHpRender(getMemDC());
 
-	if (_currentMap == map1)
+	if (!_switchScreen)
 	{
-		_obCol = RectMake(130, 580, 100, 100);
-
-
-		if (_renderBreakGlass)
+		if (_currentMap == map1)
 		{
-			IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
-			IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
-		}
-		else if (!_createPlayer)
-		{
-			IMAGEMANAGER->frameRender("유리관", getMemDC(), 602, 420);
-			IMAGEMANAGER->findImage("유리관플레이어")->setX(640);
-			IMAGEMANAGER->findImage("유리관플레이어")->setY(480);
-			IMAGEMANAGER->render("유리관플레이어", getMemDC(), 640, 480);
-			UI->btnERender(getMemDC());
-			//RECT test = RectMake(625, 480, 76, 72);
-			//DrawRectMake(getMemDC(), test);
-		}
+			_obCol = RectMake(130, 580, 100, 100);
 
-		if (_breakFX)
-		{
-			IMAGEMANAGER->render("깨지는파티클", getMemDC(), _breakStartX, _breakStartY, _breakSizeX, _breakSizeY);
-		}
 
-		for (int i = 0; i < 50; i++)
-		{
-			if (!_gl[i].isGlass) continue;
-
-			if (_gl[i].isGlass)
+			if (_renderBreakGlass)
 			{
-				//	cout << "dd" << endl;
-				IMAGEMANAGER->findImage("유리폭발")->setFrameY(_gl[i].glassYIdx);
-				IMAGEMANAGER->frameAlphaRender("유리폭발", getMemDC(), _gl[i].glass.left, _gl[i].glass.top,
-					IMAGEMANAGER->findImage("유리폭발")->getFrameX(),
-					IMAGEMANAGER->findImage("유리폭발")->getFrameY(), _gl[i].alpha);
-				//cout << _gl[i].alpha << endl;
+				IMAGEMANAGER->render("깨진유리위", getMemDC(), 593, 412);
+				IMAGEMANAGER->render("깨진유리아래", getMemDC(), 593, 567);
+			}
+			else if (!_createPlayer)
+			{
+				IMAGEMANAGER->frameRender("유리관", getMemDC(), 602, 420);
+				IMAGEMANAGER->findImage("유리관플레이어")->setX(640);
+				IMAGEMANAGER->findImage("유리관플레이어")->setY(480);
+				IMAGEMANAGER->render("유리관플레이어", getMemDC(), 640, 480);
+				UI->btnERender(getMemDC());
+				//RECT test = RectMake(625, 480, 76, 72);
+				//DrawRectMake(getMemDC(), test);
+			}
+
+			if (_breakFX)
+			{
+				IMAGEMANAGER->render("깨지는파티클", getMemDC(), _breakStartX, _breakStartY, _breakSizeX, _breakSizeY);
+			}
+
+			for (int i = 0; i < 50; i++)
+			{
+				if (!_gl[i].isGlass) continue;
+
+				if (_gl[i].isGlass)
+				{
+					//	cout << "dd" << endl;
+					IMAGEMANAGER->findImage("유리폭발")->setFrameY(_gl[i].glassYIdx);
+					IMAGEMANAGER->frameAlphaRender("유리폭발", getMemDC(), _gl[i].glass.left, _gl[i].glass.top,
+						IMAGEMANAGER->findImage("유리폭발")->getFrameX(),
+						IMAGEMANAGER->findImage("유리폭발")->getFrameY(), _gl[i].alpha);
+					//cout << _gl[i].alpha << endl;
+				}
+
+			}
+			if (_readyPlayer)
+			{
+				IMAGEMANAGER->frameRender("플레이어생성", getMemDC(), 600, 570);
+			}
+
+
+
+
+
+			if (_upBtnRender)
+			{
+				UI->btnUPRender(getMemDC());
+			}
+			if (PLAYER->getTxtCom())
+			{
+				UI->txtRender(getMemDC(), "컴퓨터텍스트");
+
+				UI->btnEnterRender(getMemDC(), "컴퓨터텍스트");
+
+			}
+
+
+		}
+
+		if (_currentMap == map2 && _renderDoor)
+		{
+			IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
+
+		}
+		if (_currentMap == map3 && _renderDoor)
+		{
+			IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
+			IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
+		}
+
+		if (_currentMap == map4 && _renderDoor)
+		{
+			IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
+			if (_renderKnife && !_knifeGet)
+			{
+				IMAGEMANAGER->frameRender("일본도이펙트", getMemDC(), _obCol.left, _obCol.top);
+				IMAGEMANAGER->render("일본도", getMemDC(), _obCol.left, _obCol.top);
+
+			}
+			if (_UIknifeRender && !_knifeGet)
+			{
+				UI->btnUPRender(getMemDC());		
+			}
+			if (PLAYER->getTxtKnife())
+			{
+				UI->txtRender(getMemDC(), "일본도텍스트");
+				UI->btnEnterRender(getMemDC(), "일본도텍스트");
+			}
+			if (PLAYER->getPanalKnife())
+			{
+				IMAGEMANAGER->render("일본도획득", getMemDC(), 0, _panalOffsetY);
+			}
+			if (!_knifeGet)
+			{
+				_obCol = RectMake(900, 537, 140, 100);
 			}
 
 		}
-		if (_readyPlayer)
+		if (KEYMANAGER->isToggleKey(VK_F1))
 		{
-			IMAGEMANAGER->frameRender("플레이어생성", getMemDC(), 600, 570);
+			IMAGEMANAGER->render("스테이지1픽셀", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
+			if (_currentMap == map1)
+				DrawRectMake(getMemDC(), _obCol);
+
+			if (_currentMap == map4)
+				DrawRectMake(getMemDC(), _obCol);
+
+			if (_currentMap == map6)
+			{
+				for (int i = 0; i < _Fzm.size(); i++)
+				{
+					if (_Fzm[i]->getDie() == false)
+					{
+						DrawRectMake(getMemDC(), _Fzm[i]->getRange());
+						DrawRectMake(getMemDC(), _Fzm[i]->getPos());
+					}
+				}
+			}
+
+
+
 		}
 
 
-
-
-
-		if (_upBtnRender)
+		if (_currentMap == map5)
 		{
-			UI->btnUPRender(getMemDC());
-		}
-		if (PLAYER->getTxtCom())
-		{
-			UI->txtRender(getMemDC(), "컴퓨터텍스트");
 
-			UI->btnEnterRender(getMemDC(), "컴퓨터텍스트");
+			for (auto it = _obj.begin(); it != _obj.end(); ++it)
+			{
+				IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
+			}
 
-		}
-
-
-	}
-
-	if (_currentMap == map2 && _renderDoor)
-	{
-		IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
-
-	}
-	if (_currentMap == map3 && _renderDoor)
-	{
-		IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
-		IMAGEMANAGER->render("문", getMemDC(), 1255, 437, 0, _cutDoorR, 55, 225);
-	}
-
-	if (_currentMap == map4 && _renderDoor)
-	{
-		IMAGEMANAGER->render("문", getMemDC(), -30, 437, 0, _cutDoorL, 55, 225);
-		if (_renderKnife && !_knifeGet)
-		{
-			IMAGEMANAGER->frameRender("일본도이펙트", getMemDC(), _obCol.left, _obCol.top);
-			IMAGEMANAGER->render("일본도", getMemDC(), _obCol.left, _obCol.top);
+			// 파편 렌더링
+			for (auto& fragment : m_fragments)
+			{
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					72,     // 파편의 너비 설정
+					40);    // 파편의 높이 설정
+			}
 
 		}
-		if (_UIknifeRender && !_knifeGet)
-		{
-			UI->btnUPRender(getMemDC());
-			//IMAGEMANAGER->frameRender("방향키위", getMemDC(), (_pPosRc.left + _pPosRc.right) / 2, _pPosRc.top - 60);
 
-		}
-		if (PLAYER->getTxtKnife())
-		{
-			UI->txtRender(getMemDC(), "일본도텍스트");
-
-			UI->btnEnterRender(getMemDC(), "일본도텍스트");
-
-			//	IMAGEMANAGER->render("일본도텍스트", getMemDC(), _pPosRc.left-200, _pPosRc.top-200);
-
-			//	IMAGEMANAGER->frameRender("엔터키", getMemDC(), _pPosRc.left+240, _pPosRc.top + 3);
-
-		}
-		if (PLAYER->getPanalKnife())
-		{
-			IMAGEMANAGER->render("일본도획득", getMemDC(), 0, _panalOffsetY);
-		}
-		if (!_knifeGet)
-		{
-			_obCol = RectMake(900, 537, 140, 100);
-		}
-
-	}
-	if (KEYMANAGER->isToggleKey(VK_F1))
-	{
-		IMAGEMANAGER->render("스테이지1픽셀", getMemDC(), 0, 0, _offsetX, _offsetY, 8960, 1600);
-		if (_currentMap == map1)
-			DrawRectMake(getMemDC(), _obCol);
-
-		if (_currentMap == map4)
-			DrawRectMake(getMemDC(), _obCol);
 
 		if (_currentMap == map6)
 		{
+			//_zm->render();
+		//	_zombieManager.render();
 			for (int i = 0; i < _Fzm.size(); i++)
 			{
-				if (_Fzm[i]->getDie() == false)
+				_Fzm[i]->render();
+			}
+
+			for (int i = 0; i < _Zfragments.size(); i++)
+			{
+				auto& fragment = _Zfragments[i];
+				switch (i % 3)
 				{
-					DrawRectMake(getMemDC(), _Fzm[i]->getRange());
-					DrawRectMake(getMemDC(), _Fzm[i]->getPos());
+				case 0:
+					fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+						static_cast<int>(fragment.GetPosition().y),
+						26,
+						34);
+					break;
+				case 1:
+					fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+						static_cast<int>(fragment.GetPosition().y),
+						58,
+						44);
+					break;
+				case 2:
+					fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+						static_cast<int>(fragment.GetPosition().y),
+						46,
+						30);
+					break;
+
 				}
+
+
+			}
+			/*	for (auto& fragment : _Zfragments)
+				{
+					fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+						static_cast<int>(fragment.GetPosition().y),
+						46,
+						30);
+
+				}*/
+				//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
+
+				//DrawRectMake(getMemDC(), _bgImage);
+		}
+
+		if (_currentMap == map7)
+		{
+
+			for (auto it = _box2.begin(); it != _box2.end(); ++it)
+			{
+				IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
+			}
+
+			// 파편 렌더링
+			for (auto& fragment : m_fragments)
+			{
+				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+					static_cast<int>(fragment.GetPosition().y),
+					72,     // 파편의 너비 설정
+					40);    // 파편의 높이 설정
 			}
 		}
 
+		if (_currentMap == map8)
+		{
+		//	_kunaigetCOl = RectMake(350, 550, 100, 100);
+		//	DrawRectMake(getMemDC(), _kunaigetCOl);
+		//	IMAGEMANAGER->render("쿠나이", getMemDC(), _kunaigetCOl.left, _kunaigetCOl.top);
+		//	IMAGEMANAGER->render("쿠나이획득", getMemDC(),0, _kunaipanalOffsetY);
+			if (_renderKunai && !_kunaiGet)
+			{
+				IMAGEMANAGER->frameRender("쿠나이이펙트", getMemDC(), _kunaigetCOl.left, _kunaigetCOl.top);
+				IMAGEMANAGER->render("쿠나이", getMemDC(), _kunaigetCOl.left+30, _kunaigetCOl.top+30);
+
+			}
+			if (_UIkunaiRender && !_kunaiGet)
+			{
+				UI->btnUPRender(getMemDC());
+			}
+			if (PLAYER->getTxtKunai())
+			{
+				UI->txtRender(getMemDC(), "쿠나이텍스트");
+				UI->btnEnterRender(getMemDC(), "쿠나이텍스트");
+			}
+			if (PLAYER->getPanalKunai())
+			{
+				IMAGEMANAGER->render("쿠나이획득", getMemDC(), 0, _panalKunaiOffsetY);
+			}
+			if (!_kunaiGet)
+			{
+				_kunaigetCOl = RectMake(300, 600, 140, 100);
+			}
+		}
+
+		
 
 
 	}
+	
+
+
 	if (_createPlayer)
 	{
 		PLAYER->render(getMemDC());
-		//_kunai->render(getMemDC());
-	}
-
-	if (_currentMap == map5)
-	{
-
-		for (auto it = _obj.begin(); it != _obj.end(); ++it)
-		{
-			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
-		}
-
-		// 파편 렌더링
-		for (auto& fragment : m_fragments)
-		{
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				72,     // 파편의 너비 설정
-				40);    // 파편의 높이 설정
-		}
 
 	}
-
-
-	if (_currentMap == map6)
-	{
-		//_zm->render();
-		for (int i = 0; i < _Fzm.size(); i++)
-		{
-			_Fzm[i]->render();
-		}
-
-		for (int i = 0; i < _Zfragments.size(); i++)
-		{
-			auto& fragment = _Zfragments[i];
-			switch (i % 3)
-			{
-			case 0:
-				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-					static_cast<int>(fragment.GetPosition().y),
-					26,
-					34);
-				break;
-			case 1:
-				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-					static_cast<int>(fragment.GetPosition().y),
-					58,
-					44);
-				break;
-			case 2:
-				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-					static_cast<int>(fragment.GetPosition().y),
-					46,
-					30);
-				break;
-
-			}
-
-
-		}
-		/*	for (auto& fragment : _Zfragments)
-			{
-				fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-					static_cast<int>(fragment.GetPosition().y),
-					46,
-					30);
-
-			}*/
-			//IMAGEMANAGER->render("배경시체", getMemDC(), _bgImage.left, _bgImage.top);
-
-			//DrawRectMake(getMemDC(), _bgImage);
-	}
-
-	if (_currentMap == map7)
-	{
-
-		for (auto it = _box2.begin(); it != _box2.end(); ++it)
-		{
-			IMAGEMANAGER->render("상자", getMemDC(), it->rc.left, it->rc.top);
-		}
-
-		// 파편 렌더링
-		for (auto& fragment : m_fragments)
-		{
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				72,     // 파편의 너비 설정
-				40);    // 파편의 높이 설정
-		}
-	}
-
-
-
 	char ptMouse[128];
 	char ptOffset[128];
-	char test[128] = "안녕하세요";
+	char ptPlayerPos[128];
 	
 	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
 	wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
-	
+	wsprintf(ptPlayerPos, "x : %d y : %d", PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top);
 	
 	
 	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
 	TextOut(getMemDC(), 100, 120, ptOffset, strlen(ptOffset));
+	TextOut(getMemDC(), 100, 140, ptPlayerPos, strlen(ptPlayerPos));
 
 
 	
@@ -1519,6 +1508,25 @@ void Stage1::efKnife()
 	
 }
 
+void Stage1::efKunai()
+{
+	_kunaiCnt++;
+	if (_kunaiCnt % 3 == 0)
+	{
+		_kunaiIdx++;
+
+		if (_kunaiIdx > 7)
+		{
+			_kunaiIdx = 0;
+			_kunaiCnt = 0;
+		}
+		IMAGEMANAGER->findImage("쿠나이이펙트")->setFrameX(_kunaiIdx);
+	}
+}
+
+
+
+
 void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY)
 {
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -1535,8 +1543,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 			}
 			if (_currentMap == map6)
 			{
-				_bgImage.left += 8;
-				_bgImage.right += 8;
+				
 				for (int i = 0; i < _Fzm.size(); i++)
 				{
 					_Fzm[i]->setPosLeft(8);
@@ -1577,8 +1584,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 			}
 			if (_currentMap == map6)
 			{
-				_bgImage.left -= 8;
-				_bgImage.right -= 8;
+			
 				//_zombieDiePosX -= 8;
 				for (int i = 0; i < _Fzm.size(); i++)
 				{
@@ -1628,8 +1634,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		}
 		if (_currentMap == map6)
 		{
-			_bgImage.top += cameraOffsetY - PLAYER->getPlayerPos().top;
-			_bgImage.bottom += cameraOffsetY - PLAYER->getPlayerPos().top;
+			
 			for (int i = 0; i < _Fzm.size(); i++)
 			{
 				_Fzm[i]->setPosTop(cameraOffsetY - PLAYER->getPlayerPos().top);
@@ -1674,8 +1679,7 @@ void Stage1::moveCamera(int LcameraOffsetX,int RcameraOffsetX, int cameraOffsetY
 		}
 		if (_currentMap == map6)
 		{
-			_bgImage.top -= PLAYER->getPlayerPos().top - cameraOffsetY;
-			_bgImage.bottom -= PLAYER->getPlayerPos().top - cameraOffsetY;
+
 			for (int i = 0; i < _Fzm.size(); i++)
 			{
 				_Fzm[i]->setPosBottom(PLAYER->getPlayerPos().top - cameraOffsetY);
@@ -1754,7 +1758,7 @@ void Stage1::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float&
 {
 	if (shakeDuration > 0)
 	{
-		shakeDuration -= 0.016f; // 상황에 따라 실제 deltaTime으로 변경됩니다.
+		shakeDuration -= 0.016f; 
 
 		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
 		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
@@ -1787,3 +1791,4 @@ void Stage1::createFragments(std::vector<Fragment>& fragments, const POINT& posi
 		fragments.push_back(fragment);
 	}
 }
+

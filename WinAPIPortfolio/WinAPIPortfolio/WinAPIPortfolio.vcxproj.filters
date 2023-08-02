@@ -177,6 +177,15 @@
     <ClInclude Include="Kunai.h">
       <Filter>소스 파일\GameObjectClass\Player</Filter>
     </ClInclude>
+    <ClInclude Include="KunaiCollision.h">
+      <Filter>소스 파일\GameObjectClass\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2.h">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage3.h">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -256,6 +265,15 @@
     </ClCompile>
     <ClCompile Include="Kunai.cpp">
       <Filter>소스 파일\GameObjectClass\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="KunaiCollision.cpp">
+      <Filter>소스 파일\GameObjectClass\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage2.cpp">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage3.cpp">
+      <Filter>소스 파일\GameObjectClass\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

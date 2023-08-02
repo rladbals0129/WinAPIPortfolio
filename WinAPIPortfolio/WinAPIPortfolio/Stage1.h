@@ -6,23 +6,7 @@
 #include "Zombiebot.h"
 #include "BoxBreakEffect.h"
 #include "ZombieManager.h"
-
-
-#define PI 3.141592f
-#define RADIAN(dig)  (PI * dig) / 180.f
-#define GRAVITY  0.5f;
-enum MAP
-{
-	map1,map2,
-	map3,map4,
-	map5,map6,
-	map7,map8,
-	map9,map10,
-	map11
-};
-
-
-
+#include "KunaiCollision.h"
 
 struct GlassFragment
 {
@@ -65,13 +49,20 @@ struct BREAKOBJECT
 class Stage1 : public GameNode
 {
 private:
+	enum MAP
+	{
+		map1, map2,
+		map3, map4,
+		map5, map6,
+		map7, map8,
+		map9, map10,
+		map11
+	};
 	RotationRender* _rot;
-	
+	KunaiCollision _kunaiCOl;
 	
 	RigidBody m_rigidBody;
-	bool m_isDestroyed;
 	std::vector<Fragment> m_fragments;
-	float m_gravity; 
 	vector<BREAKOBJECT> _obj;
 	vector<BREAKOBJECT> _box2;
 	BoxBreakEffect _slashEffect;
@@ -87,17 +78,14 @@ private:
 	bool _zomIdle;
 	int _zomIdleCnt;
 	//========Àû====
+
 	float _knockBackMagnitude;
 	bool _hitDelay;
 	int _hitCnt;
 
 
-	bool _once;
-
 	RECT _pPosRc;
-	RECT _pPosRcCol;
 
-	RECT _bgImage;
 
 	MAP _currentMap;
 	bool _boom;
@@ -145,14 +133,12 @@ private:
 	RECT _obCol;
 	
 
-	int _keyUPCnt;
-	int _keyUPIdx;
+
 
 	int _knifeCnt;
 	int _knifeIdx;
 
-	int _enterCnt;
-	int _enterIdx;
+
 
 	int _panalCnt;
 	int _panalOffsetY;
@@ -162,18 +148,30 @@ private:
 	bool _txtComputer1;
 
 	//==========Äí³ªÀÌ
-	Kunai* _kunai;
+	float _lerpSpeed;
+	//Äí³ªÀÌÈ¹µæ
+	int _panalKunaiOffsetY;
+	RECT _kunaigetCOl;
+	bool _UIkunaiRender;
+	bool _kunaiGet;
+	bool _renderKunai;
+	int _panalKunaiCnt;
+	int _kunaiCnt;
+	int _kunaiIdx;
+	//=======
+	bool _goStage2;
 
+
+	//==È­¸é==
 	float _shakeDuration;
 	float _shakeOffsetX;
 	float _shakeOffsetY;
 
 	 float _initialShakeDuration = 0.5f;  // Èçµé±â Áö¼Ó½Ã°£
 	 float _initialShakeMagnitude = 15.0f; // Èçµé±â °­µµ
-
-	ZombieManager _zombieManager;
-
-	float _lerpSpeed;
+	 bool _switchScreen;
+	
+	
 
 	
 public:
@@ -190,15 +188,18 @@ public:
 	//=======
 
 	void efKnife();
-	
+	void efKunai();
 
-	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 	void glassBoom();
+	void moveCamera(int LcameraOffsetX,int RcameraOffsetX,  int cameraOffsetY, int LmaxOffsetX, int RmaxOffsetX, int maxOffsetY);
 
 	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
 	void applyShake(float shakeDuration);
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
 
+	bool getGoStage2() { return _goStage2; }
+	void setGoStage2(bool goStage2) { _goStage2 = goStage2; }
+	
 
 };
 
