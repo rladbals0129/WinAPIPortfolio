@@ -70,12 +70,127 @@ void Tutorial::update()
 	//====================================================
 	//updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
 	_zombieManager.update(0,0);
-
+	_slashEffect.update();
 	//updateZombie();
 	if (PLAYER->getCreateBoss())
 	{
+
 		_boss->update();
+
+	
+
+		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_boss->getPos()))
+		{
+			
+			if (!_bossHitDelay)
+			{
+			//	cout << "맞음?" << endl;
+				_boss->setHp(_boss->getHp() - 1);
+				_boss->setStateIdle();
+				_zombieOnce = false;
+				_boss->setHit(true);
+				_bossHitDelay = true;
+				
+				_zombieManager.applyShake(_initialShakeDuration); //스테이지에선 그냥 applyShake
 		
+				createBoxEF = true;
+				if (createBoxEF)
+				{
+					for (int k = 0; k < 8; k++)
+					{
+						float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+						float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+						float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+					}
+					for (int j = 0; j < 3; j++)
+					{
+						float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+						float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+						_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+					}
+
+					float slashX = _boss->getPos().left;
+					float slashY = _boss->getPos().top;
+					_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+				}
+				createBoxEF = false;
+
+
+				//_boss->setPattern(_boss->getPattern() + 1);
+			}
+			
+		
+		}
+
+		if (_bossHitDelay)
+		{
+			_bossHitCnt++;
+			if (_bossHitCnt % 40 == 0)
+			{
+				_boss->setHit(false);
+				_bossHitDelay = false;
+				_bossHitCnt = 0;
+				_boss->setPattern(_boss->getPattern() + 1);
+				
+				
+			//	cout << _boss->getPattern() << endl;
+			}
+		}
+
+		if (_boss->getCurrentState() == 2)
+		{
+			//cout << "좀비소환" << endl;
+			
+			if (!_zombieOnce)
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					_zombieManager.createZombie(300 * (i + 1), 600);
+				}
+
+			}
+			_zombieOnce = true;
+		
+		}
+	
+		
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_boss->getPos()))
+		{
+			if (!_hitDelay)
+			{
+				PLAYER->setDmg(_boss->getAtk());
+				PLAYER->setHit(true);
+				_hitDelay = true;
+				//넉백
+				float knockBackX = PLAYER->getPlayerCenter() > _boss->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+				float knockBackY = 0; //-_knockBackMagnitude;  
+				PLAYER->setKnockback(knockBackX, knockBackY);
+				//======
+				_zombieManager.applyShake(_initialShakeDuration);
+			}
+		}
+		if (_hitDelay)
+		{
+			PLAYER->Hit();
+			_hitCnt++;
+			if (_hitCnt % 5 == 0)
+			{
+				PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
+			}
+		}
+		if (_hitCnt > 100)
+		{
+			PLAYER->setAlpha(255);
+			PLAYER->setHit(false);
+			_hitDelay = false;
+			_hitCnt = 0;
+		}
 	}
 
 	if (PLAYER->getShoot())
@@ -117,6 +232,19 @@ void Tutorial::render()
 	//====
 	_zombieManager.render();
 	//renderZombie();
+
+	char ptMouse[128];
+	char ptOffset[128];
+	char ptPlayerPos[128];
+
+	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
+	//wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
+	wsprintf(ptPlayerPos, "x : %d y : %d", PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top);
+
+
+	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
+//	TextOut(getMemDC(), 100, 120, ptOffset, strlen(ptOffset));
+	TextOut(getMemDC(), 100, 140, ptPlayerPos, strlen(ptPlayerPos));
 }
 
 
@@ -281,221 +409,3 @@ void Tutorial::applyShake(float shakeDuration)
 
 
 
-/*
-void Tutorial::createZombie(int x, int y)
-{
-	_zm = new Zombiebot;
-	_zm->init();
-	_zm->setPos(x, y);   //670
-	_zm->setIsLeft(true);
-	//_zm->setState(2);
-	_Fzm.push_back(_zm);
-}
-
-void Tutorial::updateZombie()
-{
-	//좀비 상태처리
-	for (int i = 0; i < _Fzm.size(); i++)
-	{
-		_Fzm[i]->UpdateZombie();
-	}
-	//좀비 추적범위
-	for (int i = 0; i < _Fzm.size(); i++)
-	{
-		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getRange()))
-		{
-			if (!_Fzm[i]->getGo())
-			{
-				_Fzm[i]->setState(1);
-				_Fzm[i]->setGo(true);
-			}
-			else if (_Fzm[i]->getState() == 2)
-			{
-				if (PLAYER->getPlayerCenter() > _Fzm[i]->getCenter())
-				{
-					_Fzm[i]->setPosLeft(1);
-					_Fzm[i]->setIsLeft(false);
-				}
-				else if (PLAYER->getPlayerCenter() <= _Fzm[i]->getCenter())
-				{
-					_Fzm[i]->setPosRight(1);
-					_Fzm[i]->setIsLeft(true);
-				}
-			}
-
-		}
-		else
-		{
-			if (_Fzm[i]->getState() == 2)
-			{
-				_zomIdleCnt++;
-				if (_zomIdleCnt % RND->getFromIntTo(200, 500) == 0)
-				{
-					_zomIdle = !_zomIdle;
-				}
-
-				if (_zomIdle)
-				{
-					_Fzm[i]->setIsLeft(false);
-					_Fzm[i]->setPosLeft(1);
-				}
-				else
-				{
-					_Fzm[i]->setIsLeft(true);
-					_Fzm[i]->setPosRight(1);
-				}
-
-			}
-		}
-
-	}
-
-	for (int i = 0; i < _Fzm.size(); i++)
-	{
-
-		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Fzm[i]->getPos()))
-		{
-			if (!_hitDelay)
-			{
-				PLAYER->setDmg(_Fzm[i]->getAtk());
-				PLAYER->setHit(true);
-				_hitDelay = true;
-				//넉백
-				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
-				float knockBackY = 0; //-_knockBackMagnitude;
-				PLAYER->setKnockback(knockBackX, knockBackY);
-				//======
-				applyShake(_initialShakeDuration);
-			}
-		}
-
-
-	}
-
-
-
-	if (_hitDelay)
-	{
-		PLAYER->Hit();
-		_hitCnt++;
-		if (_hitCnt % 5 == 0)
-		{
-			PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
-		}
-	}
-	if (_hitCnt > 100)
-	{
-		PLAYER->setAlpha(255);
-		PLAYER->setHit(false);
-		_hitDelay = false;
-		_hitCnt = 0;
-	}
-
-	//cout << PLAYER->getHit() << endl;
-	//좀비 파티클
-	vector<size_t> zombieFM;
-	for (int i = 0; i < _Fzm.size(); i++)
-	{
-		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
-		{
-			_zombieDiePosX = _Fzm[i]->getPos().left;
-			_zombieDiePosY = _Fzm[i]->getPos().top;
-			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
-			float knockBackY = 0;
-			PLAYER->setKnockback(knockBackX, knockBackY);
-			_Fzm[i]->setDie(true);
-			applyShake(_initialShakeDuration);
-			createBoxEF = true;
-			if (createBoxEF)
-			{
-				for (int k = 0; k < 8; k++)
-				{
-					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
-					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
-				}
-				for (int j = 0; j < 3; j++)
-				{
-					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
-					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
-				}
-				for (int j = 0; j < 3; j++)
-				{
-					float EFX = RND->getFromIntTo(_Fzm[i]->getPos().left, _Fzm[i]->getPos().right);
-					float EFY = RND->getFromIntTo(_Fzm[i]->getPos().top, _Fzm[i]->getPos().top + 50);
-					_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
-				}
-
-				float slashX = _Fzm[i]->getPos().left;
-				float slashY = _Fzm[i]->getPos().top;
-				_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
-			}
-			createBoxEF = false;
-			zombieFM.push_back(i);
-		}
-
-	}
-
-	for (size_t i : zombieFM)
-	{
-		POINT position = { _zombieDiePosX, _zombieDiePosY };
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
-		_st.createFragments(_Zfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
-	}
-	for (auto it = zombieFM.rbegin(); it != zombieFM.rend(); ++it)
-	{
-		_Fzm.erase(_Fzm.begin() + *it);
-	}
-	// 파편 업데이트
-	for (auto& fragment : _Zfragments)
-	{
-		fragment.Update(0.16f, IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), 0, 0);
-	}
-
-}
-
-void Tutorial::renderZombie()
-{
-	for (int i = 0; i < _Fzm.size(); i++)
-	{
-		_Fzm[i]->render();
-	}
-
-	for (int i = 0; i < _Zfragments.size(); i++)
-	{
-		auto& fragment = _Zfragments[i];
-		switch (i % 3)
-		{
-		case 0:
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				26,
-				34);
-			break;
-		case 1:
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				58,
-				44);
-			break;
-		case 2:
-			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
-				static_cast<int>(fragment.GetPosition().y),
-				46,
-				30);
-			break;
-
-		}
-
-
-	}
-}
-
-
-
-*/

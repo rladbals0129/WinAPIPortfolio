@@ -12,11 +12,14 @@ private:
 	int _hp;
 	int _dmg;
 	bool _die;
+	bool _hit;
 
 	RECT _rc;
 	STATE _currentState;
 
 	bool _isLeft;
+
+	int _currentPattern;
 
 	// ¼û,È¸Àü
 	int _breath;
@@ -34,9 +37,10 @@ private:
 
 	int _delayTime;
 
+	int _movementTime;  
+	int _maxMovementTime;
 
-
-
+	int _delayTime2;
 
 
 
@@ -51,7 +55,30 @@ public:
 	void pattern3(void);
 	
 	void IdleBossRender(void);
+
+	inline int getHp() { return _hp; }
+	inline int getAtk() { return _dmg; }
+	inline bool getDie() { return _die; }
+	inline RECT getPos() { return _rc; }
+	inline bool getIsLeft() { return _isLeft; }
+	inline int getCenter() { return (_rc.left + _rc.right) / 2; }
+	int getPattern() { return _currentPattern; }
+	bool getHit() { return _hit; }
+	STATE getStateAttack2() { return ATTACK2; }
+
+	STATE getCurrentState() { return _currentState; }
+
+	void setHit(bool hit) { _hit = hit; }
+
+
 	
+
+	void setPattern(int x) { _currentPattern = x; }
+	void setHp(int hp) { _hp = hp; }
+	void setDie(bool die) { _die = die; }
+	void setStateIdle() { _currentState = IDLE; }
+	//void setCurrentPattern(int currentPattern) { _currentPattern = currentPattern; }
+
 	
 };
 

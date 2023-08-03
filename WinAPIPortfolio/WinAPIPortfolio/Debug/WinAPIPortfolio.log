@@ -1,2 +1,40 @@
-﻿  ResourceClass.cpp
-  WinAPIPortfolio.vcxproj -> C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe
+﻿  Boss.cpp
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(296,27): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(339,110): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(339,79): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(340,94): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(352,120): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(352,88): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(354,113): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(354,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(362,120): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(362,88): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(364,113): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(364,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(381,32): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(386,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(387,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(450,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(450,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(451,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(451,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(452,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(452,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(453,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(453,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(454,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(454,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(455,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(455,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(456,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(456,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(457,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(457,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(458,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(458,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(460,101): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(460,71): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(461,106): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(461,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(464,92): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WinAPIPortfolio.vcxproj -> C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe

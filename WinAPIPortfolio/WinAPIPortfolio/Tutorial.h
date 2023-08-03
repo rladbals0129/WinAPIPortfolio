@@ -62,7 +62,14 @@ private:
 	int _zomIdleCnt;
 	//==================//
 	//다른적..//
+	
+	//보스
+	bool _bossHitDelay;
+	int _bossHitCnt;
 
+	bool _zombieOnce;
+	int _zombieOnceCnt;
+	
 	//====//
 
 

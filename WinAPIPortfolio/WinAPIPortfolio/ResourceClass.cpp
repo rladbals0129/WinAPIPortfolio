@@ -338,6 +338,10 @@ HRESULT ResourceClass::init()
 		76, 76,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스피격얼굴", "Resources/Images/Enemy/Boss/BossHit.bmp",
+		72, 82,
+		true,
+		RGB(255, 0, 255));
 
 	IMAGEMANAGER->addImage("보스기본손", "Resources/Images/Enemy/Boss/BossHand.bmp",
 		38, 40,
@@ -379,6 +383,30 @@ HRESULT ResourceClass::init()
 		RGB(255, 0, 255));
 
 
+	IMAGEMANAGER->addImage("보스공격얼굴2", "Resources/Images/Enemy/Boss/BossAttack2Face.bmp",
+		78, 86,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스공격무기2", "Resources/Images/Enemy/Boss/BossAttackWeapon2.bmp",
+		70, 118,
+		true,
+		RGB(255, 0, 255));
+	//BossAttackWeapon3
+	IMAGEMANAGER->addFrameImage("보스공격얼굴3", "Resources/Images/Enemy/Boss/BossAttack1Face.bmp",
+		104, 132,
+		1, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("보스공격무기3", "Resources/Images/Enemy/Boss/BossAttackWeapon3.bmp",
+		100, 172,
+		1,2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("보스공격손", "Resources/Images/Enemy/Boss/BossHand3.bmp",
+		38, 80,
+		1,2,
+		true,
+		RGB(255, 0, 255));
 
 
 	return S_OK;
