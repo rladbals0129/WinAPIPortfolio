@@ -7,6 +7,7 @@
 #include "BoxBreakEffect.h"
 #include "ZombieManager.h"
 #include "KunaiCollision.h"
+#include "Boss.h"
 class Stage3 :public GameNode
 {
 private:
@@ -47,6 +48,16 @@ private:
 	bool _hitDelay;
 	int _hitCnt;
 
+	//===º¸½º
+	Boss* _boss;
+	RECT _bossgetCOl;
+	bool _UIBossRender;
+	bool _bossGet;
+	bool _renderBoss;
+	int _panalBossCnt;
+	int _bossCnt;
+	int _bossIdx;
+
 
 	RECT _pPosRc;
 	//===Äí³ªÀÌ
@@ -69,6 +80,10 @@ public:
 
 
 	void playerPixel();
+
+	void updateZombieBot();
+	void renderZombieBot();
+
 
 	void moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX, int RmaxOffsetX);
 

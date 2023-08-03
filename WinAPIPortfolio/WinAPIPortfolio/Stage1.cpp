@@ -253,29 +253,10 @@ void Stage1::update(void)
 			if (KEYMANAGER->isOnceKeyDown('E'))
 			{
 				_glassIdx++;
-				applyShake(_initialShakeDuration);
-				//_shakeScreen = true;
-				//_shakeDuration1 = 10;
-			/*	if (_glassIdx == 4 && !_explosion)
-				{
-					_explosion = true;
-				}*/
-			
+				applyShake(_initialShakeDuration);		
 			}
 			IMAGEMANAGER->findImage("À¯¸®°ü")->setFrameX(_glassIdx);
-			/*if (_glassIdx < 4)
-			{
-				shakeScreen(3840, 0,50);
-
-			}*/
 			
-			/*if (_explosion)
-			{
-				_shakeDuration = 10;
-				_shakeScreen = true;
-				shakeScreen(3840, 0, 50);
-		
-			}*/
 			UI->btnEAnim();
 			
 
@@ -1486,10 +1467,7 @@ void Stage1::openDoorL()
 	}
 }
 
-//void Stage1::addFragment(const Fragment& fragment)
-//{
-//	_fragments.push_back(fragment);
-//}
+
 
 void Stage1::efKnife()
 {

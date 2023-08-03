@@ -34,7 +34,7 @@ private:
 
 	BoxBreakEffect _slashEffect;
 	bool createBoxEF;
-	//==============
+	//============Àû==
 
 	Zombiebot* _zm;
 	vector<Zombiebot*> _Fzm;
@@ -44,7 +44,7 @@ private:
 	std::vector<Fragment> _Zfragments;
 	bool _zomIdle;
 	int _zomIdleCnt;
-	//========Àû====
+	//========³Ë¹é====
 
 	float _knockBackMagnitude;
 	bool _hitDelay;
@@ -95,6 +95,9 @@ public:
 	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
 	void applyShake(float shakeDuration);
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
+
+	void updateZombieBot();
+	void renderZombieBot();
 
 	bool getGoStage3() { return _goStage3; }
 	void setGoStage3(bool goStage3) { _goStage3 = goStage3; }

@@ -186,6 +186,9 @@
     <ClInclude Include="Stage3.h">
       <Filter>소스 파일\GameObjectClass\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>소스 파일\GameObjectClass\Enemy\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -274,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="Stage3.cpp">
       <Filter>소스 파일\GameObjectClass\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>소스 파일\GameObjectClass\Enemy\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

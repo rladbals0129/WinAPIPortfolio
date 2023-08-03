@@ -61,7 +61,7 @@ private:
 	RotationRender* _rot;
 	KunaiCollision _kunaiCOl;
 	
-	RigidBody m_rigidBody;
+//	RigidBody m_rigidBody;
 	std::vector<Fragment> m_fragments;
 	vector<BREAKOBJECT> _obj;
 	vector<BREAKOBJECT> _box2;

@@ -1,18 +1,2 @@
-﻿  BoxBreakEffect.cpp
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\BoxBreakEffect.cpp(119,77): warning C4244: '인수': 'const float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\BoxBreakEffect.cpp(119,66): warning C4244: '인수': 'const float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  MainGame.cpp
-  Stage2.cpp
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage2.cpp(175,73): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage2.cpp(175,54): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage2.cpp(333,47): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage2.cpp(370,40): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage2.cpp(379,50): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Stage3.cpp
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(101,73): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(101,54): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(218,47): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  WinAPIPortfolio.cpp
-  Zombiebot.cpp
-  코드를 생성하고 있습니다...
-  WinAPIPortfolio.vcxproj -> C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe
+﻿  ResourceClass.cpp
+  WinAPIPortfolio.vcxproj -> C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe

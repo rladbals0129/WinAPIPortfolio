@@ -186,13 +186,11 @@ private:
 	bool _panalKnife;
 	
 	//Äí³ªÀÌÈ¹µæ
-	bool _kunai1;
 	bool  _colKunai;
 	bool _txtKunai;
 	bool _panalKunai;
 
 	//ÃÑ È¹µæ
-	bool _gun1;
 	bool  _colGun;
 	bool _txtGun;
 	bool _panalGun;
@@ -257,6 +255,12 @@ private:
 	bool _canLeftWallJump;
 	bool _canRightWallJump;
 	bool _usingKunai;
+	//º¸½º
+	bool  _colBoss;
+	bool _txtBoss;
+	bool _panalBoss;
+	bool _createBoss;
+	int _txtIdx;
 
 
 public:	
@@ -385,6 +389,19 @@ public:
 	void setIsCanLeftWallJump(bool canLeftWallJump) { _canLeftWallJump = canLeftWallJump; }
 	void setIsCanRightWallJump(bool canRightWallJump) { _canRightWallJump = canRightWallJump; }
 
+
+	//º¸½º°ü·Ã
+	bool getColBoss() { return _colBoss; }
+	bool getTxtBoss() { return _txtBoss; }
+	bool getPanalBoss() { return _panalBoss; }
+	bool getCreateBoss() { return _createBoss; }
+	int getTxtIdx() { return _txtIdx; }
+
+
+	void setColBoss(bool colBoss) { _colBoss = colBoss; }
+	void setTxtBoss(bool txtBoss) { _txtBoss = txtBoss; }
+	void setPanalBoss(bool panalBoss) { _panalBoss = panalBoss; }
+	void setCreateBoss(bool createBoss) { _createBoss = createBoss; }
 	//Æ©Åä¸®¾ó°ü·Ã
 	bool getUsingKnife() { return _usingKnife; }
 	void setUsingKnife(bool x) { _usingKnife = x; }

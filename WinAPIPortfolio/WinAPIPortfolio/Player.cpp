@@ -38,6 +38,8 @@ HRESULT Player::init(void)
 	_kunai = new Kunai;
 	_kunai->init();
 	_lerpSpeed = 1.f;
+	//º¸½º
+	_createBoss = false;
 	
 	//ÀÌµ¿
 	_speed = 8.0f;
@@ -257,7 +259,7 @@ void Player::update(void)
 	
 	//========================================
 	//===ÀÏº»µµ È¹µæ===
-	if (KEYMANAGER->isOnceKeyDown(VK_UP) && (_knife || _colCom || _colKunai || _colGun))
+	if (KEYMANAGER->isOnceKeyDown(VK_UP) && (_knife || _colCom || _colKunai || _colGun || _colBoss))
 	{
 		if (_colCom)
 		{
@@ -275,13 +277,18 @@ void Player::update(void)
 		{
 			_txtGun = true;
 		}
+		else if (_colBoss)
+		{
+			_txtBoss = true;
+		}
 		
 		
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_UP)) {}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && (_txtKnife || _txtCom || _txtKunai || _txtGun))
+	if (KEYMANAGER->isOnceKeyDown(VK_RETURN) && (_txtKnife || _txtCom || _txtKunai || _txtGun || _txtBoss))
 	{
+		
 		if (_txtCom)
 		{
 			_txtCom = false;
@@ -302,11 +309,21 @@ void Player::update(void)
 
 			_usingKunai = true;
 		}
-		else
+		else if(_txtGun)
 		{
 			_txtGun = false;
 			_panalGun = true;
 			_usingGun = true;
+		}
+		else if (_txtBoss)
+		{
+			_txtIdx++;
+			if (_txtIdx == 4)
+			{
+				_txtBoss = false;
+				_panalBoss = true;
+			//	_createBoss = true;
+			}
 		}
 	
 	}

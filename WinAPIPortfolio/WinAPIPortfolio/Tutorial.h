@@ -8,6 +8,7 @@
 #include "Title.h"
 #include "ZombieManager.h" 
 #include "KunaiCollision.h"
+#include "Boss.h"
 
 struct Button
 {
@@ -40,6 +41,8 @@ private:
 	RotationRender* _rot;
 
 	KunaiCollision* _kunaiCol;
+
+	Boss* _boss;
 
 
 	

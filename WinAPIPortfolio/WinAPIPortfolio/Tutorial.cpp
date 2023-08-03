@@ -21,12 +21,14 @@ HRESULT Tutorial::init()
 
 	_knockBackMagnitude = 10.0f;
 
+	_boss = new Boss;
+	_boss->init();
 
 	
 
 	//버튼//
 	const vector<string> buttonTexts = {
-	"좀비 생성", "일본도 사용" ,"P90 사용" , "쿠나이 사용"};
+	"좀비 생성", "일본도 사용" ,"P90 사용" , "쿠나이 사용","보스 소환"};
 	for (int i = 0; i < buttonTexts.size(); i++)
 	{
 		int x = (i < 4) ? 0 : 1280 - _buttonWidth;
@@ -70,6 +72,11 @@ void Tutorial::update()
 	_zombieManager.update(0,0);
 
 	//updateZombie();
+	if (PLAYER->getCreateBoss())
+	{
+		_boss->update();
+		
+	}
 
 	if (PLAYER->getShoot())
 	{
@@ -98,7 +105,11 @@ void Tutorial::render()
 		// 텍스트 그리기
 		FONTMANAGER->drawText(getMemDC(), button.rect.left + 25, button.rect.top + 30, "Orange Kid", 30, FW_BOLD, (char*)button.text.c_str(), static_cast<int>(button.text.length()), RGB(255, 255, 255));
 	}
+	if (PLAYER->getCreateBoss())
+	{
+		_boss->render();
 
+	}
 	_slashEffect.render(getMemDC());
 	//플레이어
 	PLAYER->render(getMemDC());
@@ -219,7 +230,10 @@ void Tutorial::onButtonClick(int buttonIndex)
 		break;
 	case 3:
 		PLAYER->setUsingKunai(!PLAYER->getUsingKunai());
-		
+		break;
+	case 4:
+		PLAYER->setCreateBoss(!PLAYER->getCreateBoss());
+		break;
 	}
 }
 

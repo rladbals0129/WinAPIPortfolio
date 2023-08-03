@@ -301,6 +301,86 @@ HRESULT ResourceClass::init()
 	IMAGEMANAGER->addImage("튜토리얼픽셀", "Resources/Images/Stage1/_tutorial.bmp", 1280, 800);
 	
 	
+
+	IMAGEMANAGER->addFrameImage("보스정지", "Resources/Images/Enemy/Boss/BossSleep.bmp",
+		240, 80,
+		2, 1,
+		true,
+		RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("보스텍스트1", "Resources/Images/Enemy/Boss/txtBoss.bmp",
+		312, 165,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스텍스트2", "Resources/Images/Enemy/Boss/txt1.bmp",
+		273, 131,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스텍스트3", "Resources/Images/Enemy/Boss/txt2.bmp",
+		315, 102,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스텍스트4", "Resources/Images/Enemy/Boss/txt3.bmp",
+		320, 222,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스패널", "Resources/Images/Enemy/Boss/PanalBoss.bmp",
+		815, 154,
+		true,
+		RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addImage("보스Idle", "Resources/Images/Enemy/Boss/GhostBoss_body.bmp",
+		108, 82,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스기본얼굴", "Resources/Images/Enemy/Boss/GhostBoss_head-front.bmp",
+		76, 76,
+		true,
+		RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("보스기본손", "Resources/Images/Enemy/Boss/BossHand.bmp",
+		38, 40,
+		true,
+		RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("보스기본무기", "Resources/Images/Enemy/Boss/BossWeapon.bmp",
+		100, 86,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스오브젝트1", "Resources/Images/Enemy/Boss/bossCicle1.bmp",
+		67, 69,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스오브젝트2", "Resources/Images/Enemy/Boss/bossCicle2.bmp",
+		66, 77,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스오브젝트3", "Resources/Images/Enemy/Boss/bossCicle3.bmp",
+		74, 88,
+		true,
+		RGB(255, 0, 255));
+
+
+	IMAGEMANAGER->addFrameImage("보스공격얼굴1", "Resources/Images/Enemy/Boss/BossAttack1Face.bmp",
+		104, 132,
+		1,2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("보스Attack1", "Resources/Images/Enemy/Boss/BossAttack1.bmp",
+		124, 148,
+		1,2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("보스공격무기1", "Resources/Images/Enemy/Boss/BossAttackWeapon1.bmp",
+		120,88,
+		1,2,
+		true,
+		RGB(255, 0, 255));
+
+
+
+
 	return S_OK;
 }
 
