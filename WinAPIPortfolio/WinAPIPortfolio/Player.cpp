@@ -107,7 +107,7 @@ void Player::update(void)
 		_knockbackSpeedY = 0.0f;
 	}
 	
-	if (_isJumping)
+	if (_isJumping && !_onRock)
 	{
 		_currentState = JUMP;
 	}
@@ -206,7 +206,7 @@ void Player::update(void)
 		_currentState = IDLE;
 	}
 	//===========มกวม===========
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && (!_isJumping || _canLeftWallJump || _canRightWallJump) && !shoot)
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && (!_isJumping || _canLeftWallJump || _canRightWallJump || _onRock) && !shoot)
 	{
 		_jumpDust = true;
 		if (!_downJump)

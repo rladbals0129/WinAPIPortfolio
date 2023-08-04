@@ -262,6 +262,7 @@ private:
 	bool _createBoss;
 	int _txtIdx;
 
+	bool _onRock;
 
 public:	
 	HRESULT init(void);
@@ -349,6 +350,7 @@ public:
 	void setPosY(float y) { _rc.top = y; _rc.bottom = y + 74; }
 	void setGravity(float gravity) { _gravity = gravity; }
 
+	void setOnRock(bool x) { _onRock = x; }
 	inline void setIsGravity(bool isGravity) { _isGravity = isGravity; }
 	inline void setColRight(bool colRight) { _colRight = colRight; }
 	inline void setColLeft(bool colLeft) { _colLeft = colLeft; }

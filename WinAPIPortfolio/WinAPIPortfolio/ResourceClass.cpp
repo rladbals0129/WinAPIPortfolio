@@ -407,6 +407,30 @@ HRESULT ResourceClass::init()
 		1,2,
 		true,
 		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스돌", "Resources/Images/Enemy/Boss/BossRock.bmp",
+		220, 164,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스돌픽셀", "Resources/Images/Enemy/Boss/_BossRock.bmp",
+		220, 164,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스사망이펙트" ,"Resources/Images/Enemy/Boss/BossDieFX.bmp",
+		1280, 800,
+		true,
+		RGB(255,0,255));
+
+
+	IMAGEMANAGER->addFrameImage("자폭좀비기본", "Resources/Images/Enemy/Lipo/LipoZombieIdle.bmp",
+		384, 164,
+		4, 2,
+		true,
+		RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("자폭좀비폭파", "Resources/Images/Enemy/Lipo/LipoZombieBoom.bmp",
+		160, 180,
+		2, 2,
+		true,
+		RGB(255, 0, 255));
 
 
 	return S_OK;

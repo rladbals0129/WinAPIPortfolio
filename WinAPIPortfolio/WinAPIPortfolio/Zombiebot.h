@@ -57,8 +57,7 @@ public:
 	inline void setPosTop(int y) { _rc.top += y; _rc.bottom += y; }
 	inline void setPos(int x, int y) { _rc = { x,y,x + 100,y + 100 }; }
 	//RECT rc = { x,y,x + width,y + height };
-	inline void setIsLeft(bool isLeft) { _isLeft = isLeft;  /*if (isLeft) { cout << "•ûÀÌ~" << endl; }*/ }
-
+	inline void setIsLeft(bool isLeft) { _isLeft = isLeft;}
 	inline void setState(int state) { _state = state; }
 	inline void setGo(bool go) { _go = go; }
 	inline void setWake(bool wake) { _isWake = wake; }

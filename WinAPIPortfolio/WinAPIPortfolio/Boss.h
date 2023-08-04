@@ -1,5 +1,6 @@
 #pragma once
 #include "GameNode.h"
+#include "Kunai.h"
 class Boss : public GameNode
 {
 private:
@@ -9,6 +10,7 @@ private:
 		ATTACK2,ATTACK3,
 		DIE
 	};
+	Kunai* _kunaiCol;
 	int _hp;
 	int _dmg;
 	bool _die;
@@ -16,6 +18,8 @@ private:
 
 	RECT _rc;
 	STATE _currentState;
+	RECT _rockRc;
+	RECT _collider;
 
 	bool _isLeft;
 
@@ -42,6 +46,23 @@ private:
 
 	int _delayTime2;
 
+	int _aCnt;
+	int _alpha;
+
+	bool _once;
+
+	int _FXDieCnt;
+	int _goFX;
+	bool _FXDie;
+	int _breakSizeX;
+	int _breakSizeY;
+	int _breakStartX;
+	int _breakStartY;
+
+	int _dieAlpha;
+
+	bool _realDie;
+
 
 
 public:
@@ -53,7 +74,8 @@ public:
 	void pattern1(void);
 	void pattern2(void);
 	void pattern3(void);
-	
+	void dieAnim(void);
+
 	void IdleBossRender(void);
 
 	inline int getHp() { return _hp; }

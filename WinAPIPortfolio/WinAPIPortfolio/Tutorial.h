@@ -9,6 +9,7 @@
 #include "ZombieManager.h" 
 #include "KunaiCollision.h"
 #include "Boss.h"
+#include "Lipo.h"
 
 struct Button
 {
@@ -51,17 +52,21 @@ private:
 	bool createBoxEF;
 	//============//
 	//좀비//
-	Zombiebot* _zm;
+
 	vector<Zombiebot*> _Fzm;
 	Title _title;
 	int _zombieDiePosX;
 	int _zombieDiePosY;
 	RECT _collider;
-	std::vector<Fragment> _Zfragments;
+	//vector<Fragment> _Zfragments;
 	bool _zomIdle;
 	int _zomIdleCnt;
 	//==================//
 	//다른적..//
+	//자폭
+
+	vector<Lipo*> _Flp;
+	vector<Fragment> _Lfragments;
 	
 	//보스
 	bool _bossHitDelay;
@@ -110,5 +115,12 @@ public:
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
 	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
 	void applyShake(float shakeDuration);
+
+	void bossBattle();
+
+	void createLipo(int x, int y);
+
+	void updateLipo();
+	void renderLipo();
 };
 

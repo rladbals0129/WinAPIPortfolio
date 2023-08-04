@@ -165,6 +165,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Kunai.h" />
     <ClInclude Include="KunaiCollision.h" />
+    <ClInclude Include="Lipo.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomFunction.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Kunai.cpp" />
     <ClCompile Include="KunaiCollision.cpp" />
+    <ClCompile Include="Lipo.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ResourceClass.cpp" />

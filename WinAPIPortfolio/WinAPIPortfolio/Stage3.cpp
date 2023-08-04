@@ -42,7 +42,8 @@ void Stage3::update(void)
 	PLAYER->_dustEffect.update();
 	playerPixel();
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
-
+	updateZombieBot();
+	_knockBackMagnitude = 10.0f;
 	if (_currentMap == map1)
 	{
 		if ((_pPosRc.right + _pPosRc.left) / 2 > 1280) //맵 넘기기
@@ -92,7 +93,7 @@ void Stage3::update(void)
 			}
 		}
 
-		updateZombieBot();
+	//	updateZombieBot();
 	}
 	if (_currentMap == map3)
 	{
@@ -157,6 +158,119 @@ void Stage3::update(void)
 		if (PLAYER->getCreateBoss())
 		{
 			_boss->update();
+		//	updateZombieBot();
+			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_boss->getPos()) && _boss->getCurrentState() != 0)
+			{
+
+				if (!_bossHitDelay)
+				{
+
+					_boss->setHp(_boss->getHp() - 1);
+					_boss->setStateIdle();
+					_zombieOnce = false;
+					_boss->setHit(true);
+					_bossHitDelay = true;
+
+					applyShake(_initialShakeDuration); 
+
+					createBoxEF = true;
+					if (createBoxEF)
+					{
+						for (int k = 0; k < 8; k++)
+						{
+							float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+							float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+							_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+						}
+						for (int j = 0; j < 3; j++)
+						{
+							float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+							float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+							_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+						}
+						for (int j = 0; j < 3; j++)
+						{
+							float EFX = RND->getFromIntTo(_boss->getPos().left, _boss->getPos().right);
+							float EFY = RND->getFromIntTo(_boss->getPos().top, _boss->getPos().top + 50);
+							_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+						}
+
+						float slashX = _boss->getPos().left;
+						float slashY = _boss->getPos().top;
+						_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+					}
+					createBoxEF = false;
+
+
+					//_boss->setPattern(_boss->getPattern() + 1);
+				}
+
+
+			}
+
+			if (_bossHitDelay)
+			{
+				_bossHitCnt++;
+				if (_bossHitCnt % 40 == 0)
+				{
+					_boss->setHit(false);
+					_bossHitDelay = false;
+					_bossHitCnt = 0;
+					_boss->setPattern(_boss->getPattern() + 1);
+
+
+					//	cout << _boss->getPattern() << endl;
+				}
+			}
+
+			if (_boss->getCurrentState() == 2)
+			{
+				//cout << "좀비소환" << endl;
+
+				if (!_zombieOnce)
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						createZombie(300 * (i + 1), 600);
+					}
+
+				}
+				_zombieOnce = true;
+
+			}
+
+
+			if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_boss->getPos()))
+			{
+				if (!_hitDelay)
+				{
+					PLAYER->setDmg(_boss->getAtk());
+					PLAYER->setHit(true);
+					_hitDelay = true;
+					//넉백
+					float knockBackX = PLAYER->getPlayerCenter() > _boss->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+					float knockBackY = 0; //-_knockBackMagnitude;  
+					PLAYER->setKnockback(knockBackX, knockBackY);
+					//======
+					applyShake(_initialShakeDuration);
+				}
+			}
+			if (_hitDelay)
+			{
+				PLAYER->Hit();
+				_hitCnt++;
+				if (_hitCnt % 5 == 0)
+				{
+					PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
+				}
+			}
+			if (_hitCnt > 100)
+			{
+				PLAYER->setAlpha(255);
+				PLAYER->setHit(false);
+				_hitDelay = false;
+				_hitCnt = 0;
+			}
 		}
 
 
@@ -246,6 +360,7 @@ void Stage3::render(void)
 		if (PLAYER->getCreateBoss())
 		{
 			_boss->render();
+			renderZombieBot();
 		}
 	}
 
@@ -627,6 +742,15 @@ void Stage3::moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX,
 				fragment.SetPosition(fragment.GetPosition().x + 8, fragment.GetPosition().y);
 
 			}
+			for (int i = 0; i < _Flp.size(); i++)
+			{
+				_Flp[i]->setPosLeft(8);
+			}
+			for (auto& fragment : _Lfragments)
+			{
+				fragment.SetPosition(fragment.GetPosition().x + 8, fragment.GetPosition().y);
+
+			}
 			PLAYER->setPlayerPosLeft(8);
 		}
 	}
@@ -642,6 +766,14 @@ void Stage3::moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX,
 				_Fzm[i]->setPosRight(8);
 			}
 			for (auto& fragment : _Zfragments)
+			{
+				fragment.SetPosition(fragment.GetPosition().x - 8, fragment.GetPosition().y);
+			}
+			for (int i = 0; i < _Flp.size(); i++)
+			{
+				_Flp[i]->setPosRight(8);
+			}
+			for (auto& fragment : _Lfragments)
 			{
 				fragment.SetPosition(fragment.GetPosition().x - 8, fragment.GetPosition().y);
 			}
@@ -690,5 +822,146 @@ void Stage3::createFragments(std::vector<Fragment>& fragments, const POINT& posi
 		fragment.SetRotation(RND->getFloat(10.f));
 		fragment.LoadImage(imagePath);
 		fragments.push_back(fragment);
+	}
+}
+
+void Stage3::createZombie(int x, int y)
+{
+	Zombiebot* newZombie = new Zombiebot;
+	newZombie->init();
+	newZombie->setPos(x, y);
+	newZombie->setIsLeft(true);
+	//newZombie->setState(2);
+	_Fzm.push_back(newZombie);
+}
+
+void Stage3::createLipo(int x, int y)
+{
+	Lipo* newLipo = new Lipo;
+	newLipo->init();
+	newLipo->setPos(x, y);
+	newLipo->setIsLeft(false);
+	_Flp.push_back(newLipo);
+}
+
+void Stage3::updateLipo()
+{
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		_Flp[i]->UpdateLipo();
+	}
+	vector<size_t> lipoFM;
+
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Flp[i]->getPos()))
+		{
+			_zombieDiePosX = _Flp[i]->getPos().left;
+			_zombieDiePosY = _Flp[i]->getPos().top;
+			float knockBackX = PLAYER->getPlayerCenter() > _Flp[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+			float knockBackY = 0;
+			PLAYER->setKnockback(knockBackX, knockBackY);
+			_Flp[i]->setDie(true);
+
+			applyShake(_initialShakeDuration);
+			createBoxEF = true;
+			if (createBoxEF)
+			{
+				for (int k = 0; k < 8; k++)
+				{
+					float EFX = RND->getFromIntTo(_Flp[i]->getPos().left, _Flp[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Flp[i]->getPos().top, _Flp[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트검은색");
+				}
+				for (int j = 0; j < 3; j++)
+				{
+					float EFX = RND->getFromIntTo(_Flp[i]->getPos().left, _Flp[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Flp[i]->getPos().top, _Flp[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "상자깨지기이펙트");
+				}
+				for (int j = 0; j < 3; j++)
+				{
+					float EFX = RND->getFromIntTo(_Flp[i]->getPos().left, _Flp[i]->getPos().right);
+					float EFY = RND->getFromIntTo(_Flp[i]->getPos().top, _Flp[i]->getPos().top + 50);
+					_slashEffect.addEffect(EFX, EFY, 1, "베기먼지");
+				}
+
+				float slashX = _Flp[i]->getPos().left;
+				float slashY = _Flp[i]->getPos().top;
+				_slashEffect.addSlashEffect(slashX, slashY, 1, "베기");
+			}
+			createBoxEF = false;
+
+		}
+		if (_Flp[i]->getDie())
+		{
+			applyShake(_initialShakeDuration);
+			lipoFM.push_back(i);
+
+		}
+
+	}
+
+
+	for (size_t i : lipoFM)
+	{
+
+		POINT position = { _zombieDiePosX, _zombieDiePosY };
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_4.png", 1);
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_bustedHead.png", 1);
+		createFragments(_Lfragments, position, L"Resources/Images/Enemy/Zombie/Zombiebot_Core.png", 1);
+
+
+	}
+	for (auto it = lipoFM.rbegin(); it != lipoFM.rend(); ++it)
+	{
+
+		_Flp.erase(_Flp.begin() + *it);
+	}
+
+	// 파편 업데이트
+	for (auto& fragment : _Lfragments)
+	{
+		fragment.Update(0.16f, IMAGEMANAGER->findImage("스테이지3픽셀")->getMemDC(), _offsetX, _offsetY);
+	}
+}
+
+void Stage3::renderLipo()
+{
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		_Flp[i]->render();
+	}
+
+	for (int i = 0; i < _Lfragments.size(); i++)
+	{
+		auto& fragment = _Lfragments[i];
+		switch (i % 3)
+		{
+		case 0:
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				26,
+				34);
+			break;
+		case 1:
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				58,
+				44);
+			break;
+		case 2:
+			fragment.RotateRender(static_cast<int>(fragment.GetPosition().x),
+				static_cast<int>(fragment.GetPosition().y),
+				46,
+				30);
+			break;
+
+		}
+
+
 	}
 }

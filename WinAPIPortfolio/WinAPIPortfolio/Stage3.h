@@ -8,6 +8,7 @@
 #include "ZombieManager.h"
 #include "KunaiCollision.h"
 #include "Boss.h"
+#include "Lipo.h"
 class Stage3 :public GameNode
 {
 private:
@@ -72,6 +73,17 @@ private:
 	float _initialShakeMagnitude = 15.0f; // Èçµé±â °­µµ
 	bool _switchScreen;
 
+
+	//==º¸½º
+	bool _zombieOnce;
+	int _bossHitCnt;
+	int _bossHitDelay;
+
+	//== ÀÚ½T
+	vector<Lipo*> _Flp;
+	vector<Fragment> _Lfragments;
+
+
 public:
 	HRESULT init(void);
 	void release(void);
@@ -90,5 +102,11 @@ public:
 	void updateShakeEffect(float& shakeDuration, float& shakeOffsetX, float& shakeOffsetY);
 	void applyShake(float shakeDuration);
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
+
+	void createZombie(int x, int y);
+
+	void createLipo(int x, int y);
+	void updateLipo();
+	void renderLipo();
 };
 

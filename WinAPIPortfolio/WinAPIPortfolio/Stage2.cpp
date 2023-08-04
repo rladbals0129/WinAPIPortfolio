@@ -44,7 +44,7 @@ void Stage2::update(void)
 	_pPosRc.bottom = PLAYER->getPlayerPos().bottom;
 	playerPixel();
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
-
+	_knockBackMagnitude = 10.0f;
 	if (_currentMap == map1)
 	{
 		moveCamera(400, 600, 400, 0, 3840, 800);

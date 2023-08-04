@@ -189,6 +189,9 @@
     <ClInclude Include="Boss.h">
       <Filter>소스 파일\GameObjectClass\Enemy\Boss</Filter>
     </ClInclude>
+    <ClInclude Include="Lipo.h">
+      <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -280,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="Boss.cpp">
       <Filter>소스 파일\GameObjectClass\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Lipo.cpp">
+      <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
