@@ -92,7 +92,7 @@ private:
 	 float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
 	 float _initialShakeMagnitude = 15.0f; // 흔들기 강도
 
-
+	 
 	//버튼
 
 	//RECT _button;
@@ -119,7 +119,6 @@ public:
 	void bossBattle();
 
 	void createLipo(int x, int y);
-
 	void updateLipo();
 	void renderLipo();
 };

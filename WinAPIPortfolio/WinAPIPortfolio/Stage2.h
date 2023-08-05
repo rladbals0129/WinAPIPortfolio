@@ -74,8 +74,8 @@ private:
 	int _gunCnt;
 	int _gunIdx;
 
-
-	//=========스테이지3 ㄱㄱ
+	bool _sound;
+	//=========스테이지3 
 	bool _goStage3;
 
 

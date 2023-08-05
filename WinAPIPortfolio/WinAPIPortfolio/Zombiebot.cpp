@@ -20,8 +20,8 @@ HRESULT Zombiebot::init(void)
 	_isWake = false;
 	_isLeft = false;
 	//_rc = RectMake(200, 670, 100, 100);
-	
-
+	_aggroSound = false;
+	_deathSound = false;
 	return S_OK;
 }
 
@@ -32,6 +32,12 @@ void Zombiebot::release(void)
 
 void Zombiebot::UpdateZombie(void)
 {
+	
+		
+
+
+
+	
 	if (!_isDie)
 	{
 		switch (_state)
@@ -48,6 +54,8 @@ void Zombiebot::UpdateZombie(void)
 		}
 	}
 	_Range = RectMakeCenter(_rc.left+30 , _rc.top, 800, 100);
+
+	
 
 }
 
@@ -99,6 +107,13 @@ void Zombiebot::sleep()
 
 void Zombiebot::wake()
 {
+	if (!_aggroSound)
+	{
+		SOUNDMANAGER->play("어그로");
+		SOUNDMANAGER->setVolume("어그로", 0.2f);
+		_aggroSound = true;
+	}
+	
 	_Wcnt++;
 	
 	if (_Wcnt % 19 == 0)

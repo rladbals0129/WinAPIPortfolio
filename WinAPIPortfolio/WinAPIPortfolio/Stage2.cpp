@@ -27,6 +27,7 @@ HRESULT Stage2::init(void)
 
 	}
 
+	_sound = false;
 	return S_OK;
 }
 
@@ -36,6 +37,12 @@ void Stage2::release(void)
 
 void Stage2::update(void)
 {
+	if (!_sound)
+	{
+		SOUNDMANAGER->play("½ºÅ×ÀÌÁö23¹è°æÀ½");
+		SOUNDMANAGER->setVolume("½ºÅ×ÀÌÁö23¹è°æÀ½", 0.2f);
+		_sound = true;
+	}
 	PLAYER->update();
 	PLAYER->_dustEffect.update();
 	_pPosRc.left = PLAYER->getPlayerPos().left;
@@ -605,6 +612,14 @@ void Stage2::updateZombieBot()
 
 		if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
 		{
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+			}
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -646,6 +661,16 @@ void Stage2::updateZombieBot()
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 		{
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+			}
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;

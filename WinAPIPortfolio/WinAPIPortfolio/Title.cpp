@@ -3,6 +3,7 @@
 
 HRESULT Title::init(void)
 {
+	_once = true;
 	PLAYER->init();
 
 	PLAYER->setPlayerPos(610, 325, 685, 400);
@@ -15,10 +16,12 @@ HRESULT Title::init(void)
 	_arrowIdxR = 6;
 	_StartTutorial = false;
 	_StartGame = false;
+	
 	for (int i = 0; i < 3; i++)
 	{
 		_select[i] = RectMake(580, 645+(i*45), 120, 40);
 	}
+	
 	
 	
 
@@ -31,6 +34,14 @@ void Title::release(void)
 
 void Title::update(void)
 {
+	if (_once)
+	{
+		
+		SOUNDMANAGER->play("타이틀배경음");
+		SOUNDMANAGER->setVolume("타이틀배경음", 0.2f);
+	}
+	_once = false;
+	
 	_selectArrowL = RectMake(480, 645 + (_idx * 45), 100, 40);
 	_selectArrowR = RectMake(700, 645 + (_idx * 45), 100, 40);
 	if (_idx < 2)

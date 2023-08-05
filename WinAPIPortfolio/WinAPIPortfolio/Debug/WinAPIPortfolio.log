@@ -1,84 +1,62 @@
-﻿  MainGame.cpp
-  Stage3.cpp
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(181,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(182,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(187,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(188,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(193,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(194,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(198,20): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(199,20): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(297,73): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(297,54): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(475,47): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(482,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(487,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(537,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(581,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(598,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(599,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(604,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(605,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(610,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(611,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(615,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(616,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(623,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(639,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(640,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(645,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(646,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(651,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(652,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(656,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(657,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(691,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(696,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(736,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(745,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(764,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(772,22): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(849,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(855,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(872,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(873,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(878,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(879,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(884,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(885,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(889,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(890,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(934,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Stage3.cpp(939,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  Tutorial.cpp
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(33,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(62,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(95,30): warning C4305: '=': 'double'에서 'float'(으)로 잘립니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(102,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(102,56): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(136,7): warning C4101: 'ptOffset' :참조되지 않은 지역 변수입니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(247,47): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(344,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(345,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(350,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(351,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(356,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(357,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(361,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(362,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(451,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(457,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(474,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(475,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(480,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(481,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(486,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(487,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(491,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(492,18): warning C4244: '초기화 중': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(538,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Tutorial.cpp(543,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  WinAPIPortfolio.cpp
-  코드를 생성하고 있습니다...
-C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Player.h(87): warning C4715: 'FireBullet::getPos': 모든 제어 경로에서 값을 반환하지는 않습니다.
-  WinAPIPortfolio.vcxproj -> C:\Users\언리얼\Desktop\포트폴리오\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe
+﻿  Boss.cpp
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(366,35): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(432,115): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(432,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(433,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(445,124): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(445,92): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(447,118): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(447,88): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(455,124): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(455,92): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(457,118): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(457,88): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(491,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(491,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(492,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(492,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(493,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(493,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(494,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(494,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(495,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(495,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(496,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(496,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(497,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(497,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(498,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(498,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(499,105): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(499,83): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(500,109): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(500,79): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(501,114): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(501,82): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(519,32): warning C4305: '초기화 중': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(524,18): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(525,16): warning C4244: '초기화 중': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(652,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(652,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(653,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(653,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(654,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(654,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(655,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(655,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(656,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(656,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(657,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(657,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(658,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(658,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(659,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(659,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(660,97): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(660,75): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(662,101): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(662,71): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(663,106): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(663,74): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\WinAPIPortfolio\Boss.cpp(666,92): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WinAPIPortfolio.vcxproj -> C:\Users\rladb\Desktop\포폴\WinAPIPortfolio\WinAPIPortfolio\Debug\WinAPIPortfolio.exe

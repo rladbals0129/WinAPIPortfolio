@@ -63,7 +63,13 @@ private:
 
 	bool _realDie;
 
+	bool _clear;
 
+	bool _patternSound1;
+	bool _patternSound2;
+	bool _patternSound3;
+	bool _shieldSound;
+	bool _hitSound;
 
 public:
 	HRESULT init(void);
@@ -89,8 +95,10 @@ public:
 	STATE getStateAttack2() { return ATTACK2; }
 
 	STATE getCurrentState() { return _currentState; }
-
+	bool getClera() { return _clear; }
 	void setHit(bool hit) { _hit = hit; }
+
+	bool getRealDie() { return _realDie; }
 
 
 	

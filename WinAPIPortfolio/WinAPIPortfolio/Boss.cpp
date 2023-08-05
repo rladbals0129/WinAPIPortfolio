@@ -46,11 +46,39 @@ void Boss::update(void)
             _FXDie = true;
             _once = true;
         }
+        if (_hit)
+        {
+            if (!_hitSound)
+            {
+                SOUNDMANAGER->play("보스피격");
+                SOUNDMANAGER->setVolume("보스피격", 0.2f);
+                SOUNDMANAGER->play("칼피격");
+                SOUNDMANAGER->setVolume("칼피격", 0.2f);
+                SOUNDMANAGER->play("공통사망");
+                SOUNDMANAGER->setVolume("공통사망", 0.2f);
+                _hitSound = true;
+            }
+        }
+        else
+        {
+            _hitSound = false;
+        }
+
+
         if (!_die)
         {
             if (_currentState == IDLE)
             {
-
+                _patternSound1 = false;
+                _patternSound2 = false;
+                _patternSound3 = false;
+                if (!_shieldSound)
+                {
+                    SOUNDMANAGER->play("보스쉴드");
+                    SOUNDMANAGER->setVolume("보스쉴드", 0.2f);
+                    _shieldSound = true;
+                   
+                }
 
                 if (_currentPattern % 3 == 0)
                 {
@@ -175,6 +203,7 @@ void Boss::update(void)
 
                     if (_rc.left == targetX && _rc.top == targetY)
                     {
+                      
                         _currentState = ATTACK2;
                     }
                 }
@@ -280,12 +309,18 @@ void Boss::update(void)
             {
                 if (_movementTime < _maxMovementTime)
                 {
+                    if (!_patternSound1)
+                    {
+                        SOUNDMANAGER->play("보스패턴1");
+                        SOUNDMANAGER->setVolume("보스패턴1", 0.2f);
+                        _patternSound1 = true;
+                    }
                     pattern1();
                     _movementTime++;
                 }
                 else
                 {
-
+                   
                     _isLeft = !_isLeft;
                     _currentState = IDLE;
                 }
@@ -296,20 +331,38 @@ void Boss::update(void)
             {
                 _idleHandCnt++;
                 _idleWeaponCnt++;
+                if (!_hit)
+                {
+                    if (!_patternSound2)
+                    {
+                        SOUNDMANAGER->play("보스패턴2");
+                        SOUNDMANAGER->setVolume("보스패턴2", 0.2f);
+                        _patternSound2 = true;
+                    }
+                }
+             
+              
                 if (_hit)
                 {
+                  
                     _currentState = IDLE;
                 }
             }
 
             if (_currentState == ATTACK3)
             {
-
+                if (!_patternSound3)
+                {
+                    SOUNDMANAGER->play("보스패턴3");
+                    SOUNDMANAGER->setVolume("보스패턴3", 0.2f);
+                    _patternSound3 = true;
+                }
                 _idleHandCnt++;
                 _idleWeaponCnt++;
                 pattern3();
                 if (_hit)
                 {
+                   
                     _currentState == IDLE;
                 }
             }
@@ -546,17 +599,21 @@ void Boss::dieAnim(void)
             if (_breakSizeX > 1000 && _breakSizeY > 800)
             {
                 _goFX++;
+                SOUNDMANAGER->play("공통사망");
+                SOUNDMANAGER->setVolume("공통사망", 0.2f);
                 _dieAlpha = 255;
                 _FXDie = false;
                 _breakSizeX = 0;
                 _breakSizeY = 0;
                 _breakStartX = (_rc.left + _rc.right) / 2;
                 _breakStartY = (_rc.top + _rc.bottom) / 2;
+
             }
         }
         else
         {
             _realDie = true;
+            
             cout << _realDie << endl;
         }
     }

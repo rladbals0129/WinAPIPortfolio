@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -72,6 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\FMOD SoundSystem\FMOD Studio API Windows\api\core\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -95,6 +97,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -154,13 +157,13 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BoxBreakEffect.h" />
     <ClInclude Include="CommonMacroFunction.h" />
+    <ClInclude Include="Ending.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="Fragment.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="GImage.h" />
     <ClInclude Include="ImageManager.h" />
-    <ClInclude Include="Intro.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Kunai.h" />
@@ -174,6 +177,8 @@
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="RotationRender.h" />
     <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="SoundClass.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage3.h" />
@@ -183,7 +188,9 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Tutorial.h" />
     <ClInclude Include="UIManager.h" />
-    <ClInclude Include="VideoPlayer.h" />
+    <ClInclude Include="VideoPlayer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="WinAPIPortfolio.h" />
     <ClInclude Include="Zombiebot.h" />
     <ClInclude Include="ZombieManager.h" />
@@ -191,13 +198,13 @@
   <ItemGroup>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BoxBreakEffect.cpp" />
+    <ClCompile Include="Ending.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Fragment.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="GImage.cpp" />
     <ClCompile Include="ImageManager.cpp" />
-    <ClCompile Include="Intro.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Kunai.cpp" />
@@ -208,6 +215,8 @@
     <ClCompile Include="ResourceClass.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RotationRender.cpp" />
+    <ClCompile Include="SoundClass.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage3.cpp" />
@@ -218,7 +227,9 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Tutorial.cpp" />
     <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="VideoPlayer.cpp" />
+    <ClCompile Include="VideoPlayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="WinAPIPortfolio.cpp" />
     <ClCompile Include="Zombiebot.cpp" />
     <ClCompile Include="ZombieManager.cpp" />

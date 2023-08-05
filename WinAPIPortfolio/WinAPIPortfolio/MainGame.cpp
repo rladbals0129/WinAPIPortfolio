@@ -5,12 +5,14 @@ HRESULT MainGame::init()
 {
 	GameNode::init(true);
 	_resource.init();
+	_sound.init();
 	_title = new Title;
 	_intro = new IntroScene;
 	_stage1 = new Stage1;
 	_stage2 = new Stage2;
 	_stage3 = new Stage3;
 	_tutorial = new Tutorial;
+	_ending = new Ending;
 
 	_title->init();
 	
@@ -49,6 +51,7 @@ void MainGame::update(void)
 
 	if (_title->getStartGame())
 	{	
+		SOUNDMANAGER->stop("타이틀배경음");
 		if (!_playVideo)
 		{
 			_intro->init();
@@ -59,14 +62,18 @@ void MainGame::update(void)
 	}
 	if (_title->getStartTutorial())
 	{
+	
 		_tutorial->init();
 		_currentScene = _tutorial;
 		_title->setStartTutorial(false);
+		SOUNDMANAGER->stop("타이틀배경음");
 	}
 	if (_tutorial->getGoTitle())
 	{
 	
+		_title->init();
 		_currentScene = _title;
+
 
 		_tutorial->setGoTitle(false);
 		
@@ -83,6 +90,7 @@ void MainGame::update(void)
 	}
 	if (_stage1->getGoStage2())
 	{
+		SOUNDMANAGER->stop("스테이지1배경음");
 		if (!_startStage2)
 		{
 			_stage2->init();
@@ -100,6 +108,17 @@ void MainGame::update(void)
 		}
 		_currentScene = _stage3;
 	}
+	if (_stage3->getClear())
+	{
+		SOUNDMANAGER->stop("보스배경음");
+		if (!_gameEnd)
+		{
+			_ending->init();
+			
+			_gameEnd = true;
+		}
+		_currentScene = _ending;
+	}
 
 	_currentScene->update();
 
@@ -107,7 +126,7 @@ void MainGame::update(void)
 
 void MainGame::render(void)
 {
-	if (_currentScene != _intro)
+	if (_currentScene != _intro && _currentScene != _ending)
 	{
 		PatBlt(getMemDC(), 0, 0, WINSIZE_X, WINSIZE_Y, BLACKNESS);
 		_currentScene->render();

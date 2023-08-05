@@ -46,6 +46,8 @@ private:
 	const float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
 	const float _initialShakeMagnitude = 15.0f; // 흔들기 강도
 
+	bool _deathSound;
+
 	void updateShakeEffect();
 	void createFragments(std::vector<Fragment>& fragments, const POINT& position, wchar_t* imagePath, int numFragments);
 	void cameraCalibration();

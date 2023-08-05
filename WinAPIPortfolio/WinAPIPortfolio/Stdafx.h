@@ -42,6 +42,7 @@ using namespace std;
 #include "TempSoundManager.h"
 #include "UIManager.h"
 #include "Player.h"
+#include "SoundManager.h"
 //#include "VideoPlayer.h"
 
 #include <Vfw.h>
@@ -56,7 +57,8 @@ using namespace std;
 #define TEMPSOUNDMANAGER TempSoundManager::getSingleton()
 #define UI UIManager::getSingleton()
 #define PLAYER Player::getSingleton()
-//#define VIDEOMANAGER VideoPlayer::getSingleton()
+#define SOUNDMANAGER SoundManager::getSingleton()
+
 
 
 

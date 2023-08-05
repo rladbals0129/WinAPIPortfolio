@@ -264,6 +264,15 @@ private:
 
 	bool _onRock;
 
+	//sound
+	
+	int _runSoundCnt;
+	
+	int _attackSoundCnt;
+	bool _jumpSound;
+	bool _shotGunSound;
+	bool _hitSound;
+	bool _bossCreateSound;
 public:	
 	HRESULT init(void);
 	void release(void);

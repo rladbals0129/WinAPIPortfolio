@@ -73,6 +73,10 @@ HRESULT Player::init(void)
 	//벽점프
 	_canLeftWallJump = false;
 	_canRightWallJump = false;
+
+
+
+	
 	return S_OK;
 }
 
@@ -89,7 +93,7 @@ void Player::release(void)
 void Player::update(void)
 {
 	_frame++;
-
+	SOUNDMANAGER->update();
 	_rc.left += _knockbackSpeedX;
 	_rc.right += _knockbackSpeedX;
 	_rc.top += _knockbackSpeedY;
@@ -100,7 +104,21 @@ void Player::update(void)
 	{
 		_kunai->update();
 	}
-	
+	if (_hit)
+	{
+		if (!_hitSound)
+		{
+			SOUNDMANAGER->play("피격");
+			SOUNDMANAGER->setVolume("피격", 0.2f);
+			_hitSound = true;
+		}
+		
+	}
+	else
+	{
+		_hitSound = false;
+		SOUNDMANAGER->stop("피격");
+	}
 	if (_knockbackDistanceX >= _maxKnockbackDistance || _knockbackDistanceY >= _maxKnockbackDistance)
 	{
 		_knockbackSpeedX = 0.0f;
@@ -146,9 +164,19 @@ void Player::update(void)
 	
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && !KEYMANAGER->isStayKeyDown(VK_RIGHT)&&!_down && !_colLeft &&!_isATK&&!shoot)
 	{
+		
 		_isLeft = true;
 		if (_currentState != JUMP)
-		_currentState = MOVE;
+		{
+			_runSoundCnt++;
+			if (_runSoundCnt % 10 == 0)
+			{
+				SOUNDMANAGER->play("달리기");
+				SOUNDMANAGER->setVolume("달리기", 0.2f);
+			}
+			_currentState = MOVE;
+		}
+	
 
 		if (_currentState == MOVE)
 		{
@@ -164,6 +192,10 @@ void Player::update(void)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) )
 	{
+		_runSoundCnt = 0;
+		SOUNDMANAGER->stop("달리기");
+		
+
 		IMAGEMANAGER->findImage("머리")->setY(_rc.top);
 		IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
 		if (_currentState != JUMP)
@@ -171,9 +203,19 @@ void Player::update(void)
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && !KEYMANAGER->isStayKeyDown(VK_LEFT) && !_down && !_colRight && !_isATK &&!shoot)
 	{
+	
 		_isLeft = false;
 		if (_currentState != JUMP)
+		{
+			_runSoundCnt++;
+			if (_runSoundCnt % 10 == 0)
+			{
+				SOUNDMANAGER->play("달리기");
+				SOUNDMANAGER->setVolume("달리기", 0.2f);
+			}
 			_currentState = MOVE;
+		}
+			
 
 		if (_currentState == MOVE)
 		{
@@ -190,6 +232,8 @@ void Player::update(void)
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
+		_runSoundCnt = 0;
+		SOUNDMANAGER->stop("달리기");
 		IMAGEMANAGER->findImage("머리")->setY(_rc.top);
 		IMAGEMANAGER->findImage("기본표정")->setY(_rc.top);
 		_currentState = IDLE;
@@ -208,6 +252,8 @@ void Player::update(void)
 	//===========점프===========
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE) && (!_isJumping || _canLeftWallJump || _canRightWallJump || _onRock) && !shoot)
 	{
+		SOUNDMANAGER->play("점프");
+		SOUNDMANAGER->setVolume("점프", 0.2f);
 		_jumpDust = true;
 		if (!_downJump)
 		{
@@ -328,6 +374,20 @@ void Player::update(void)
 	
 	}
 	if (KEYMANAGER->isOnceKeyUp(VK_RETURN)) {}
+
+	if (_createBoss)
+	{
+		if (!_bossCreateSound)
+		{
+			SOUNDMANAGER->play("보스등장");
+			SOUNDMANAGER->setVolume("보스등장", 0.2f);
+			_bossCreateSound = true;
+		}
+	}
+	else
+	{
+		_bossCreateSound = false;
+	}
 	//=====================================txtui==========
 	//if (KEYMANAGER->isOnceKeyDown(VK_UP) && _colCom)
 	//{
@@ -346,6 +406,12 @@ void Player::update(void)
 	//========공격===========
 	if (KEYMANAGER->isStayKeyDown('S') && _usingKnife && !_hit && !shoot)
 	{
+		_attackSoundCnt++;
+		if (_attackSoundCnt % 10 == 0)
+		{
+			SOUNDMANAGER->play("칼공격");
+			SOUNDMANAGER->setVolume("칼공격", 0.2f);
+		}
 		_currentState = ATTACK;
 		_isATK = true;
 		//cout << "ss?" << endl;
@@ -408,11 +474,19 @@ void Player::update(void)
 
 	if (KEYMANAGER->isStayKeyDown('W') && _usingGun)
 	{
+		if (!_shotGunSound)
+		{
+			SOUNDMANAGER->play("총공격");
+			SOUNDMANAGER->setVolume("총공격", 0.2f);
+			_shotGunSound = true;
+		}
 		shoot = true;
 		_currentState = GUN;
 	}
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
+		SOUNDMANAGER->stop("총공격");
+		_shotGunSound = false;
 		shoot = false;
 	}
 	if (_currentState == GUN)

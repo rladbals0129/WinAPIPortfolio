@@ -5,7 +5,6 @@ HRESULT ZombieManager::init()
 {
 	_knockBackMagnitude = 10.0f;
 
-
 	return S_OK;
 }
 
@@ -29,6 +28,7 @@ void ZombieManager::update(int offsetX,int offsetY)
 	for (int i = 0; i < _Fzm.size(); i++)
 	{
 		_Fzm[i]->UpdateZombie();
+	
 	}
 	//Á»ºñ ÃßÀû¹üÀ§
 	for (int i = 0; i < _Fzm.size(); i++)
@@ -130,6 +130,17 @@ void ZombieManager::update(int offsetX,int offsetY)
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 		{
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
+			
+			}
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -174,8 +185,17 @@ void ZombieManager::update(int offsetX,int offsetY)
 
 		if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
 		{
+			
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+			}
 			_Fzm[i]->setDie(true);
 			createBoxEF = true;
 			if (createBoxEF)

@@ -73,14 +73,14 @@
     <Filter Include="소스 파일\GameObjectClass\IntroReal">
       <UniqueIdentifier>{61cbc1fb-3f74-4ef5-88f8-e6d4d52ad3f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\GameObjectClass\IntroTest">
-      <UniqueIdentifier>{30d3fb64-a422-4c5c-b62a-ed28cb8463b0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\GameObjectClass\UI">
       <UniqueIdentifier>{4112fbfd-ae2a-455f-abae-21bb2e463fce}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\Effect">
       <UniqueIdentifier>{e1305c63-2fb9-485c-88ad-e87a17a3eed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\GameObjectClass\Ending">
+      <UniqueIdentifier>{5ef88a9a-80ef-472a-acbd-a97ee335ea97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,12 +138,6 @@
     <ClInclude Include="Title.h">
       <Filter>소스 파일\GameObjectClass\Title</Filter>
     </ClInclude>
-    <ClInclude Include="VideoPlayer.h">
-      <Filter>2D FrameWork\FrameWorkManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Intro.h">
-      <Filter>소스 파일\GameObjectClass\IntroTest</Filter>
-    </ClInclude>
     <ClInclude Include="IntroScene.h">
       <Filter>소스 파일\GameObjectClass\IntroReal</Filter>
     </ClInclude>
@@ -192,6 +186,18 @@
     <ClInclude Include="Lipo.h">
       <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
     </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Ending.h">
+      <Filter>소스 파일\GameObjectClass\Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoPlayer.h">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundClass.h">
+      <Filter>2D FrameWork\Utility\ResourceClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinAPIPortfolio.cpp">
@@ -235,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="VideoPlayer.cpp">
       <Filter>2D FrameWork\FrameWorkManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Intro.cpp">
-      <Filter>소스 파일\GameObjectClass\IntroTest</Filter>
     </ClCompile>
     <ClCompile Include="IntroScene.cpp">
       <Filter>소스 파일\GameObjectClass\IntroReal</Filter>
@@ -286,6 +289,15 @@
     </ClCompile>
     <ClCompile Include="Lipo.cpp">
       <Filter>소스 파일\GameObjectClass\Enemy\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>2D FrameWork\FrameWorkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Ending.cpp">
+      <Filter>소스 파일\GameObjectClass\Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundClass.cpp">
+      <Filter>2D FrameWork\Utility\ResourceClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

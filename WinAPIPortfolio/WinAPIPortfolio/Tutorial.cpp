@@ -50,9 +50,10 @@ void Tutorial::update()
 {
     if (KEYMANAGER->isOnceKeyDown(VK_BACK))
     {
-		_title.init();
+		//_title.init();
         _goTitle = true;
-		
+	//	SOUNDMANAGER->play("타이틀배경음");
+	//	SOUNDMANAGER->setVolume("타이틀배경음", 0.2f);
     }
 	PLAYER->update();
 	playerPixel();
@@ -68,18 +69,16 @@ void Tutorial::update()
 			}
 		}
 	}
-	//====================================================
-	//updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
+	
+
 	_zombieManager.update(0,0);
 	_slashEffect.update();
 
-	//==================자폭
 	updateLipo();
 	
 
 
-	//======================
-	//updateZombie();
+	
 	if (PLAYER->getCreateBoss())
 	{
 
@@ -114,7 +113,7 @@ void Tutorial::render()
 	{
 		IMAGEMANAGER->render("버튼", getMemDC(), button.rect.left, button.rect.top, _buttonWidth, _buttonHeight);
 
-		// 텍스트 그리기
+	
 		FONTMANAGER->drawText(getMemDC(), button.rect.left + 25, button.rect.top + 30, "Orange Kid", 30, FW_BOLD, (char*)button.text.c_str(), static_cast<int>(button.text.length()), RGB(255, 255, 255));
 	}
 	if (PLAYER->getCreateBoss())
@@ -123,13 +122,13 @@ void Tutorial::render()
 
 	}
 	_slashEffect.render(getMemDC());
-	//플레이어
+	
 	PLAYER->render(getMemDC());
 	PLAYER->_dustEffect.update();
-	//====
+	
 	_zombieManager.render();
 	renderLipo();
-	//renderZombie();
+
 
 
 	char ptMouse[128];
@@ -137,12 +136,12 @@ void Tutorial::render()
 	char ptPlayerPos[128];
 
 	wsprintf(ptMouse, "x : %d y : %d", _ptMouse.x, _ptMouse.y);
-	//wsprintf(ptOffset, "offsetX : %d  offsetY : %d", _offsetX, _offsetY);
+
 	wsprintf(ptPlayerPos, "x : %d y : %d", PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().top);
 
 
 	TextOut(getMemDC(), 100, 100, ptMouse, strlen(ptMouse));
-//	TextOut(getMemDC(), 100, 120, ptOffset, strlen(ptOffset));
+
 	TextOut(getMemDC(), 100, 140, ptPlayerPos, strlen(ptPlayerPos));
 }
 
@@ -153,7 +152,7 @@ void Tutorial::playerPixel()
 	_pPosRc.right = PLAYER->getPlayerPos().right;
 	_pPosRc.top = PLAYER->getPlayerPos().top;
 	_pPosRc.bottom = PLAYER->getPlayerPos().bottom;
-	//==픽셀 충돌==
+
 	int Rlb = GetRValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.left , _pPosRc.bottom + 3));
 	int Rlbup = GetRValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.left, _pPosRc.bottom - 5));
 
@@ -171,14 +170,7 @@ void Tutorial::playerPixel()
 	int GCR = GetGValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.right, (_pPosRc.top + _pPosRc.bottom) / 2 )); //g134
 	int GCL = GetGValue(GetPixel(IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), _pPosRc.left , (_pPosRc.top + _pPosRc.bottom) / 2 ));
 
-	//int RlbR = GetRValue(GetPixel(IMAGEMANAGER->findImage("보스돌픽셀")->getMemDC(), PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().bottom + 3));
-	//int RrbR = GetRValue(GetPixel(IMAGEMANAGER->findImage("보스돌픽셀")->getMemDC(), PLAYER->getPlayerPos().right, PLAYER->getPlayerPos().bottom));
-	//int RlbupR = GetRValue(GetPixel(IMAGEMANAGER->findImage("보스돌픽셀")->getMemDC(), PLAYER->getPlayerPos().left, PLAYER->getPlayerPos().bottom - 5));
-	//int RrbupR = GetRValue(GetPixel(IMAGEMANAGER->findImage("보스돌픽셀")->getMemDC(), PLAYER->getPlayerPos().right, PLAYER->getPlayerPos().bottom - 5));
-	/*if (PLAYER->getUsingKunai())
-	{
-		_kunaiCol->kunaiCollision(IMAGEMANAGER->findImage("보스돌픽셀")->getMemDC(), 0, 0);
-	}*/
+
 
 	if (PLAYER->getUsingKunai())
 	{
@@ -208,7 +200,7 @@ void Tutorial::playerPixel()
 		PLAYER->setDownJump(false);
 		
 	}
-	//센터값 장애물
+	
 	if (GCR == 134)
 	{
 		PLAYER->setColRight(true);
@@ -226,7 +218,7 @@ void Tutorial::playerPixel()
 
 
 
-	//오른쪽 막힌곳
+	
 	if (Grt == 134 && Grb == 134)
 	{
 		PLAYER->setPlayerPosRight(8);
@@ -234,14 +226,13 @@ void Tutorial::playerPixel()
 	}
 
 
-	//왼쪽막힌곳
+
 	if (Glt == 134 && Glb == 134)
 	{
 		PLAYER->setPlayerPosLeft(8);
 	}
 
 
-	//위쪽막힌곳
 	if (Glt == 134 && Grt == 134)
 	{
 		PLAYER->setPlayerPosBottom(PLAYER->getColTop());
@@ -249,7 +240,6 @@ void Tutorial::playerPixel()
 	}
 
 
-	//
 
 
 
@@ -259,11 +249,11 @@ void Tutorial::onButtonClick(int buttonIndex)
 {
 	switch (buttonIndex)
 	{
-	case 0: // 좀비 생성 버튼
+	case 0: 
 		_zombieManager.createZombie(800, 600);
-		//createZombie(800,600);
+		
 		break;
-	case 1: // 칼 사용 버튼
+	case 1: 
 		PLAYER->setUsingKnife(!PLAYER->getUsingKnife());
 		break;
 	case 2:
@@ -276,7 +266,7 @@ void Tutorial::onButtonClick(int buttonIndex)
 		PLAYER->setCreateBoss(!PLAYER->getCreateBoss());
 		break;
 	case 5:
-		createLipo(300, 600);
+		createLipo(300, 580);
 		break;
 	}
 }
@@ -303,7 +293,7 @@ void Tutorial::updateShakeEffect(float& shakeDuration, float& shakeOffsetX, floa
 {
 	if (shakeDuration > 0)
 	{
-		shakeDuration -= 0.016f; // 상황에 따라 실제 deltaTime으로 변경됩니다.
+		shakeDuration -= 0.016f; 
 
 		shakeOffsetX = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
 		shakeOffsetY = (rand() % (int)(_initialShakeMagnitude * 2 + 1) - _initialShakeMagnitude) * sin(2 * PI * shakeDuration / _initialShakeDuration);
@@ -334,7 +324,7 @@ void Tutorial::bossBattle()
 			_boss->setHit(true);
 			_bossHitDelay = true;
 
-			_zombieManager.applyShake(_initialShakeDuration); //스테이지에선 그냥 applyShake
+			_zombieManager.applyShake(_initialShakeDuration); 
 
 			createBoxEF = true;
 			if (createBoxEF)
@@ -365,7 +355,7 @@ void Tutorial::bossBattle()
 			createBoxEF = false;
 
 
-			//_boss->setPattern(_boss->getPattern() + 1);
+			
 		}
 
 
@@ -382,13 +372,13 @@ void Tutorial::bossBattle()
 			_boss->setPattern(_boss->getPattern() + 1);
 
 
-			//	cout << _boss->getPattern() << endl;
+		
 		}
 	}
 
 	if (_boss->getCurrentState() == 2)
 	{
-		//cout << "좀비소환" << endl;
+	
 
 		if (!_zombieOnce)
 		{
@@ -410,11 +400,11 @@ void Tutorial::bossBattle()
 			PLAYER->setDmg(_boss->getAtk());
 			PLAYER->setHit(true);
 			_hitDelay = true;
-			//넉백
+			
 			float knockBackX = PLAYER->getPlayerCenter() > _boss->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
-			float knockBackY = 0; //-_knockBackMagnitude;  
+			float knockBackY = 0;  
 			PLAYER->setKnockback(knockBackX, knockBackY);
-			//======
+			
 			_zombieManager.applyShake(_initialShakeDuration);
 		}
 	}
@@ -452,12 +442,63 @@ void Tutorial::updateLipo()
 	{
 		_Flp[i]->UpdateLipo();
 	}
+
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Flp[i]->getRange()))
+		{
+
+			
+			if (!_hitDelay)
+			{
+				PLAYER->setDmg(_Flp[i]->getAtk());
+				PLAYER->setHit(true);
+				_hitDelay = true;
+				
+				float knockBackX = PLAYER->getPlayerCenter() > _Flp[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+				float knockBackY = 0; 
+				PLAYER->setKnockback(knockBackX, knockBackY);
+			
+				_zombieManager.applyShake(_initialShakeDuration);
+			}
+			
+		}
+	}
+
+
+	if (_hitDelay)
+	{
+		PLAYER->Hit();
+		_hitCnt++;
+		if (_hitCnt % 5 == 0)
+		{
+			PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
+		}
+	}
+	if (_hitCnt > 100)
+	{
+		PLAYER->setAlpha(255);
+		PLAYER->setHit(false);
+		_hitDelay = false;
+		_hitCnt = 0;
+	}
+
+
 	vector<size_t> lipoFM;
 
 	for (int i = 0; i < _Flp.size(); i++)
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Flp[i]->getPos()))
 		{
+			if (!_Flp[i]->getRecognition())
+			{
+				SOUNDMANAGER->play("자폭인식");
+				SOUNDMANAGER->setVolume("자폭인식", 0.2f);
+				SOUNDMANAGER->play("칼피격");
+				SOUNDMANAGER->setVolume("칼피격", 0.2f);
+				_Flp[i]->setRecognition(true);
+			}
+
 			_zombieDiePosX = _Flp[i]->getPos().left;
 			_zombieDiePosY = _Flp[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Flp[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -524,7 +565,7 @@ void Tutorial::updateLipo()
 		_Flp.erase(_Flp.begin() + *it);
 	}
 
-	// 파편 업데이트
+
 	for (auto& fragment : _Lfragments)
 	{
 		fragment.Update(0.16f, IMAGEMANAGER->findImage("튜토리얼픽셀")->getMemDC(), 0, 0);

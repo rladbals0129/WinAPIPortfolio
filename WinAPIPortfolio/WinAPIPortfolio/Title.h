@@ -9,7 +9,7 @@ private:
 	RECT _select[3];
 
 	int _idx;
-
+	bool _once;
 	int _arrowCntL;
 	int _arrowIdxL;
 	int _arrowCntR;

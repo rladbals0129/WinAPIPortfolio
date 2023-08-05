@@ -59,7 +59,7 @@ private:
 	int _bossCnt;
 	int _bossIdx;
 
-
+	
 	RECT _pPosRc;
 	//===Äí³ªÀÌ
 	float _lerpSpeed;
@@ -78,11 +78,15 @@ private:
 	bool _zombieOnce;
 	int _bossHitCnt;
 	int _bossHitDelay;
-
+	bool _bossSound;
+	bool _bossCreateSound;
 	//== ÀÚ½T
 	vector<Lipo*> _Flp;
 	vector<Fragment> _Lfragments;
+	bool lipoInit;
 
+	//==¿£µù
+	bool _clear;
 
 public:
 	HRESULT init(void);
@@ -108,5 +112,7 @@ public:
 	void createLipo(int x, int y);
 	void updateLipo();
 	void renderLipo();
+
+	bool getClear() { return _clear; }
 };
 

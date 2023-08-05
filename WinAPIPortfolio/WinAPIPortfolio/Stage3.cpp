@@ -28,7 +28,6 @@ HRESULT Stage3::init(void)
 	_zm->setPos(1120, 510);
 	_Fzm.push_back(_zm);
 	_renderBoss = true;
-
 	return S_OK;
 }
 
@@ -38,11 +37,16 @@ void Stage3::release(void)
 
 void Stage3::update(void)
 {
+	if (_boss->getRealDie())
+	{
+		_clear = true;
+	}
+
 	PLAYER->update();
 	PLAYER->_dustEffect.update();
 	playerPixel();
 	updateShakeEffect(_shakeDuration, _shakeOffsetX, _shakeOffsetY);
-	updateZombieBot();
+	
 	_knockBackMagnitude = 10.0f;
 	if (_currentMap == map1)
 	{
@@ -93,7 +97,19 @@ void Stage3::update(void)
 			}
 		}
 
-	//	updateZombieBot();
+
+
+		if (!lipoInit)
+		{
+			createLipo(1450, 270);
+			createLipo(2060, 625);
+			createLipo(3190, 560);
+
+			lipoInit = true;
+		}
+		updateLipo();
+
+		updateZombieBot();
 	}
 	if (_currentMap == map3)
 	{
@@ -149,6 +165,8 @@ void Stage3::update(void)
 				_renderBoss = false;
 				PLAYER->setPanalBoss(false);
 				PLAYER->setCreateBoss(true);
+			
+
 			}
 			PLAYER->setColBoss(false);
 		}
@@ -157,8 +175,16 @@ void Stage3::update(void)
 
 		if (PLAYER->getCreateBoss())
 		{
+			if (!_bossSound)
+			{
+				SOUNDMANAGER->stop("½ºÅ×ÀÌÁö23¹è°æÀ½");
+				SOUNDMANAGER->play("º¸½º¹è°æÀ½");
+				SOUNDMANAGER->setVolume("º¸½º¹è°æÀ½", 0.2f);
+				_bossSound = true;
+			}
+			
 			_boss->update();
-		//	updateZombieBot();
+			updateZombieBot();
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_boss->getPos()) && _boss->getCurrentState() != 0)
 			{
 
@@ -231,7 +257,7 @@ void Stage3::update(void)
 				{
 					for (int i = 0; i < 3; i++)
 					{
-						createZombie(300 * (i + 1), 600);
+						createZombie(300 * (i + 1), 640);
 					}
 
 				}
@@ -306,6 +332,7 @@ void Stage3::render(void)
 	if (_currentMap == map2)
 	{
 		renderZombieBot();
+		renderLipo();
 	}
 	if (_currentMap == map3)
 	{
@@ -583,6 +610,14 @@ void Stage3::updateZombieBot()
 
 		if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
 		{
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+			}
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -624,6 +659,16 @@ void Stage3::updateZombieBot()
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 		{
+			_Fzm[i]->setDeathSound(true);
+			if (_Fzm[i]->getDeathSound())
+			{
+				SOUNDMANAGER->play("»ç¸Á");
+				SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
+				SOUNDMANAGER->play("°øÅë»ç¸Á");
+				SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+			}
 			_zombieDiePosX = _Fzm[i]->getPos().left;
 			_zombieDiePosY = _Fzm[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -736,6 +781,7 @@ void Stage3::moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX,
 			for (int i = 0; i < _Fzm.size(); i++)
 			{
 				_Fzm[i]->setPosLeft(8);
+			
 			}
 			for (auto& fragment : _Zfragments)
 			{
@@ -745,6 +791,7 @@ void Stage3::moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX,
 			for (int i = 0; i < _Flp.size(); i++)
 			{
 				_Flp[i]->setPosLeft(8);
+				_Flp[i]->setBreakStartXLeft(8);
 			}
 			for (auto& fragment : _Lfragments)
 			{
@@ -772,6 +819,7 @@ void Stage3::moveCamera(int LcameraOffsetX, int RcameraOffsetX, int LmaxOffsetX,
 			for (int i = 0; i < _Flp.size(); i++)
 			{
 				_Flp[i]->setPosRight(8);
+				_Flp[i]->setBreakStartXRight(8);
 			}
 			for (auto& fragment : _Lfragments)
 			{
@@ -850,12 +898,66 @@ void Stage3::updateLipo()
 	{
 		_Flp[i]->UpdateLipo();
 	}
+
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		_Flp[i]->UpdateLipo();
+	}
+
+	for (int i = 0; i < _Flp.size(); i++)
+	{
+		if (IntersectRect(&_collider, &PLAYER->getPlayerPos(), &_Flp[i]->getRange()))
+		{
+
+
+			if (!_hitDelay)
+			{
+				PLAYER->setDmg(_Flp[i]->getAtk());
+				PLAYER->setHit(true);
+				_hitDelay = true;
+				//³Ë¹é
+				float knockBackX = PLAYER->getPlayerCenter() > _Flp[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
+				float knockBackY = 0; //-_knockBackMagnitude;  
+				PLAYER->setKnockback(knockBackX, knockBackY);
+				//======
+			    applyShake(_initialShakeDuration);
+			}
+
+		}
+	}
+
+
+	if (_hitDelay)
+	{
+		PLAYER->Hit();
+		_hitCnt++;
+		if (_hitCnt % 5 == 0)
+		{
+			PLAYER->setAlpha(255 - (PLAYER->getAlpha() - 115));
+		}
+	}
+	if (_hitCnt > 100)
+	{
+		PLAYER->setAlpha(255);
+		PLAYER->setHit(false);
+		_hitDelay = false;
+		_hitCnt = 0;
+	}
+
 	vector<size_t> lipoFM;
 
 	for (int i = 0; i < _Flp.size(); i++)
 	{
 		if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Flp[i]->getPos()))
 		{
+			if (!_Flp[i]->getRecognition())
+			{
+				SOUNDMANAGER->play("ÀÚÆøÀÎ½Ä");
+				SOUNDMANAGER->setVolume("ÀÚÆøÀÎ½Ä", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
+				_Flp[i]->setRecognition(true);
+			}
 			_zombieDiePosX = _Flp[i]->getPos().left;
 			_zombieDiePosY = _Flp[i]->getPos().top;
 			float knockBackX = PLAYER->getPlayerCenter() > _Flp[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;

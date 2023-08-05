@@ -160,7 +160,13 @@ private:
 	int _kunaiIdx;
 	//=======
 	bool _goStage2;
+	
 
+	bool _sound;
+	bool _RopenSound;
+	bool _RcloseSound;
+	bool _LopenSound;
+	bool _LcloseSound;
 
 	//==È­¸é==
 	float _shakeDuration;

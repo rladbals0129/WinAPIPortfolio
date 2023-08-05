@@ -69,6 +69,18 @@ void KunaiCollision::kunaiCollision(HDC hdc, int offsetX, int offsetY)
 				PLAYER->getKunai()->setLeftStuck(false);
 
 			}
+
+			if (!_soundL)
+			{
+				SOUNDMANAGER->play("쿠나이벽충돌");
+				SOUNDMANAGER->setVolume("쿠나이벽충돌", 0.2f);
+				_soundL = true;
+			}
+
+		}
+		else
+		{
+			_soundL = false;
 		}
 	}
 
@@ -103,6 +115,17 @@ void KunaiCollision::kunaiCollision(HDC hdc, int offsetX, int offsetY)
 				PLAYER->setPosY(targetPosY);
 				PLAYER->getKunai()->setRightStuck(false);
 			}
+
+			if (!_soundR)
+			{
+				SOUNDMANAGER->play("쿠나이벽충돌");
+				SOUNDMANAGER->setVolume("쿠나이벽충돌", 0.2f);
+				_soundR = true;
+			}
+		}
+		else
+		{
+			_soundR = false;
 		}
 
 	}

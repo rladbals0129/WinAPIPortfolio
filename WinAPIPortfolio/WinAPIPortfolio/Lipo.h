@@ -27,6 +27,11 @@ private:
 	int _breakSizeY;
 	int _breakStartX;
 	int _breakStartY;
+
+	bool _soundReady;
+	bool _soundBoom;
+	bool _recognition;
+
 public:
 	HRESULT init(void);
 	void release(void);
@@ -40,8 +45,9 @@ public:
 	inline RECT getRange() { return _Range; }
 	inline int getState() { return _state; }
 	inline int getCenter() { return (_rc.left + _rc.right) / 2; }
-	
+	inline bool getRecognition() { return _recognition; }
 
+	inline void setRecognition(bool recognition) { _recognition = recognition; }
 	inline void setDie(bool die) { _boomStart = die; }
 	inline void setPosLeft(int x) { _rc.left += x; _rc.right += x; }
 	inline void setPosRight(int x) { _rc.left -= x; _rc.right -= x; }
@@ -50,6 +56,9 @@ public:
 	inline void setPos(int x, int y) { _rc = { x,y,x + 90,y + 82 }; }
 	inline void setIsLeft(bool isLeft) { _isLeft = isLeft; }
 	inline void setState(int state) { _state = state; }
+	
+	inline void setBreakStartXRight(int x) { _breakStartX -= x; }
+	inline void setBreakStartXLeft(int x) {	_breakStartX += x;}
 
 
 	void idle();

@@ -29,6 +29,10 @@ private:
 	int _Mcnt;
 	int _Midx;
 	int _MYidx;
+
+	//sound
+	bool _aggroSound;
+	bool _deathSound;
 public:
 	HRESULT init(void);
 	void release(void);
@@ -61,6 +65,9 @@ public:
 	inline void setState(int state) { _state = state; }
 	inline void setGo(bool go) { _go = go; }
 	inline void setWake(bool wake) { _isWake = wake; }
+
+	inline bool getDeathSound() { return _deathSound; }
+	inline void setDeathSound(bool deathSound) { _deathSound = deathSound; }
 
 	void sleep();
 	void wake();

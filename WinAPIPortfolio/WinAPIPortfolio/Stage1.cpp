@@ -58,8 +58,8 @@ HRESULT Stage1::init(void)
 
 	}
 	
-
-
+	_sound = false;
+	//SOUNDMANAGER->addSound("")
 	_cutDoorL = 0;
 	_cutDoorR = 0;
 	_renderDoor = true;
@@ -134,6 +134,12 @@ void Stage1::release(void)
 
 void Stage1::update(void)
 {
+	if (!_sound)
+	{
+		SOUNDMANAGER->play("½ºÅ×ÀÌÁö1¹è°æÀ½");
+		SOUNDMANAGER->setVolume("½ºÅ×ÀÌÁö1¹è°æÀ½", 0.2f);
+		_sound = true;
+	}
 	
 	if (_createPlayer)
 	{
@@ -252,8 +258,19 @@ void Stage1::update(void)
 		
 			if (KEYMANAGER->isOnceKeyDown('E'))
 			{
+				
 				_glassIdx++;
 				applyShake(_initialShakeDuration);		
+				if (_glassIdx <= 3)
+				{
+					SOUNDMANAGER->play("À¯¸®Å¸°Ý");
+					SOUNDMANAGER->setVolume("À¯¸®Å¸°Ý", 0.2f);
+				}
+				else if (_glassIdx == 4)
+				{
+					SOUNDMANAGER->play("À¯¸®ÆÄ±«");
+					SOUNDMANAGER->setVolume("À¯¸®ÆÄ±«", 0.2f);
+				}
 			}
 			IMAGEMANAGER->findImage("À¯¸®°ü")->setFrameX(_glassIdx);
 			
@@ -625,7 +642,10 @@ void Stage1::update(void)
 
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_obj[i].rc))
 			{
-				cout << "»óÀÚ ¸Â¾Ò´Ù" << endl;
+				SOUNDMANAGER->play("»óÀÚÆÄ±«");
+				SOUNDMANAGER->setVolume("»óÀÚÆÄ±«", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
 				applyShake(_initialShakeDuration);
 				createBoxEF = true;
 				if (createBoxEF)
@@ -785,6 +805,14 @@ void Stage1::update(void)
 
 			if (IntersectRect(&_collider, &PLAYER->_bullet.getPos(), &_Fzm[i]->getPos()))
 			{
+				_Fzm[i]->setDeathSound(true);
+				if (_Fzm[i]->getDeathSound())
+				{
+					SOUNDMANAGER->play("»ç¸Á");
+					SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+					SOUNDMANAGER->play("°øÅë»ç¸Á");
+					SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+				}
 				_zombieDiePosX = _Fzm[i]->getPos().left;
 				_zombieDiePosY = _Fzm[i]->getPos().top;
 				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -826,6 +854,16 @@ void Stage1::update(void)
 		{
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_Fzm[i]->getPos()))
 			{
+				_Fzm[i]->setDeathSound(true);
+				if (_Fzm[i]->getDeathSound())
+				{
+					SOUNDMANAGER->play("»ç¸Á");
+					SOUNDMANAGER->setVolume("»ç¸Á", 0.2f);
+					SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+					SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
+					SOUNDMANAGER->play("°øÅë»ç¸Á");
+					SOUNDMANAGER->setVolume("°øÅë»ç¸Á", 0.2f);
+				}
 				_zombieDiePosX = _Fzm[i]->getPos().left;
 				_zombieDiePosY = _Fzm[i]->getPos().top;
 				float knockBackX = PLAYER->getPlayerCenter() > _Fzm[i]->getCenter() ? _knockBackMagnitude : -_knockBackMagnitude;
@@ -976,19 +1014,23 @@ void Stage1::update(void)
 				if (_box2[i].rc.right-10 < PLAYER->getPlayerPos().left)
 				{
 					PLAYER->setColLeft(true);
-					cout << " ¤·¿À¸¥ÂÊ¿¡¼­¹Ú¾Æ" << endl;
+					
 				}
 				else if (_box2[i].rc.left+10 > PLAYER->getPlayerPos().right)
 				{
 					PLAYER->setColRight(true);
-					cout << "¿ÞÂÊ¿¡¼­¹Ú¾Æ" << endl;
+					
 				}
 				
 			}
 
 			if (IntersectRect(&_collider, &PLAYER->getATKRange(), &_box2[i].rc))
 			{
-				cout << "»óÀÚ ¸Â¾Ò´Ù" << endl;
+				
+				SOUNDMANAGER->play("»óÀÚÆÄ±«");
+				SOUNDMANAGER->setVolume("»óÀÚÆÄ±«", 0.2f);
+				SOUNDMANAGER->play("Ä®ÇÇ°Ý");
+				SOUNDMANAGER->setVolume("Ä®ÇÇ°Ý", 0.2f);
 				applyShake(_initialShakeDuration);
 				createBoxEF = true;
 				if (createBoxEF)
@@ -1440,12 +1482,32 @@ void Stage1::openDoorR()
 		if (_cutDoorR <= 170)
 		{
 			_cutDoorR += 10;
+			if (!_RopenSound)
+			{
+				SOUNDMANAGER->play("¹®¿­¸²");
+				SOUNDMANAGER->setVolume("¹®¿­¸²", 0.2f);
+				_RopenSound = true;
+			}
+		}
+		else
+		{
+			_RopenSound = false;
 		}
 	}
 	else {
 		if (_cutDoorR > 0 )
 		{
 			_cutDoorR -= 10;
+			if (!_RcloseSound)
+			{
+				SOUNDMANAGER->play("¹®´ÝÈû");
+				SOUNDMANAGER->setVolume("¹®´ÝÈû", 0.2f);
+				_RcloseSound = true;
+			}
+		}
+		else
+		{
+			_RcloseSound = false;
 		}
 	}	
 }
@@ -1457,12 +1519,32 @@ void Stage1::openDoorL()
 		if (_cutDoorL <= 170)
 		{
 			_cutDoorL += 10;
+			if (!_LopenSound)
+			{
+				SOUNDMANAGER->play("¹®¿­¸²");
+				SOUNDMANAGER->setVolume("¹®¿­¸²", 0.2f);
+				_LopenSound = true;
+			}
+		}
+		else
+		{
+			_LopenSound = false;
 		}
 	}
 	else {
 		if (_cutDoorL > 0)
 		{
 			_cutDoorL -= 10;
+			if (!_LcloseSound)
+			{
+				SOUNDMANAGER->play("¹®´ÝÈû");
+				SOUNDMANAGER->setVolume("¹®´ÝÈû", 0.2f);
+				_LcloseSound = true;
+			}
+		}
+		else
+		{
+			_LcloseSound = false;
 		}
 	}
 }

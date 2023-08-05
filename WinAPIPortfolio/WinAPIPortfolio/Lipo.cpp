@@ -4,7 +4,7 @@
 HRESULT Lipo::init(void)
 {
 	_isLeft = true;
-
+	_dmg = 50;
 	return S_OK;
 }
 
@@ -102,6 +102,12 @@ void Lipo::boom()
 
 
 	Bcnt++;
+	if (!_soundReady)
+	{
+		SOUNDMANAGER->play("ÀÚÆøÁØºñ");
+		SOUNDMANAGER->setVolume("ÀÚÆøÁØºñ", 0.2f);
+		_soundReady = true;
+	}
 	if (Bcnt % 10 == 0)
 	{
 		BIdx = 1 - BIdx;
@@ -113,17 +119,26 @@ void Lipo::boom()
 
 	if (_boom)
 	{
+		if (!_soundBoom)
+		{
+			SOUNDMANAGER->play("ÀÚÆø");
+			SOUNDMANAGER->setVolume("ÀÚÆø", 0.2f);
+			_soundBoom = true;
+		}
 		_breakSizeX += 30;
 		_breakSizeY += 30;
 		_breakStartX -= 15;
 		_breakStartY -= 15;
+		_Range = RectMake(_breakStartX, _breakSizeY, _breakSizeX, _breakSizeY);
 		if (_breakSizeX > 1000 && _breakSizeY > 800)
 		{
 			_isDie = true;
-			//_breakSizeX = 0;
-		//	_breakSizeY = 0;
-		//	_breakStartX = (_rc.left + _rc.right) / 2;
-		//	_breakStartY = (_rc.top + _rc.bottom) / 2;
+
+			_breakSizeX = 0;
+			_breakSizeY = 0;
+			_breakStartX = (_rc.left + _rc.right) / 2;
+			_breakStartY = (_rc.top + _rc.bottom) / 2;
+			_Range = RectMake(_breakStartX, _breakSizeY, _breakSizeX, _breakSizeY);
 		}
 	}
 }
