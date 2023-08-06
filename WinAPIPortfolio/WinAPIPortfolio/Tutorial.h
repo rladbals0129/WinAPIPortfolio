@@ -33,7 +33,7 @@ private:
 	const int _buttonWidth = 200;
 	const int _buttonHeight = 100;
 	ZombieManager _zombieManager;
-	//ZombieManager* getZombieManager() { return &_zombieManager; }
+	
 
 private:
 	
@@ -50,7 +50,7 @@ private:
 	//타격이펙트
 	BoxBreakEffect _slashEffect;
 	bool createBoxEF;
-	//============//
+	
 	//좀비//
 
 	vector<Zombiebot*> _Fzm;
@@ -58,11 +58,11 @@ private:
 	int _zombieDiePosX;
 	int _zombieDiePosY;
 	RECT _collider;
-	//vector<Fragment> _Zfragments;
+
 	bool _zomIdle;
 	int _zomIdleCnt;
 	//==================//
-	//다른적..//
+	
 	//자폭
 
 	vector<Lipo*> _Flp;
@@ -75,27 +75,25 @@ private:
 	bool _zombieOnce;
 	int _zombieOnceCnt;
 	
-	//====//
+	
 
 
-	//플레이어위치
+	
 	RECT _pPosRc;
 
-	//넉백
+	
 	bool _hitDelay;
 	int _hitCnt;
 	float _knockBackMagnitude;
-	//화면흔들림
+	
 	float _shakeDuration;
 	float _shakeOffsetX;
 	float _shakeOffsetY;
-	 float _initialShakeDuration = 0.5f;  // 흔들기 지속시간
-	 float _initialShakeMagnitude = 15.0f; // 흔들기 강도
+	 float _initialShakeDuration = 0.5f;  
+	 float _initialShakeMagnitude = 15.0f; 
 
 	 
-	//버튼
-
-	//RECT _button;
+	
 
 
 public:
